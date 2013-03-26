@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><channels>	<channel name="cctv1">		<url>http://localhost/projects/TV/test/cctv1.htm</url>	</channel>	<channel name="cctv2">		<url>http://localhost/projects/TV/test/cctv2.htm</url>	</channel>	<channel name="cctv3">		<url>http://localhost/projects/TV/test/cctv3.htm</url>	</channel></channels>

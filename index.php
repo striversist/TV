@@ -2,13 +2,14 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>电视节目预告</title>
         <script type="text/javascript"> 
             /*
-             * Use Ajax to quote TV program list
+             * @returns XMLHttpRequest object
              */
-            function quote(value)
-            {   
+            function createXHR()
+            {
                 var xhr;
                 try
                 {
@@ -24,9 +25,45 @@
                     alert("Ajax is not supported by your browser!")
                     return;
                 }
-                
+                return xhr;
+            }
+            
+            /*
+             * Use Ajax to quote TV program list
+             */
+            function quote(value)
+            {   
+                var xhr = createXHR();
                 var url = "choose.php?channel=" + value;
                 //document.getElementById("div").innerHTML += "url=" + url;
+                xhr.onreadystatechange = function()
+                {
+                    // only handle loaded requests
+                    if(xhr.readyState == 4)
+                    {
+                        if(xhr.status == 200)
+                        {
+                            document.getElementById("div").innerHTML = xhr.responseText;
+                        }
+                        else
+                        {
+                            alert("Error with Ajax call!");
+                        }
+                    }
+                };
+                xhr.open("GET", url, true);
+                xhr.send();
+            }
+            
+            /*
+             * Use Ajax to search TV program
+             */
+            function search()
+            {
+                var xhr = createXHR();
+                var value = document.getElementById("keytext").value;
+                //document.getElementById("div").innerHTML = value;
+                var url = "search.php?keyword=" + value;
                 xhr.onreadystatechange = function()
                 {
                     // only handle loaded requests
@@ -67,6 +104,11 @@
                 <option value="cctv15">CCTV-15（音乐）</option>
             </optgroup>
         </select>
+        <br /><br />
+        <form name="input" action="search.php" method="get" onsubmit="search(); return false;">
+            <input id="keytext" type="text" name="keyword" />
+            <input type="submit" value="搜索" />
+        </form>
         <br /><br />
         <div id="div"></div>
     </body>

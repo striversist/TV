@@ -1,7 +1,5 @@
 <?php
     header("Content-type: text/html; charset=utf8");
-    require_once dirname(__FILE__).'/'.'Collector.php';
-    require_once dirname(__FILE__).'/'.'ProgramFilter.php';
     require_once dirname(__FILE__).'/'.'Database.php';
     
     if(isset($_GET["channel"]))
@@ -9,8 +7,6 @@
         //echo "You select channel: ".$_GET["channel"]."<br />";
         $channel = $_GET["channel"];
     }
-    $colletor = Collector::getInstance();
-    $filter = ProgramFilter::getInstance();
     $db = Database::getInstance();
     
     /*
@@ -22,7 +18,7 @@
     }
     $db->store($channels);
     */
-    
+    echo "$channel 今天的节目单："."<br />";
     $channels = $db->getChannels();
     foreach ($channels[$channel] as $program)
     {

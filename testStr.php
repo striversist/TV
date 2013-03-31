@@ -11,4 +11,16 @@
     $keyword = htmlspecialchars($_GET["keyword"]);
     echo "You input keyword: ".$keyword."<br />";
     
+    $content[] = "中文";
+    $content[] = "英文";
+    
+    foreach ($content as $key => $value)
+    {
+        $pos = strpos($value, $keyword);
+        if($pos !== FALSE)
+        {
+            echo "You found $keyword"." in $value"."<br />";
+        }
+    }
+    
 ?>

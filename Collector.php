@@ -18,18 +18,41 @@ class Collector
      * return: array["channel_name"] = channel_url
      * eg. array["cctv1"] = "http://xxx";
      */
-    public function getChannelUrls()
+    public function getIdUrls()
     {
         $xml = simplexml_load_file($this->_file_path);
         foreach ($xml->channel as $channel)
         {
-            $name = $channel["name"];
-            $url = $channel->url;
-            $array["$name"] = $url;
+            $id = $channel["id"];
+            $array["$id"] = (string)($channel->url);  // SimpleXMLElement object to string
         }
         return $array;
     }
- 
+    
+    public function getIdNames()
+    {
+        $xml = simplexml_load_file($this->_file_path);
+        foreach ($xml->channel as $channel)
+        {
+            $id = $channel["id"];
+            $array["$id"] = (string)($channel->name);  // SimpleXMLElement object to string
+        }
+        return $array;
+    }
+    
+    public function getNameById($id)
+    {
+        $xml = simplexml_load_file($this->_file_path);
+        foreach ($xml->channel as $channel)
+        {
+            if($id == $channel["id"])
+            {
+                return (string)($channel->name);  // SimpleXMLElement object to string
+            }
+        }
+        return null;
+    }
+
     private static $instance_;
     private function __construct()
     {

@@ -10,11 +10,11 @@
     $filter = ProgramFilter::getInstance();
     $db = Database::getInstance();
     
-    $pairs = $colletor->getChannelUrls();
-    foreach ($pairs as $pair => $url)
+    $map = $colletor->getIdUrls();
+    foreach ($map as $id => $url)
     {
-        echo "collecting $pair:$url"."<br />";
-        $channels[$pair] = $filter->getChannel($url);
+        echo "collecting $id:$url"."<br />";
+        $channels[$id] = $filter->getChannel($url);
     }
     //dump($channels);
     $db->store($channels);

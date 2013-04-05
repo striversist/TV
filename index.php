@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>电视节目预告</title>
         <script type="text/javascript"> 
-            /*
+             /*
              * @returns XMLHttpRequest object
              */
             function createXHR()
@@ -26,6 +26,40 @@
                     return;
                 }
                 return xhr;
+            }
+            
+            /*
+             * Using Ajax sync request to init select options from json.php
+             */
+            function initSelect()
+            {
+                var mySelect = document.getElementById("mySelect");
+                var jsonObject;
+                var xhr = createXHR();
+                var url = "json.php";
+                xhr.onreadystatechange = function()
+                {
+                    // only handle loaded requests
+                    if(xhr.readyState == 4)
+                    {
+                        if(xhr.status == 200)
+                        {
+                            jsonObject = eval("(" + xhr.responseText + ")");
+                            //document.getElementById("div").innerHTML = xhr.responseText;
+                            for(var i=0; i<jsonObject.channel_list.length; i++)
+                            {
+                                //document.getElementById("div").innerHTML += jsonObject.channel_list[i].id + ": " + jsonObject.channel_list[i].name + "<br />";
+                                mySelect.options[mySelect.length] = new Option(jsonObject.channel_list[i].name, jsonObject.channel_list[i].id);
+                            }
+                        }
+                        else
+                        {
+                            alert("Error with Ajax call!");
+                        }
+                    }
+                };
+                xhr.open("GET", url, false);
+                xhr.send();               
             }
             
             /*
@@ -84,9 +118,10 @@
             }
         </script>
     </head>
-    <body>
-        <select id="select" onchange="quote(this.value)" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
-            <optgroup label="中央台">
+    <body onload="initSelect()">
+        <select id="mySelect" onchange="quote(this.value)" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
+            <!--
+            <optgroup id="myOptGroup" label="中央台">
                 <option value="cctv1">CCTV-1（综合）</option>
                 <option value="cctv2">CCTV-2（财经）</option>
                 <option value="cctv3">CCTV-3（综艺）</option>
@@ -103,6 +138,7 @@
                 <option value="cctv14">CCTV-14（少儿）</option>
                 <option value="cctv15">CCTV-15（音乐）</option>
             </optgroup>
+            -->
         </select>
         <br /><br />
         <form name="input" action="search.php" method="get" onsubmit="search(); return false;">

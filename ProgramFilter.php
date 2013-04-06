@@ -13,7 +13,7 @@ class ProgramFilter
         return self::$instance_;
     }
     
-    public function getChannel($url)
+    public function getProgramList($url)
     {
         $html = file_get_html($url);
         foreach ($html->find("div[id=PMT1]") as $pmt1)

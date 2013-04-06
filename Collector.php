@@ -2,8 +2,8 @@
 
 class Collector
 {
-    //const CHANNELS_XML = "channels_test.xml";
-    const CHANNELS_XML = "channels.xml";
+    const CHANNELS_XML = "channels_test.xml";
+    //const CHANNELS_XML = "channels.xml";
     private $_file_path = null;
     public static function getInstance()
     {
@@ -14,7 +14,7 @@ class Collector
         return self::$instance_;
     }
 
-    /*
+    /* @Deprecated
      * return: array["channel_name"] = channel_url
      * eg. array["cctv1"] = "http://xxx";
      */
@@ -25,6 +25,27 @@ class Collector
         {
             $id = $channel["id"];
             $array["$id"] = (string)($channel->url);  // SimpleXMLElement object to string
+        }
+        return $array;
+    }
+    
+    /*
+     * param: $day: 1-7 means Monday to Sunday of this week
+     * return: array["channel_name"] = channel_url
+     * eg. array["cctv1"] = "http://xxx";
+     */
+    public function getIdUrlsByDay($day)
+    {
+        if($day < 0 || $day > 7)
+        {
+            echo "day $day out limit";
+            return null;
+        }
+        $xml = simplexml_load_file($this->_file_path);
+        foreach ($xml->channel as $channel)
+        {
+            $id = $channel["id"];
+            $array["$id"] = (string)($channel->urls->url[$day - 1]);
         }
         return $array;
     }

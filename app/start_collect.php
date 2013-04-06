@@ -10,14 +10,19 @@
     $filter = ProgramFilter::getInstance();
     $db = Database::getInstance();
     
-    $map = $colletor->getIdUrls();
-    foreach ($map as $id => $url)
+    //$map = $colletor->getIdUrls();
+    for($day = 1; $day <= 7; $day++)
     {
-        echo "collecting $id:$url"."<br />";
-        $channels[$id] = $filter->getChannel($url);
+        $map = $colletor->getIdUrlsByDay($day);
+        foreach ($map as $id => $url)
+        {
+            echo "collecting $id day=$day url=$url"."<br />";
+            $channels[$id][$day] = $filter->getProgramList($url);
+        }
+        //dump($channels);
     }
-    //dump($channels);
-    $db->store($channels);
+    //var_dump($channels);
+    //$db->store($channels);
     
     echo "collect finished..."."<br />";
     

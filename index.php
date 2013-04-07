@@ -33,7 +33,7 @@
              */
             function initSelect()
             {
-                var mySelect = document.getElementById("mySelect");
+                var programSelect = document.getElementById("programSelect");
                 var jsonObject;
                 var xhr = createXHR();
                 var url = "json.php";
@@ -49,7 +49,7 @@
                             for(var i=0; i<jsonObject.channel_list.length; i++)
                             {
                                 //document.getElementById("div").innerHTML += jsonObject.channel_list[i].id + ": " + jsonObject.channel_list[i].name + "<br />";
-                                mySelect.options[mySelect.length] = new Option(jsonObject.channel_list[i].name, jsonObject.channel_list[i].id);
+                                programSelect.options[programSelect.length] = new Option(jsonObject.channel_list[i].name, jsonObject.channel_list[i].id);
                             }
                         }
                         else
@@ -65,11 +65,13 @@
             /*
              * Use Ajax to quote TV program list
              */
-            function quote(value)
+            function quote()
             {   
                 var xhr = createXHR();
-                var url = "choose.php?channel=" + value;
-                //document.getElementById("div").innerHTML += "url=" + url;
+                var channel = document.getElementById("programSelect").options[document.getElementById("programSelect").options.selectedIndex].value;
+                var day = document.getElementById("daySelect").options[document.getElementById("daySelect").options.selectedIndex].value;
+                var url = "choose.php?channel=" + channel + "&day=" + day;
+                //document.getElementById("div").innerHTML = "url=" + url;
                 xhr.onreadystatechange = function()
                 {
                     // only handle loaded requests
@@ -87,13 +89,14 @@
                 };
                 xhr.open("GET", url, true);
                 xhr.send();
-            }
+            }            
             
             /*
              * Use Ajax to search TV program
              */
-            function search()
+            function search(type)
             {
+                document.getElementById("div").innerHTML += type + "<br />";
                 var xhr = createXHR();
                 var value = document.getElementById("keytext").value;
                 //document.getElementById("div").innerHTML = value;
@@ -114,36 +117,27 @@
                     }
                 };
                 xhr.open("GET", url, true);
-                xhr.send();
+                //xhr.send();
             }
         </script>
     </head>
     <body onload="initSelect()">
-        <select id="mySelect" onchange="quote(this.value)" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
-            <!--
-            <optgroup id="myOptGroup" label="中央台">
-                <option value="cctv1">CCTV-1（综合）</option>
-                <option value="cctv2">CCTV-2（财经）</option>
-                <option value="cctv3">CCTV-3（综艺）</option>
-                <option value="cctv4">CCTV-4 (中文国际）</option>
-                <option value="cctv5">CCTV-5（体育）</option>
-                <option value="cctv6">CCTV-6（电影）</option>
-                <option value="cctv7">CCTV-7（军事 农业）</option>
-                <option value="cctv8">CCTV-8（电视剧）</option>
-                <option value="cctv9">CCTV-9（纪录）</option>
-                <option value="cctv10">CCTV-10（科教）</option>
-                <option value="cctv11">CCTV-11（戏曲）</option>
-                <option value="cctv12">CCTV-12（社会与法）</option>
-                <option value="cctv13">CCTV-13（新闻）</option>
-                <option value="cctv14">CCTV-14（少儿）</option>
-                <option value="cctv15">CCTV-15（音乐）</option>
-            </optgroup>
-            -->
+        <select id="programSelect" onchange="quote()" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
+        </select>
+        <select id="daySelect" onchange="quote()" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
+            <option value="1">星期一</option>
+            <option value="2">星期二</option>
+            <option value="3">星期三</option>
+            <option value="4">星期四</option>
+            <option value="5">星期五</option>
+            <option value="6">星期六</option>
+            <option value="7">星期日</option>
         </select>
         <br /><br />
-        <form name="input" action="search.php" method="get" onsubmit="search(); return false;">
+        <form name="searchForm" action="search.php" method="get" onsubmit="return false;">
             <input id="keytext" type="text" name="keyword" />
-            <input type="submit" value="搜索" />
+            <input type="submit" value="搜今日" onclick="search(this.value)"/>
+            <input type="submit" value="搜本周" onclick="search(this.value)"/>
         </form>
         <br /><br />
         <div id="div"></div>

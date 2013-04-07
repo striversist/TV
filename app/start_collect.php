@@ -17,12 +17,12 @@
         foreach ($map as $id => $url)
         {
             echo "collecting $id day=$day url=$url"."<br />";
-            $channels[$id][$day] = $filter->getProgramList($url);
+            $channels["$id"]["$day"] = $filter->getProgramList($url);
         }
         //dump($channels);
     }
     //var_dump($channels);
-    //$db->store($channels);
+    $db->store($channels);
     
     echo "collect finished..."."<br />";
     

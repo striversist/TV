@@ -7,38 +7,49 @@
     {
         echo "You should input search text"."<br />";
         return;
-    }
+    }    
     
     $keyword = htmlspecialchars($_GET["keyword"]);
-    //echo "You input keyword: ".$keyword."<br />";
+    //echo "You input keyword: ".$keyword." type = ".$type."<br />";
     
     $db = Database::getInstance();
     $colletor = Collector::getInstance();
     $channels = $db->getChannels();
-    foreach ($channels as $channel => $programes) 
+    
+    $today = date("w");
+    if ($today == "0")    // Sunday
     {
-        $tmp = array();
-        foreach ($programes as $program)
+        $today = "7";
+    }
+    $result = array();
+    foreach ($channels as $id => $days)
+    {
+        foreach ($days as $day => $programs) 
         {
-            $pos = strpos($program["title"], $keyword);
-            if($pos !== FALSE)
+            if ($day == $today)
             {
-                //echo "You found $keyword in ".$program["title"]."<br />";
-                $tmp[] = $program;
+                $tmp = array();
+                foreach ($programs as $program)
+                {
+                    if (strpos($program["title"], $keyword) !== FALSE)
+                    {
+                        //echo "You found $keyword in ".$program["title"]."<br />";
+                        $tmp[] = $program;
+                    }
+                }
+                if (count($tmp))
+                {
+                    $result["$id"] = $tmp;
+                }
             }
         }
-        if(count($tmp))
-        {
-            $result["$channel"] = $tmp;
-        }
     }
-    
-    if(count($result))
+    if (count($result))
     {
-        foreach ($result as $id => $programes) 
+        foreach ($result as $id => $programs) 
         {
             echo $colletor->getNameById($id)."<br />";
-            foreach ($programes as $program)
+            foreach ($programs as $program)
             {
                 echo $program["time"].": ".$program["title"]."<br />";
             }

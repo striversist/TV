@@ -7,11 +7,12 @@
     {
         $id = $_GET["channel"];
         $day = $_GET["day"];
-        echo "You select channel: ".$id." on day ".$day."<br />";
+        //echo "You select channel: ".$id." on day ".$day."<br />";
     }
     else
     {
         echo "You should select channel and day!!"."<br />";
+        return;
     }
     $db = Database::getInstance();
     $colletor = Collector::getInstance();

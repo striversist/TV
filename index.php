@@ -94,13 +94,12 @@
             /*
              * Use Ajax to search TV program
              */
-            function search(type)
+            function search()
             {
-                document.getElementById("div").innerHTML += type + "<br />";
                 var xhr = createXHR();
-                var value = document.getElementById("keytext").value;
-                //document.getElementById("div").innerHTML = value;
-                var url = "search.php?keyword=" + value;
+                var keyword = document.getElementById("keytext").value;
+                var url = "search.php?keyword=" + keyword;
+                document.getElementById("div").innerHTML = "url = " + url;
                 xhr.onreadystatechange = function()
                 {
                     // only handle loaded requests
@@ -117,7 +116,7 @@
                     }
                 };
                 xhr.open("GET", url, true);
-                //xhr.send();
+                xhr.send();
             }
         </script>
     </head>
@@ -134,10 +133,9 @@
             <option value="7">星期日</option>
         </select>
         <br /><br />
-        <form name="searchForm" action="search.php" method="get" onsubmit="return false;">
+        <form name="searchForm" action="search.php" method="get" onsubmit="search(); return false;">
             <input id="keytext" type="text" name="keyword" />
-            <input type="submit" value="搜今日" onclick="search(this.value)"/>
-            <input type="submit" value="搜本周" onclick="search(this.value)"/>
+            <input type="submit" value="搜索" />
         </form>
         <br /><br />
         <div id="div"></div>

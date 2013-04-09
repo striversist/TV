@@ -2,8 +2,8 @@
 
 class Collector
 {
-    //const CHANNELS_XML = "channels_test.xml";
-    const CHANNELS_XML = "channels.xml";
+    const CHANNELS_XML = "channels_test.xml";
+    //const CHANNELS_XML = "channels.xml";
     private $_file_path = null;
     public static function getInstance()
     {

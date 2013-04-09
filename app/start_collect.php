@@ -18,6 +18,7 @@
         {
             echo "collecting $id day=$day url=$url"."<br />";
             $channels["$id"]["$day"] = $filter->getProgramList($url);
+            usleep(10 * 1000);  // sleep 10ms
         }
         //dump($channels);
     }

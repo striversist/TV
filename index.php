@@ -28,28 +28,31 @@
                 return xhr;
             }
             
-            /*
-             * Using Ajax sync request to init select options from json.php
-             */
-            function initSelect()
+            function updateProgramSelect()
             {
                 var programSelect = document.getElementById("programSelect");
-                var jsonObject;
-                var xhr = createXHR();
-                var url = "json.php";
-                xhr.onreadystatechange = function()
+                var length = programSelect.length;
+                for(var i=length-1; i>=0; i--)
+                {
+                    programSelect.remove(i);
+                }
+                
+                var programJsonObject;
+                var xhrProgram = createXHR();
+                var programUrl = "json/channels.php?category=" + categorySelect.options[document.getElementById("categorySelect").options.selectedIndex].value;;
+                xhrProgram.onreadystatechange = function()
                 {
                     // only handle loaded requests
-                    if(xhr.readyState == 4)
+                    if(xhrProgram.readyState === 4)
                     {
-                        if(xhr.status == 200)
+                        if(xhrProgram.status === 200)
                         {
-                            jsonObject = eval("(" + xhr.responseText + ")");
+                            programJsonObject = eval("(" + xhrProgram.responseText + ")");
                             //document.getElementById("div").innerHTML = xhr.responseText;
-                            for(var i=0; i<jsonObject.channel_list.length; i++)
+                            for(var i=0; i<programJsonObject.channel_list.length; i++)
                             {
                                 //document.getElementById("div").innerHTML += jsonObject.channel_list[i].id + ": " + jsonObject.channel_list[i].name + "<br />";
-                                programSelect.options[programSelect.length] = new Option(jsonObject.channel_list[i].name, jsonObject.channel_list[i].id);
+                                programSelect.options[programSelect.length] = new Option(programJsonObject.channel_list[i].name, programJsonObject.channel_list[i].id);
                             }
                         }
                         else
@@ -58,8 +61,44 @@
                         }
                     }
                 };
-                xhr.open("GET", url, false);
-                xhr.send();               
+                xhrProgram.open("GET", programUrl, false);
+                xhrProgram.send();
+            }
+            
+            /*
+             * Using Ajax sync request to init select options from json.php
+             */
+            function initSelect()
+            {              
+                var categorySelect = document.getElementById("categorySelect");
+                var categoryJsonObject;
+                var xhrCategory = createXHR();
+                var categoryUrl = "json/categories.php";
+                xhrCategory.onreadystatechange = function()
+                {
+                    //document.getElementById("div").innerHTML += xhrCategory.readyState;
+                    // only handle loaded requests
+                    if(xhrCategory.readyState === 4)
+                    {
+                        if(xhrCategory.status === 200)
+                        {
+                            categoryJsonObject = eval("(" + xhrCategory.responseText + ")");
+                            //document.getElementById("div").innerHTML = xhrCategory.responseText;
+                            for(var i=0; i<categoryJsonObject.categories.length; i++)
+                            {
+                                //document.getElementById("div").innerHTML += jsonObject.channel_list[i].id + ": " + jsonObject.channel_list[i].name + "<br />";
+                                categorySelect.options[categorySelect.length] = new Option(categoryJsonObject.categories[i].name, categoryJsonObject.categories[i].id);
+                            }
+                            updateProgramSelect();
+                        }
+                        else
+                        {
+                            alert("Error with Ajax call!");
+                        }
+                    }
+                };
+                xhrCategory.open("GET", categoryUrl, false);
+                xhrCategory.send();
             }
             
             /*
@@ -75,9 +114,9 @@
                 xhr.onreadystatechange = function()
                 {
                     // only handle loaded requests
-                    if(xhr.readyState == 4)
+                    if(xhr.readyState === 4)
                     {
-                        if(xhr.status == 200)
+                        if(xhr.status === 200)
                         {
                             document.getElementById("div").innerHTML = xhr.responseText;
                         }
@@ -103,9 +142,9 @@
                 xhr.onreadystatechange = function()
                 {
                     // only handle loaded requests
-                    if(xhr.readyState == 4)
+                    if(xhr.readyState === 4)
                     {
-                        if(xhr.status == 200)
+                        if(xhr.status === 200)
                         {
                             document.getElementById("div").innerHTML = xhr.responseText;
                         }
@@ -121,6 +160,8 @@
         </script>
     </head>
     <body onload="initSelect()">
+        <select id="categorySelect" onchange="updateProgramSelect()" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
+        </select>
         <select id="programSelect" onchange="quote()" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
         </select>
         <select id="daySelect" onchange="quote()" style="font-family:Verdana, Arial, Helvetica, sans-serif;">

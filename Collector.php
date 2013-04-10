@@ -4,7 +4,9 @@ class Collector
 {
     const CHANNELS_XML = "channels_test.xml";
     //const CHANNELS_XML = "channels.xml";
-    private $_file_path = null;
+    const CHANNEL_CATEGORIES_XML = "channel_categories.xml";
+    private $_channels_xml_path = null;
+    private $_category_xml_path = null;
     public static function getInstance()
     {
         if(!self::$instance_ instanceof  self)
@@ -12,21 +14,6 @@ class Collector
             self::$instance_ = new self();
         }
         return self::$instance_;
-    }
-
-    /* @Deprecated
-     * return: array["channel_name"] = channel_url
-     * eg. array["cctv1"] = "http://xxx";
-     */
-    public function getIdUrls()
-    {
-        $xml = simplexml_load_file($this->_file_path);
-        foreach ($xml->channel as $channel)
-        {
-            $id = $channel["id"];
-            $array["$id"] = (string)($channel->url);  // SimpleXMLElement object to string
-        }
-        return $array;
     }
     
     /*
@@ -41,7 +28,7 @@ class Collector
             echo "day $day out limit";
             return null;
         }
-        $xml = simplexml_load_file($this->_file_path);
+        $xml = simplexml_load_file($this->_channels_xml_path);
         foreach ($xml->channel as $channel)
         {
             $id = $channel["id"];
@@ -52,7 +39,7 @@ class Collector
     
     public function getIdNames()
     {
-        $xml = simplexml_load_file($this->_file_path);
+        $xml = simplexml_load_file($this->_channels_xml_path);
         foreach ($xml->channel as $channel)
         {
             $id = $channel["id"];
@@ -61,9 +48,34 @@ class Collector
         return $array;
     }
     
+    public function getIdNamesByCategory($category)
+    {
+        $xml = simplexml_load_file($this->_channels_xml_path);
+        foreach ($xml->channel as $channel)
+        {
+            if ($channel->category == $category)
+            {
+                $id = $channel["id"];
+                $array["$id"] = (string)($channel->name);  // SimpleXMLElement object to string
+            }
+        }
+        return $array;
+    }
+    
+    public function getIdCategories()
+    {
+        $xml = simplexml_load_file($this->_category_xml_path);
+        foreach ($xml->category as $category)
+        {
+            $id = $category["id"];
+            $array["$id"] = (string)($category);
+        }
+        return $array;
+    }
+    
     public function getNameById($id)
     {
-        $xml = simplexml_load_file($this->_file_path);
+        $xml = simplexml_load_file($this->_channels_xml_path);
         foreach ($xml->channel as $channel)
         {
             if($id == $channel["id"])
@@ -77,7 +89,8 @@ class Collector
     private static $instance_;
     private function __construct()
     {
-        $this->_file_path = dirname(__FILE__).'/'."xml/".self::CHANNELS_XML;
+        $this->_channels_xml_path = dirname(__FILE__).'/'."xml/".self::CHANNELS_XML;
+        $this->_category_xml_path = dirname(__FILE__).'/'."xml/".self::CHANNEL_CATEGORIES_XML;
     }
     private function __clone() { }
 }

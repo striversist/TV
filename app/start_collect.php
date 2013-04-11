@@ -11,13 +11,15 @@
     $db = Database::getInstance();
     
     //$map = $colletor->getIdUrls();
+    $channels = array();
     for($day = 1; $day <= 7; $day++)
     {
         $map = $colletor->getIdUrlsByDay($day);
         foreach ($map as $id => $url)
         {
             echo "collecting $id day=$day url=$url"."<br />";
-            $channels["$id"]["$day"] = $filter->getProgramList($url);
+            $dom = file_get_html($url);
+            $channels["$id"]["$day"] = $filter->getProgramList($dom);
             usleep(10 * 1000);  // sleep 10ms
         }
         //dump($channels);
@@ -26,7 +28,7 @@
     $db->store($channels);
     
     echo "collect finished..."."<br />";
-    
+        
     function dump($channels)
     {
         foreach ($channels as $channel => $list)

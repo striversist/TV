@@ -13,10 +13,9 @@ class ProgramFilter
         return self::$instance_;
     }
     
-    public function getProgramList($url)
+    public function getProgramList($dom)
     {
-        $html = file_get_html($url);
-        foreach ($html->find("div[id=PMT1]") as $pmt1)
+        foreach ($dom->find("div[id=PMT1]") as $pmt1)
         {
             $times = $pmt1->find("div[id=e1] b font");
             $titles = $pmt1->find("div[id=e2] a.black");
@@ -37,7 +36,7 @@ class ProgramFilter
             //echo "title: ".$titles[0]->plaintext."<br />";
             $list[] = @array("time" => $times[0]->plaintext, "title" => $titles[0]->plaintext);
         }
-        foreach ($html->find("div[id=PMT2]") as $pmt2)
+        foreach ($dom->find("div[id=PMT2]") as $pmt2)
         {
             $times = $pmt2->find("div[id=e1] b font");
             $titles = $pmt2->find("div[id=e2] a.black");

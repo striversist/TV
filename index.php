@@ -20,9 +20,9 @@
                     xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 }
                 // handle old browsers
-                if(xhr == null)
+                if(xhr === null)
                 {
-                    alert("Ajax is not supported by your browser!")
+                    alert("Ajax is not supported by your browser!");
                     return;
                 }
                 return xhr;
@@ -54,6 +54,7 @@
                                 //document.getElementById("div").innerHTML += jsonObject.channel_list[i].id + ": " + jsonObject.channel_list[i].name + "<br />";
                                 programSelect.options[programSelect.length] = new Option(programJsonObject.channel_list[i].name, programJsonObject.channel_list[i].id);
                             }
+                            quote();
                         }
                         else
                         {
@@ -159,12 +160,12 @@
             }
         </script>
     </head>
-    <body onload="initSelect()">
-        <select id="categorySelect" onchange="updateProgramSelect()" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
+    <body onload="initSelect();">
+        <select id="categorySelect" onchange="updateProgramSelect();" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
         </select>
-        <select id="programSelect" onchange="quote()" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
+        <select id="programSelect" onchange="quote();" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
         </select>
-        <select id="daySelect" onchange="quote()" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
+        <select id="daySelect" onchange="quote();" style="font-family:Verdana, Arial, Helvetica, sans-serif;">
             <option value="1">星期一</option>
             <option value="2">星期二</option>
             <option value="3">星期三</option>

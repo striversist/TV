@@ -48,7 +48,7 @@
     {
         foreach ($result as $id => $programs) 
         {
-            echo $colletor->getNameById($id)."<br />";
+            echo "今日 ".$colletor->getNameById($id)."<br />";
             foreach ($programs as $program)
             {
                 echo $program["time"].": ".$program["title"]."<br />";

@@ -5,6 +5,7 @@
     require_once dirname(__FILE__).'/'.'../ProgramFilter.php';
 
     echo "start collecting..."."<br />";
+    $t = getTime();
     
     $colletor = Collector::getInstance();
     $filter = ProgramFilter::getInstance();
@@ -28,6 +29,21 @@
     $db->store($channels);
     
     echo "collect finished..."."<br />";
+    runTime($t);
+    
+    #----------- calculate time function-------------  
+    function getTime()
+    {
+        $time = explode(" ",microtime());
+        $time = $time[1].substr($time[0],1);
+        return $time;
+    }
+    
+    function runTime($t,$l=3)
+    {
+        $dif = getTime()-$t;
+        echo ' '.number_format($dif,$l);
+    }
         
     function dump($channels)
     {

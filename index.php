@@ -110,7 +110,9 @@
                 var xhr = createXHR();
                 var channel = document.getElementById("programSelect").options[document.getElementById("programSelect").options.selectedIndex].value;
                 var day = document.getElementById("daySelect").options[document.getElementById("daySelect").options.selectedIndex].value;
-                var url = "choose.php?channel=" + channel + "&day=" + day;
+                var url = "json/choose.php?channel=" + channel + "&day=" + day;
+                var resultJsonObject;
+                document.getElementById("div").innerHTML="";
                 //document.getElementById("div").innerHTML = "url=" + url;
                 xhr.onreadystatechange = function()
                 {
@@ -119,7 +121,12 @@
                     {
                         if(xhr.status === 200)
                         {
-                            document.getElementById("div").innerHTML = xhr.responseText;
+                            //document.getElementById("div").innerHTML = xhr.responseText;
+                            resultJsonObject = eval("(" + xhr.responseText + ")");
+                            for(var i=0; i<resultJsonObject.result.length; i++)
+                            {
+                                document.getElementById("div").innerHTML += resultJsonObject.result[i].time + ": " + resultJsonObject.result[i].title + "<br />";
+                            }
                         }
                         else
                         {
@@ -138,8 +145,10 @@
             {
                 var xhr = createXHR();
                 var keyword = document.getElementById("keytext").value;
-                var url = "search.php?keyword=" + keyword;
-                document.getElementById("div").innerHTML = "url = " + url;
+                var url = "json/search.php?keyword=" + keyword;
+                var resultJsonObject;
+                document.getElementById("div").innerHTML = "";
+                //document.getElementById("div").innerHTML = "url = " + url;
                 xhr.onreadystatechange = function()
                 {
                     // only handle loaded requests
@@ -147,7 +156,22 @@
                     {
                         if(xhr.status === 200)
                         {
-                            document.getElementById("div").innerHTML = xhr.responseText;
+                            //document.getElementById("div").innerHTML = xhr.responseText;
+                            resultJsonObject = eval("(" + xhr.responseText + ")");
+                            if (resultJsonObject.result.length === 0)
+                            {
+                                document.getElementById("div").innerHTML += "抱歉，没有要找!" + "<br />";
+                                return;
+                            }
+                            for (var i=0; i<resultJsonObject.result.length; i++)
+                            {
+                                document.getElementById("div").innerHTML += resultJsonObject.result[i].name + "<br />";
+                                for (var j=0; j<resultJsonObject.result[i].id.length; j++)
+                                {
+                                    document.getElementById("div").innerHTML += resultJsonObject.result[i].id[j].time + ": " + resultJsonObject.result[i].id[j].title + "<br />";
+                                }
+                                document.getElementById("div").innerHTML += "<br />";
+                            }
                         }
                         else
                         {

@@ -1,11 +1,11 @@
 <?php
     header("Content-type: text/html; charset=utf8");
-    require_once dirname(__FILE__).'/'.'Database.php';
-    require_once dirname(__FILE__).'/'.'Collector.php';
+    require_once dirname(__FILE__).'/'.'../Database.php';
+    require_once dirname(__FILE__).'/'.'../Collector.php';
     
     if(!isset($_GET["keyword"]) || htmlspecialchars($_GET["keyword"]) === '')
     {
-        echo "You should input search text"."<br />";
+        //echo "You should input search text"."<br />";
         return;
     }    
     
@@ -48,17 +48,25 @@
     {
         foreach ($result as $id => $programs) 
         {
-            echo "今日 ".$colletor->getNameById($id)."<br />";
+            //echo "今日 ".$colletor->getNameById($id)."<br />";
+            $tmp = array();
             foreach ($programs as $program)
             {
-                echo $program["time"].": ".$program["title"]."<br />";
+                //echo $program["time"].": ".$program["title"]."<br />";
+                $tmp[] = array("time" => $program["time"], "title" => $program["title"]);
             }
-            echo "<br />";
+            $array["id"] = $tmp;
+            $array["name"] = $colletor->getNameById("$id");
+            $array2[] = $array;
         }
+        $return["result"] = $array2;
+        echo json_encode($return);
     }
     else 
     {
-        echo "对不起，没有匹配的结果"."<br />";
+        //echo "对不起，没有匹配的结果"."<br />";
+        $return["result"] = array();
+        echo json_encode($return);
     }
     
 ?>

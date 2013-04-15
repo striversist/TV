@@ -21,6 +21,7 @@ class ProgramFilter
             echo "Error $dom is not a instance of simple_html_dom"."<b />";
             return;
         }
+        $list = array();
         foreach ($dom->find("div[id=PMT1]") as $pmt1)
         {
             $times = $pmt1->find("div[id=e1] b font");

@@ -68,7 +68,7 @@ class Collector
         foreach ($xml->category as $category)
         {
             $id = $category["id"];
-            $array["$id"] = (string)($category);
+            $array["$id"] = (string)($category->name);
         }
         return $array;
     }

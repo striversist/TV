@@ -8,7 +8,7 @@
     $t = getTime();
     
     $colletor = Collector::getInstance();
-    $filter = ProgramFilter::getInstance();
+    $filter = ProgramFilterFactory::createProgramFilter();
     $db = Database::getInstance();
     
     //$map = $colletor->getIdUrls();

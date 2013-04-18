@@ -3,7 +3,23 @@ header("Content-type: text/html; charset=utf8");
 require_once (dirname(__FILE__).'/'.'../simplehtmldom_1_5/simple_html_dom.php');
 
 set_time_limit(0);
-class ProgramFilter
+class ProgramFilterFactory
+{
+    public static function createProgramFilter()
+    {
+        return ProgramFilter_tvsou::getInstance();
+    }
+}
+
+interface ProgramFilter
+{
+    public function getProgramList($dom);
+}
+
+/*
+ * 专门针对http://epg.tvsou.com 过滤节目信息的ProgramFilter
+ */
+class ProgramFilter_tvsou implements ProgramFilter
 {
     public static function getInstance()
     {
@@ -75,5 +91,41 @@ class ProgramFilter
     private function __construct() { }
     private function __clone() { }
 }
+
+/*
+ * 专门针对http://tvguide.ent.sina.com.cn 过滤节目信息的ProgramFilter
+ */
+class ProgramFilter_sina implements ProgramFilter
+{
+    public static function getInstance()
+    {
+        if(!self::$instance_ instanceof self)
+        {
+            self::$instance_ = new self();
+        }
+        return self::$instance_;
+    }
+    
+    public function getProgramList($dom)
+    {
+        if (!($dom instanceof simple_html_dom))
+        {
+            echo "Error $dom is not a instance of simple_html_dom"."<b />";
+            return;
+        }
+        $list = array();
+        // Dump result
+        foreach ($list as $program)
+        {
+            echo $program["time"].": ".$program["title"]."<br />";
+        }
+        return $list;
+    }
+            
+    private static $instance_;
+    private function __construct() { }
+    private function __clone() { }
+}
+
 
 ?>

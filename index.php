@@ -103,6 +103,36 @@
             }
             
             /*
+             *  Show the program wi
+             */
+            function showOnPlayingProgram(id)
+            {
+                var xhr = createXHR();
+                var url = "json/onplaying_program.php?channel=" + id;
+                var resultJsonObject;
+                //document.getElementById("div").innerHTML += "showOnPlayingProgram " + url + "<br />";
+                xhr.onreadystatechange = function()
+                {
+                    // only handle loaded requests
+                    if(xhr.readyState === 4)
+                    {
+                        if(xhr.status === 200)
+                        {
+                            //document.getElementById("div").innerHTML += xhr.responseText;
+                            resultJsonObject = eval("(" + xhr.responseText + ")");
+                            document.getElementById("div").innerHTML += "<br />" + "正在播放: " + resultJsonObject.time + ": " + resultJsonObject.title + "<br />";
+                        }
+                        else
+                        {
+                            alert("Error with Ajax call!");
+                        }
+                    }
+                };
+                xhr.open("GET", url, true);
+                xhr.send();
+            }
+            
+            /*
              * Use Ajax to quote TV program list
              */
             function quote()
@@ -127,6 +157,7 @@
                             {
                                 document.getElementById("div").innerHTML += resultJsonObject.result[i].time + ": " + resultJsonObject.result[i].title + "<br />";
                             }
+                            showOnPlayingProgram(channel);
                         }
                         else
                         {

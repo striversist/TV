@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <categories>
     <category id="cctv">
-        <name>央视</name>
+        <name>央视频道</name>
     </category>
     <category id="satellitetv">
-        <name>卫视</name>
+        <name>卫视频道</name>
     </category>
     <category id="hd">
         <name>高清频道</name>

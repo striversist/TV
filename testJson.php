@@ -5,5 +5,5 @@
     
     $test = '{"channels":["cctv1","cctv2"]}';
     $channels = json_decode($test);
-    var_dump($channels);
+    var_dump($channels->channels);
 ?>

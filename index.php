@@ -132,6 +132,35 @@
                 xhr.send();
             }
             
+            function showOnPlayingPrograms()
+            {
+                var xhr = createXHR();
+                //var url = "json/onplaying_program.php?channel=" + id;
+                var url = "testPost.php";
+                var resultJsonObject;
+                //document.getElementById("div").innerHTML += "showOnPlayingProgram " + url + "<br />";
+                xhr.onreadystatechange = function()
+                {
+                    // only handle loaded requests
+                    if(xhr.readyState === 4)
+                    {
+                        if(xhr.status === 200)
+                        {
+                            document.getElementById("div").innerHTML += xhr.responseText;
+                            //resultJsonObject = eval("(" + xhr.responseText + ")");
+                            //document.getElementById("div").innerHTML += "<br />" + "正在播放: " + resultJsonObject.time + ": " + resultJsonObject.title + "<br />";
+                        }
+                        else
+                        {
+                            alert("Error with Ajax call!");
+                        }
+                    }
+                };
+                xhr.open("POST", url);
+                xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+                xhr.send("channel=" + encodeURIComponent("cctv1"));
+            }
+            
             /*
              * Use Ajax to quote TV program list
              */

@@ -1,19 +1,20 @@
 <?php
-    echo "test post"."<br />";        
+    var_dump($_POST);
 
-    if(!isset($_POST["channel"]))
+    if(!isset($_POST["channels"]) || htmlspecialchars($_POST["channels"]) === '')
     {
-        echo "!isset channel"."<br />";
         return;
     }
     
-    if (htmlspecialchars($_POST["channel"]) === '')
-    {
-        echo "post channel is null"."<br />";
-        return;
-    }
+    //$channels_json = htmlspecialchars($_POST["channels"]);
+    $channels_json = $_POST["channels"];
+    echo "POST channels = $channels_json"."<br />";
+    var_dump($channels_json);
     
-    $id = htmlspecialchars($_POST["channel"]);
-    echo "Post channel=$id"."<br />";
+    //$channels_json = '{"channels":["cctv1","cctv2"]}';
+    //var_dump($channels_json);
+    
+    $channels = json_decode("$channels_json");
+    var_dump($channels);
     
 ?>

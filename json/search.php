@@ -7,7 +7,7 @@
     {
         //echo "You should input search text"."<br />";
         return;
-    }    
+    }
     
     $keyword = htmlspecialchars($_GET["keyword"]);
     //echo "You input keyword: ".$keyword." type = ".$type."<br />";
@@ -55,8 +55,9 @@
                 //echo $program["time"].": ".$program["title"]."<br />";
                 $tmp[] = array("time" => $program["time"], "title" => $program["title"]);
             }
-            $array["id"] = $tmp;
+            $array["id"] = $id;
             $array["name"] = $colletor->getNameById("$id");
+            $array["programs"] = $tmp;
             $array2[] = $array;
         }
         $return["result"] = $array2;

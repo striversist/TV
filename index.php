@@ -226,9 +226,9 @@
                             for (var i=0; i<resultJsonObject.result.length; i++)
                             {
                                 document.getElementById("div").innerHTML += resultJsonObject.result[i].name + "<br />";
-                                for (var j=0; j<resultJsonObject.result[i].id.length; j++)
+                                for (var j=0; j<resultJsonObject.result[i].programs.length; j++)
                                 {
-                                    document.getElementById("div").innerHTML += resultJsonObject.result[i].id[j].time + ": " + resultJsonObject.result[i].id[j].title + "<br />";
+                                    document.getElementById("div").innerHTML += resultJsonObject.result[i].programs[j].time + ": " + resultJsonObject.result[i].programs[j].title + "<br />";
                                 }
                                 document.getElementById("div").innerHTML += "<br />";
                             }

@@ -1,6 +1,6 @@
 <?php
 header("Content-type: text/html; charset=utf8");
-require_once (dirname(__FILE__).'/'.'../simplehtmldom_1_5/simple_html_dom.php');
+require_once (dirname(__FILE__).'/'.'./third_party/simplehtmldom_1_5/simple_html_dom.php');
 
 set_time_limit(0);
 class ProgramFilterFactory

@@ -3,6 +3,7 @@
     require_once dirname(__FILE__).'/'.'../Collector.php';
     require_once dirname(__FILE__).'/'.'../Database.php';
     require_once dirname(__FILE__).'/'.'../ProgramFilter.php';
+    require_once dirname(__FILE__).'/'.'./utils.php';
 
     echo "start collecting..."."<br />";
     $t = getTime();
@@ -19,7 +20,13 @@
         foreach ($map as $id => $url)
         {
             echo "collecting $id day=$day url=$url"."<br />";
-            $dom = file_get_html($url);
+            //$dom = file_get_html($url);
+            $html = file_get_contents($url);
+            if (get_html_charset($html) === "gb2312")
+            {
+                $html = gb2312_to_utf8($html);
+            }
+            $dom = str_get_html($html);
             $channels["$id"]["$day"] = $filter->getProgramList($dom);
             usleep(10 * 1000);  // sleep 10ms
         }

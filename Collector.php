@@ -2,8 +2,9 @@
 
 class Collector
 {
-    const CHANNELS_XML = "channels_test.xml";
     //const CHANNELS_XML = "channels.xml";
+    //const CHANNELS_XML = "channels_test.xml";
+    const CHANNELS_XML = "channels_error.xml";
     const CHANNEL_CATEGORIES_XML = "categories.xml";
     private $_channels_xml_path = null;
     private $_category_xml_path = null;

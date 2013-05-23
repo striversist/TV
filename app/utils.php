@@ -1,6 +1,7 @@
 <?php
 function gb2312_to_utf8( $instr ) 
 {
+    static $fp;
     $fp = fopen('../third_party/pnews265/language/gb-unicode.tab', 'r' );
     $len = strlen($instr);
     $outstr = '';
@@ -12,6 +13,8 @@ function gb2312_to_utf8( $instr )
             $l = ( $i+1 >= $len ) ? 32 : ord($instr[$i+1]);
             fseek( $fp, ($h-161)*188+($l-161)*2 );
             $uni = fread( $fp, 2 );
+            if (!isset($uni[0]) || !isset($uni[1]))
+                continue;
             $codenum = ord($uni[0])*256 + ord($uni[1]);
             if( $codenum < 0x800 ) 
             {

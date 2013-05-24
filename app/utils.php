@@ -2,7 +2,7 @@
 function gb2312_to_utf8( $instr ) 
 {
     static $fp;
-    $fp = fopen('../third_party/pnews265/language/gb-unicode.tab', 'r' );
+    $fp = fopen(dirname(__FILE__).'/'."../third_party/pnews265/language/gb-unicode.tab", 'r' );
     $len = strlen($instr);
     $outstr = '';
     for( $i = $x = 0 ; $i < $len ; $i++ ) 

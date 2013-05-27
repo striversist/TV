@@ -49,10 +49,14 @@ class ProgramFilter_tvsou implements ProgramFilter
                     continue;
                 
                 // Deal with special case: <div id="e2">abcd<a href="xxx">...</a></div>
-                $start = strpos($titles[0]->outertext, ">", 1);
-                $end = strpos($titles[0]->outertext, "<", 1);
-                $substr = substr($titles[0]->outertext, $start + 1, $end - $start - 1);
-                $titles[0]->plaintext = $substr;
+                if (strpos($titles[0]->outertext, "<a", 1))
+                {
+                    $start = strpos($titles[0]->outertext, ">", 1);
+                    $end = strpos($titles[0]->outertext, "<", 1);
+                    $outtest = $titles[0]->outertext;
+                    $substr = substr($titles[0]->outertext, $start + 1, $end - $start - 1);
+                    $titles[0]->plaintext = $substr;
+                }
             }
             //echo "time: ".$times[0]->plaintext."  ";
             //echo "title: ".$titles[0]->plaintext."<br />";
@@ -70,10 +74,13 @@ class ProgramFilter_tvsou implements ProgramFilter
                     continue;
                 
                 // Deal with special case: <div id="e2">abcd<a href="xxx">...</a></div>
-                $start = strpos($titles[0]->outertext, ">", 1);
-                $end = strpos($titles[0]->outertext, "<", 1);
-                $substr = substr($titles[0]->outertext, $start + 1, $end - $start - 1);
-                $titles[0]->plaintext = $substr;
+                if (strpos($titles[0]->outertext, "<a", 1))
+                {
+                    $start = strpos($titles[0]->outertext, ">", 1);
+                    $end = strpos($titles[0]->outertext, "<", 1);
+                    $substr = substr($titles[0]->outertext, $start + 1, $end - $start - 1);
+                    $titles[0]->plaintext = $substr;
+                }
             }
 
             $list[] = @array("time" => $times[0]->plaintext, "title" => $titles[0]->plaintext);

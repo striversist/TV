@@ -36,35 +36,16 @@ function gb2312_to_utf8( $instr )
         {
             // wen.tang add: for special chinese characters <<
             $next = 0;
-            $utf8_text = "";
             if (isset($instr[$i + 1]))
             {
                 $next = ord($instr[$i + 1]);
             }
-            if ($h === 0x8B and $next === 0xD6)          // gb2312: 嬛(0x8BD6)
+            if (is_specical_gb2312_char($h, $next))
             {
-                $utf8_text = "嬛";
-                for ($k=0; $k<strlen($utf8_text); $k++)
+                $convert = convert_special_gb2312_char($h, $next);
+                for ($k=0; $k<count($convert); $k++)
                 {
-                    $outstr[$x++] = $utf8_text[$k];
-                }
-                $i++;
-            }
-            else if ($h === 0x91 and $next === 0x6A)    // gb2312: 慾(0x916A)
-            {
-                $utf8_text = "慾";
-                for ($k=0; $k<strlen($utf8_text); $k++)
-                {
-                    $outstr[$x++] = $utf8_text[$k];
-                }
-                $i++;
-            }
-            else if ($h === 0x8C and $next === 0xC6)    // gb2312: 屍(0x8CC6)
-            {
-                $utf8_text = "屍";
-                for ($k=0; $k<strlen($utf8_text); $k++)
-                {
-                    $outstr[$x++] = $utf8_text[$k];
+                    $outstr[$x++] = $convert[$k];
                 }
                 $i++;
             }
@@ -82,9 +63,48 @@ function gb2312_to_utf8( $instr )
     }
 }
 
+$SpecialChars = array
+(
+    0x8BD6 => "嬛",
+    0x916A => "慾",
+    0x8CC6 => "屍",
+    0x8753 => "嘢",
+);
+
+function is_specical_gb2312_char($first, $second)
+{
+    global $SpecialChars;
+    $ret = false;
+    $index = $first * 256 + $second;
+    if (isset($SpecialChars[$index]))
+    {
+        $ret = true;
+    }
+    return $ret;
+}
+
+/*
+ * first, second: 字符编码的第一、二个编码值
+ * out: 输出到的数组中
+ * return: 返回转换后的数组
+ */
+function convert_special_gb2312_char($first, $second)
+{
+    global $SpecialChars;
+    $ret = array();
+    if (is_specical_gb2312_char($first, $second))
+    {
+        $index = $first * 256 + $second;
+        for ($i=0; $i<strlen($SpecialChars[$index]); $i++)
+        {
+            $ret[$i] = $SpecialChars[$index][$i];
+        }
+    }
+    return $ret;
+}
+
 function get_html_charset($html)
 {
     return preg_match("/<meta.+?charset=[^\w]?([-\w]+)/i",$html,$temp) ? strtolower($temp[1]):"";
 }
-
 ?>

@@ -34,7 +34,45 @@ function gb2312_to_utf8( $instr )
         }
         else
         {
-            $outstr[$x++] = $instr[$i];
+            // wen.tang add: for special chinese characters <<
+            $next = 0;
+            $utf8_text = "";
+            if (isset($instr[$i + 1]))
+            {
+                $next = ord($instr[$i + 1]);
+            }
+            if ($h === 0x8B and $next === 0xD6)          // gb2312: 嬛(0x8BD6)
+            {
+                $utf8_text = "嬛";
+                for ($k=0; $k<strlen($utf8_text); $k++)
+                {
+                    $outstr[$x++] = $utf8_text[$k];
+                }
+                $i++;
+            }
+            else if ($h === 0x91 and $next === 0x6A)    // gb2312: 慾(0x916A)
+            {
+                $utf8_text = "慾";
+                for ($k=0; $k<strlen($utf8_text); $k++)
+                {
+                    $outstr[$x++] = $utf8_text[$k];
+                }
+                $i++;
+            }
+            else if ($h === 0x8C and $next === 0xC6)    // gb2312: 屍(0x8CC6)
+            {
+                $utf8_text = "屍";
+                for ($k=0; $k<strlen($utf8_text); $k++)
+                {
+                    $outstr[$x++] = $utf8_text[$k];
+                }
+                $i++;
+            }
+            // wen.tang end >>
+            else
+            {
+                $outstr[$x++] = $instr[$i];
+            }
         }
     }
     fclose($fp);

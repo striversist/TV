@@ -40,19 +40,21 @@
                 var programJsonObject;
                 var xhrProgram = createXHR();
                 var programUrl = "json/channels.php?category=" + categorySelect.options[document.getElementById("categorySelect").options.selectedIndex].value;;
+                //document.getElementById("div").innerHTML = "updateProgramSelect=" + programUrl + "<br />";
                 xhrProgram.onreadystatechange = function()
                 {
                     // only handle loaded requests
                     if(xhrProgram.readyState === 4)
                     {
+                        //document.getElementById("div").innerHTML += "onreadystatechange readyState=" + xhrProgram.readyState + " status=" + xhrProgram.status + "<br />";
                         if(xhrProgram.status === 200)
                         {
+                            //document.getElementById("div").innerHTML += "response = " + xhrProgram.responseText + "<br />";
                             programJsonObject = eval("(" + xhrProgram.responseText + ")");
-                            //document.getElementById("div").innerHTML = xhr.responseText;
-                            for(var i=0; i<programJsonObject.channel_list.length; i++)
+                            for(var i=0; i<programJsonObject.channels.length; i++)
                             {
-                                //document.getElementById("div").innerHTML += jsonObject.channel_list[i].id + ": " + jsonObject.channel_list[i].name + "<br />";
-                                programSelect.options[programSelect.length] = new Option(programJsonObject.channel_list[i].name, programJsonObject.channel_list[i].id);
+                                //document.getElementById("div").innerHTML += jsonObject.channels[i].id + ": " + jsonObject.channels[i].name + "<br />";
+                                programSelect.options[programSelect.length] = new Option(programJsonObject.channels[i].name, programJsonObject.channels[i].id);
                             }
                             quote();
                         }
@@ -87,7 +89,7 @@
                             //document.getElementById("div").innerHTML = xhrCategory.responseText;
                             for(var i=0; i<categoryJsonObject.categories.length; i++)
                             {
-                                //document.getElementById("div").innerHTML += jsonObject.channel_list[i].id + ": " + jsonObject.channel_list[i].name + "<br />";
+                                //document.getElementById("div").innerHTML += jsonObject.channels[i].id + ": " + jsonObject.channels[i].name + "<br />";
                                 categorySelect.options[categorySelect.length] = new Option(categoryJsonObject.categories[i].name, categoryJsonObject.categories[i].id);
                             }
                             updateProgramSelect();

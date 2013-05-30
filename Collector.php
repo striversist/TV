@@ -2,8 +2,8 @@
 
 class Collector
 {
-    const CHANNELS_XML = "channels.xml";
-    //const CHANNELS_XML = "channels_test.xml";
+    //const CHANNELS_XML = "channels.xml";
+    const CHANNELS_XML = "channels_test.xml";
     //const CHANNELS_XML = "channels_error.xml";
     const CHANNEL_CATEGORIES_XML = "categories.xml";
     private $_channels_xml_path = null;
@@ -49,21 +49,29 @@ class Collector
         return $array;
     }
     
+    /*
+     * 目前只支持二级类别遍历
+     * TODO: 以后支持多级类别遍历
+     */
     public function getIdNamesByCategory($category)
     {
         $xml = simplexml_load_file($this->_channels_xml_path);
+        $array = array();
         foreach ($xml->channel as $channel)
         {
-            if ($channel->category == $category)
+            for ($i=0; $i<count($channel->category); $i++)
             {
-                $id = $channel["id"];
-                $array["$id"] = (string)($channel->name);  // SimpleXMLElement object to string
+                if ($channel->category[$i] == $category)
+                {
+                    $id = $channel["id"];
+                    $array["$id"] = (string)($channel->name);  // SimpleXMLElement object to string
+                }
             }
         }
         return $array;
     }
     
-    public function getIdCategories()
+    public function getRootCategories()
     {
         $xml = simplexml_load_file($this->_category_xml_path);
         foreach ($xml->category as $category)
@@ -72,6 +80,29 @@ class Collector
             $array["$id"] = (string)($category->name);
         }
         return $array;
+    }
+    
+    public function getLocals()
+    {
+        return $this->getLocalSubCategories();
+    }
+    
+    public function getLocalSubCategories()
+    {
+       $array = array();
+       $xml = simplexml_load_file($this->_category_xml_path);
+       for ($i=0; $i<$xml->count(); $i++)
+       {
+           if ($xml->category[$i]["id"] == "local")
+           {
+               foreach ($xml->category[$i]->category as $subcategory)
+               {
+                   $id = $subcategory["id"];
+                   $array["$id"] = (string)($subcategory->name);
+               }
+           }
+       }
+       return $array;
     }
     
     public function getNameById($id)

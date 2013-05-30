@@ -11,13 +11,11 @@
     </category>
     <category id="local">
         <name>地方台</name>
-        <cities>
-            <city id="beijing">
-                <name>北京</name>
-            </city>
-            <city id="wuhan">
-                <name>武汉</name>
-            </city>
-        </cities>
+        <category id="beijing">
+            <name>北京</name>
+        </category>
+        <category id="wuhan">
+            <name>武汉</name>
+        </category>
     </category>
 </categories>

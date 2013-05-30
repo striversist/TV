@@ -6,13 +6,14 @@
     
     if (isset($_GET["category"]))
     {
-        $category = $_GET["category"];    
+        $array = array();
+        $category = $_GET["category"];
         $idNames = $colletor->getIdNamesByCategory($category);
         foreach ($idNames as $id => $name) 
         {
             $array[] = array("id" => $id, "name" => $name);
         }
-        $list["channel_list"] = $array;
+        $list["channels"] = $array;
         echo json_encode($list);
         //var_dump($array);
     }

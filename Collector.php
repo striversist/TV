@@ -2,8 +2,8 @@
 
 class Collector
 {
-    const CHANNELS_XML = "channels.xml";
-    //const CHANNELS_XML = "channels_test.xml";
+    //const CHANNELS_XML = "channels.xml";
+    const CHANNELS_XML = "channels_test.xml";
     //const CHANNELS_XML = "channels_error.xml";
     const CHANNEL_CATEGORIES_XML = "categories.xml";
     private $_channels_xml_path = null;
@@ -74,12 +74,22 @@ class Collector
     public function getRootCategories()
     {
         $xml = simplexml_load_file($this->_category_xml_path);
+        $result = array();
         foreach ($xml->category as $category)
         {
             $id = $category["id"];
-            $array["$id"] = (string)($category->name);
+            $array["name"] = (string)($category->name);
+            if (isset($category->category))
+            {
+                $array["has_sub_category"] = 1;
+            }
+            else
+            {
+                $array["has_sub_category"] = 0;
+            }
+            $result["$id"] = $array;
         }
-        return $array;
+        return $result;
     }
     
     public function getLocals()
@@ -98,11 +108,20 @@ class Collector
                foreach ($xml->category[$i]->category as $subcategory)
                {
                    $id = $subcategory["id"];
-                   $array["$id"] = (string)($subcategory->name);
+                   $arr1["name"] = (string)($subcategory->name);
+                   if (isset($subcategory->category))
+                   {
+                       $arr1["has_sub_category"] = 1;
+                   }
+                   else
+                   {
+                       $arr1["has_sub_category"] = 0;
+                   }
+                   $arr2["$id"] = $arr1;
                }
            }
        }
-       return $array;
+       return $arr2;
     }
     
     public function getNameById($id)

@@ -22,9 +22,14 @@
     
     foreach ($categories as $id => $category)
     {
-        $array[] = array("id" => $id, "name" => $category);
+        $arr1["id"] = $id;
+        foreach ($category as $key => $value)
+        {
+            $arr1["$key"] = $value;
+        }
+        $arr2[] = $arr1;
     }
-    $result["categories"] = $array;
+    $result["categories"] = $arr2;
     echo json_encode($result);
     //var_dump($categories);
 ?>

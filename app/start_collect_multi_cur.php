@@ -22,7 +22,6 @@
         $num = 0;
         foreach ($map as $id => $url)
         {
-            echo "collecting $id day=$day url=$url"."<br />";
             $num++;
             $urls["$id"] = $url;
             if (count($urls) === MAX_CONCURRENT_TASKS or $num === count($map))
@@ -32,6 +31,11 @@
                 {
                     foreach ($htmls as $id => $html) 
                     {
+                        echo "collecting $id day=$day url=$url"."<br />";
+                        if (empty($html))   // The get_urls_contents fail to get the url
+                        {
+                            $html = file_get_contents($url);
+                        }
                         if (get_html_charset($html) === "gb2312")
                         {
                             $html = gb2312_to_utf8($html);
@@ -65,6 +69,7 @@
         #----------------执行线程----------------  
         $active = null;
         do { $n = curl_multi_exec($mh,$active); usleep(1000);} while ($active); // 网上说些方法有时会让CPU达100%
+        sleep(1);
         /*
         do {
             $mrc = curl_multi_exec($mh, $active);
@@ -85,6 +90,7 @@
             $res[$i] = curl_multi_getcontent($conn[$i]);    // 得到页面输入内容
             curl_multi_remove_handle($mh, $conn[$i]);
             curl_close($conn[$i]);
+            usleep(10000);
         }
         curl_multi_close($mh);
         return $res;

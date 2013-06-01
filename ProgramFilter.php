@@ -34,7 +34,7 @@ class ProgramFilter_tvsou implements ProgramFilter
     {
         if (!($dom instanceof simple_html_dom))
         {
-            echo "Error $dom is not a instance of simple_html_dom"."<b />";
+            echo "Error input is not a instance of simple_html_dom"."<br />";
             die("getProgramList error");
             return;
         }

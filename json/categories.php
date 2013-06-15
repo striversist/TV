@@ -11,7 +11,7 @@
     
     $colletor = Collector::getInstance();
     
-    if ($type == null)  // Default: get root categories
+    if ($type == null or $type == "root")  // Default: get root categories
     {
         $categories = $colletor->getRootCategories();
     }

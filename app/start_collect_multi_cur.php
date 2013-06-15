@@ -31,7 +31,7 @@
                 {
                     foreach ($htmls as $id => $html) 
                     {
-                        echo "collecting $id day=$day url=$url"."<br />";
+                        echo "collecting $id day=$day url=$urls[$id]"."<br />";
                         if (empty($html))   // The get_urls_contents fail to get the url
                         {
                             $html = file_get_contents($url);

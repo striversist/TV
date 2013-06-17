@@ -8,6 +8,25 @@ function gb2312_to_utf8( $instr )
     for( $i = $x = 0 ; $i < $len ; $i++ ) 
     {
         $h = ord($instr[$i]);
+        
+        // wen.tang add: for special chinese characters <<
+        $next = 0;
+        if (isset($instr[$i + 1]))
+        {
+            $next = ord($instr[$i + 1]);
+        }
+        if (is_specical_gb2312_char($h, $next))
+        {
+            $convert = convert_special_gb2312_char($h, $next);
+            for ($k=0; $k<count($convert); $k++)
+            {
+                $outstr[$x++] = $convert[$k];
+            }
+            $i++;
+            continue;
+        }
+        // wen.tang end >>
+        
         if( $h > 160 ) 
         {
             $l = ( $i+1 >= $len ) ? 32 : ord($instr[$i+1]);
@@ -34,26 +53,7 @@ function gb2312_to_utf8( $instr )
         }
         else
         {
-            // wen.tang add: for special chinese characters <<
-            $next = 0;
-            if (isset($instr[$i + 1]))
-            {
-                $next = ord($instr[$i + 1]);
-            }
-            if (is_specical_gb2312_char($h, $next))
-            {
-                $convert = convert_special_gb2312_char($h, $next);
-                for ($k=0; $k<count($convert); $k++)
-                {
-                    $outstr[$x++] = $convert[$k];
-                }
-                $i++;
-            }
-            // wen.tang end >>
-            else
-            {
-                $outstr[$x++] = $instr[$i];
-            }
+            $outstr[$x++] = $instr[$i];
         }
     }
     fclose($fp);
@@ -75,6 +75,9 @@ $SpecialChars = array
     0x9F68 => "焗",
     0x85EE => "咁",
     0x8956 => "塚",
+    0x879F => "嚐",
+    0x835E => "僞",
+    0xB0A0 => "盃",
 );
 
 function is_specical_gb2312_char($first, $second)

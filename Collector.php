@@ -6,8 +6,10 @@ class Collector
     //const CHANNELS_XML = "channels_test.xml";
     //const CHANNELS_XML = "channels_error.xml";
     const CHANNEL_CATEGORIES_XML = "categories.xml";
+    const HOT_XML = "hot.xml";
     private $_channels_xml_path = null;
     private $_category_xml_path = null;
+    private $_hot_xml_path = null;
     public static function getInstance()
     {
         if(!self::$instance_ instanceof  self)
@@ -129,12 +131,33 @@ class Collector
         $xml = simplexml_load_file($this->_channels_xml_path);
         foreach ($xml->channel as $channel)
         {
-            if($id == $channel["id"])
+            if ($id == $channel["id"])
             {
                 return (string)($channel->name);  // SimpleXMLElement object to string
             }
         }
         return null;
+    }
+    
+    public function getHot()
+    {
+        $xml = simplexml_load_file($this->_hot_xml_path);
+        $arr1 = array();
+        $arr2 = array();
+        foreach ($xml->channel as $channel)
+        {
+            $programs = array();
+            foreach ($channel->program as $program)
+            {
+                $programs[] = (string)$program;
+            }
+            $id = (string)$channel["id"];
+            $arr1["name"] = $this->getNameById($id);
+            $arr1["programs"] = $programs;
+            $arr2[$id] = $arr1;
+        }
+        //var_dump($arr2);
+        return $arr2;
     }
 
     private static $instance_;
@@ -142,6 +165,7 @@ class Collector
     {
         $this->_channels_xml_path = dirname(__FILE__).'/'."xml/".self::CHANNELS_XML;
         $this->_category_xml_path = dirname(__FILE__).'/'."xml/".self::CHANNEL_CATEGORIES_XML;
+        $this->_hot_xml_path = dirname(__FILE__).'/'."xml/".self::HOT_XML;
     }
     private function __clone() { }
 }

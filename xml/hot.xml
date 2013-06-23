@@ -1,0 +1,120 @@
+<channels>
+    <channel id="cctv1">
+        <program>奇思妙想的喜洋洋</program>
+        <program>战火大金脉</program>
+        <program>火线三兄弟</program>
+        <program>爱在春天</program>
+        <program>寻路</program>
+    </channel>
+    <channel id="cctv8">
+        <program>就是要香恋</program>
+        <program>民兵葛二蛋</program>
+        <program>温州一家人</program>
+        <program>战旗</program>
+        <program>落日余晖</program>
+        <program>守候我们的幸福</program>
+        <program>缉毒精英</program>
+        <program>百万新娘之爱无悔</program>
+        <program>战火大金脉</program>
+        <program>少林寺传奇之乱世英雄</program>
+        <program>三进山城(电视剧)</program>
+        <program>雾都</program>
+        <program>小菊的秋天</program>
+        <program>再续意难忘</program>
+        <program>娘要嫁人</program>
+        <program>正午阳光</program>
+    </channel>
+    <channel id="hunanst">
+        <program>爱在春天</program>
+        <program>天天有喜</program>
+        <program>天才碰麻瓜</program>
+        <program>活佛济公3</program>
+        <program>幸福保卫战</program>
+    </channel>
+    <channel id="jiangsust">
+        <program>裸婚时代</program>
+        <program>新恋爱时代</program>
+        <program>宝贝</program>
+        <program>像火花像蝴蝶</program>
+    </channel>
+    <channel id="dongfangst">
+        <program>读心神探</program>
+        <program>成长</program>
+        <program>新恋爱时代</program>
+        <program>像火花像蝴蝶</program>
+    </channel>
+    <channel id="anhuist">
+        <program>一闪一闪亮晶晶</program>
+        <program>妈妈你到底在哪里</program>
+        <program>乱世三义</program>
+        <program>贤内助女王</program>
+        <program>战雷</program>
+        <program>门第</program>
+    </channel>
+    <channel id="zhejiangst">
+        <program>第九个寡妇</program>
+        <program>爱情公寓2</program>
+        <program>正者无敌</program>
+        <program>风影</program>
+    </channel>
+    <channel id="beijingst">
+        <program>后宫·甄嬛传</program>
+        <program>战雷</program>
+        <program>谁是内线</program>
+        <program>风声传奇</program>
+        <program>正道沧桑-社会主义五百年</program>
+        <program>零炮楼</program>
+    </channel>
+    <channel id="shandongst">
+        <program>谍变1939</program>
+        <program>成长</program>
+        <program>火线三兄弟</program>
+        <program>箭在弦上</program>
+        <program>神医喜来乐传奇</program>
+        <program>断奶(2013版)</program>
+    </channel>
+    <channel id="jiangxist">
+        <program>后宫·甄嬛传</program>
+        <program>红罂粟</program>
+        <program>阿喜</program>
+        <program>案发现场</program>
+        <program>斩匪</program>
+    </channel>
+    <channel id="henanst">
+        <program>婆婆来了</program>
+        <program>战雷神</program>
+        <program>孤岛飞鹰</program>
+        <program>妯娌的三国时代</program>
+        <program>插翅难逃</program>
+        <program>蝴蝶行动</program>
+        <program>乱世三义</program>
+        <program>与狼共舞</program>
+        <program>门第</program>
+    </channel>
+    <channel id="chongqingst">
+        <program>刘伯承元帅</program>
+        <program>射雕英雄传(胡歌版)</program>
+        <program>天不藏奸</program>
+        <program>妙手仁心</program>
+        <program>疯狂的背后</program>
+    </channel>
+    <channel id="guangdongst">
+        <program>借枪</program>
+        <program>还珠格格之燕儿翩翩飞</program>
+        <program>宫锁珠帘</program>
+        <program>便衣支队</program>
+        <program>爱上查美乐</program>
+        <program>妈祖</program>
+        <program>神枪</program>
+        <program>刘伯承元帅</program>
+    </channel>
+    <channel id="dongnanst">
+        <program>搜神记(2012)</program>
+        <program>聊斋奇女子</program>
+        <program>妈妈你到底在哪里</program>
+        <program>王者清风</program>
+        <program>神医大道公</program>
+        <program>新白发魔女传</program>
+        <program>包青天之开封奇案</program>
+    </channel>
+</channels>

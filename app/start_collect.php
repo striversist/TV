@@ -21,7 +21,12 @@
         {
             echo "collecting $id day=$day url=$url"."<br />";
             //$dom = file_get_html($url);
-            $html = file_get_contents($url);
+            for ($i=0; $i<3; $i++)
+            {
+                $html = file_get_contents($url);
+                if (!empty($html))
+                    break;
+            }
             if (get_html_charset($html) === "gb2312")
             {
                 $html = gb2312_to_utf8($html);

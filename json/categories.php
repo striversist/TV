@@ -1,12 +1,28 @@
 <?php
     header("Content-type: text/html; charset=utf8");
     require_once dirname(__FILE__).'/'.'../Collector.php';
+    require_once dirname(__FILE__).'/'.'../app/utils.php';
+    require_once dirname(__FILE__).'/'.'../Database.php';
     
     $type = null;
     $result = array();
     if (isset($_GET["type"]))
     {
         $type = $_GET["type"];
+    }
+    
+    // Detect GUID header, is not set, generate a GUID header
+    $headers = apache_request_headers();
+    if (!isset($headers["GUID"]))
+    {
+        $guid = guid();
+        header("GUID: ".$guid);
+        $db = Database::getInstance();
+        $profiles = $db->getProfiles();
+        $profile["first_use"] = date("Y/m/d H:i:s");
+        $profiles["$guid"] = $profile;
+        $db->storeProfiles($profiles);
+//        var_dump($profiles);
     }
     
     $colletor = Collector::getInstance();

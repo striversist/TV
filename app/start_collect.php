@@ -38,7 +38,7 @@
         //dump($channels);
     }
     //var_dump($channels);
-    $db->store($channels);
+    $db->storeChannels($channels);
     
     echo "collect finished..."."<br />";
     runTime($t);

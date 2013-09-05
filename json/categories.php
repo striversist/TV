@@ -18,10 +18,9 @@
         $guid = guid();
         header("GUID: ".$guid);
         $db = Database::getInstance();
-        $profiles = $db->getProfiles();
         $profile["first_use"] = date("Y/m/d H:i:s");
-        $profiles["$guid"] = $profile;
-        $db->storeProfiles($profiles);
+        $profile["GUID"] = $guid;
+        $db->storeProfile($profile);
 //        var_dump($profiles);
     }
     

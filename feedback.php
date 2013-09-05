@@ -8,10 +8,9 @@
     }
     
     $db = Database::getInstance();
-    $profiles = $db->getProfiles();
     $headers = apache_request_headers();
     $guid = $headers["GUID"];
-    $profile = $profiles[$guid];
+    $profile = $db->getProfile($guid);
     $feedback = $_POST["feedback"];
     $date = date("Y/m/d H:i:s");
     
@@ -26,8 +25,7 @@
         $feedbacks["$date"] = $feedback;
         $profile["feedbacks"] = $feedbacks;
     }
-    $profiles[$guid] = $profile;
-    $db->storeProfiles($profiles);
+    $db->storeProfile($profile);
     
 //    var_dump($profiles[$guid]);
 ?>

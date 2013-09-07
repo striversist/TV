@@ -114,7 +114,8 @@ class Database
     { 
         $this->channels_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNELS_FILE;
         $this->profiles_file_path_ = dirname(__FILE__).'/store/'.self::DB_PROFILES;
-        $con = mysql_connect("localhost", "test", "test");
+//        $con = mysql_connect("localhost", "test", "test");
+        $con = mysql_pconnect("localhost", "test", "test");     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
         if (!$con)
             die('Could not connect: ' . mysql_error());
         mysql_select_db("test", $con);

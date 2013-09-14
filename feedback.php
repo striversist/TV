@@ -9,6 +9,8 @@
     
     $db = Database::getInstance();
     $headers = apache_request_headers();
+    if (!isset($headers["GUID"]))
+        return;
     $guid = $headers["GUID"];
     $profile = $db->getProfile($guid);
     $feedback = $_POST["feedback"];
@@ -17,14 +19,13 @@
     if (!isset($profile["feedbacks"]))
     {
         $feedbacks["$date"] = $feedback;
-        $profile["feedbacks"] = $feedbacks;
     }
     else
     {
         $feedbacks = $profile["feedbacks"];
         $feedbacks["$date"] = $feedback;
-        $profile["feedbacks"] = $feedbacks;
     }
+    $profile["feedbacks"] = $feedbacks;
     $db->storeProfile($profile);
     
 //    var_dump($profiles[$guid]);

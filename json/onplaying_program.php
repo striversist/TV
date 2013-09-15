@@ -24,9 +24,9 @@
     for($i=0; $i<count($programs); $i++)
     {
         // TODO: 跨天的情况没有考虑，不过考虑转钟时使用的人数非常少，放在将在实现该功能
-        if ($now >= $programs[$i]["time"] && $now <$programs[$i+1]["time"])
+        if (($now >= $programs[$i]["time"] && $now < @$programs[$i+1]["time"]) or ($i == count($programs) - 1))
         {
-            //echo "Found the program now playing: ".$programs[$i]['time'].": ".$programs[$i]['title']."<br />";
+//            echo "Found the program now playing: ".$programs[$i]['time'].": ".$programs[$i]['title']."<br />";
             $result["time"] = $programs[$i]['time'];
             $result["title"] = $programs[$i]['title'];
             break;

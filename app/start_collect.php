@@ -5,7 +5,7 @@
     require_once dirname(__FILE__).'/'.'../ProgramFilter.php';
     require_once dirname(__FILE__).'/'.'./utils.php';
 
-    echo "start collecting..."."<br />";
+    echo "start collecting..."."(".date("Y/m/d H:i:s").")"."<br />";
     $t = getTime();
     
     $colletor = Collector::getInstance();
@@ -40,8 +40,8 @@
     //var_dump($channels);
     $db->storeChannels($channels);
     
-    echo "collect finished..."."<br />";
-    runTime($t);
+    echo "collect finished..."."(".date("Y/m/d H:i:s").")"."<br />";
+    echo "total time: ".runTime($t)."s"."<br />";
     
     #----------- calculate time function-------------  
     function getTime()

@@ -54,7 +54,7 @@
     function runTime($t,$l=3)
     {
         $dif = getTime()-$t;
-        echo ' '.number_format($dif,$l);
+        return ' '.number_format($dif,$l);
     }
         
     function dump($channels)

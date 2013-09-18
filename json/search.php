@@ -70,4 +70,28 @@
         echo json_encode($return);
     }
     
+    // 收集用户搜索记录
+    $headers = apache_request_headers();
+    if (!isset($headers["GUID"]))
+        return;
+    $guid = $headers["GUID"];
+    $profile = $db->getProfile($guid);
+    if ($profile == false)
+        return;
+    
+    $date = date("Y/m/d");
+    // SearchRecords: key(date) => value(keywords); 
+    // keywords: array of keyword
+    if (!isset($profile["SearchRecords"]))
+    {
+        $keywords[] = $keyword;
+        $search_records["$date"] = $keywords;
+    }
+    else
+    {
+        $search_records = $profile["SearchRecords"];
+        $search_records["$date"][] = $keyword;
+    }
+    $profile["SearchRecords"] = $search_records;
+    $db->storeProfile($profile);
 ?>

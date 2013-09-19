@@ -14,6 +14,7 @@ class ProgramFilterFactory
 interface ProgramFilter
 {
     public function getProgramList($dom);
+    public function getHotInfo($dom);
 }
 
 /*
@@ -94,6 +95,57 @@ class ProgramFilter_tvsou implements ProgramFilter
         }
         return $list;
     }
+    
+    /*
+     * return: The map: key(name) => value(program map)
+     * program map: key: id, name, detail...
+     */
+    public function getHotInfo($dom)
+    {
+        if (!($dom instanceof simple_html_dom))
+        {
+            echo "Error input is not a instance of simple_html_dom"."<br />";
+            die("getHotInfo error");
+            return;
+        }
+        $channels = array();
+        $programs_list = array();
+        $channel_name_list = array();
+        foreach ($dom->find("div[class=rb_tv]") as $rb_tv)
+        {
+            $channel_names = $rb_tv->find("a");
+            foreach ($channel_names as $name)
+            {
+//                echo "name=".$name->plaintext."<br />";
+                $channel_name_list[] = $name->plaintext;
+            }
+        }
+        foreach ($dom->find("div[class=rb_tv_jm rb_tv_jm2]") as $rb_tv_jm)
+        {
+            $program_names = $rb_tv_jm->find("a");
+            $programs = array();
+            foreach($program_names as $name)
+            {
+//                echo "name=".$name->plaintext."<br />";
+                $program["name"] = $name->plaintext;
+                $programs[] = $program;
+            }
+            $programs_list[] = $programs;
+        }
+//        echo "count(channel_name_list)=".count($channel_name_list)."<br />";
+//        echo "count(programs_list)=".count($programs_list)."<br />";
+
+        // 保证是一一对应的，否则错位，结果肯定不对
+        if (count($channel_name_list) == count($programs_list))
+        {
+            for ($i=0; $i<count($channel_name_list); $i++)
+            {
+                $channels["$channel_name_list[$i]"] = $programs_list[$i];
+            }
+        }
+        var_dump($channels);
+        return $channels;
+    }
             
     private static $instance_;
     private function __construct() { }
@@ -129,7 +181,11 @@ class ProgramFilter_sina implements ProgramFilter
         }
         return $list;
     }
-            
+    
+    public function getHotInfo($dom)
+    {   
+    }
+    
     private static $instance_;
     private function __construct() { }
     private function __clone() { }

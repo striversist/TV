@@ -4,8 +4,10 @@ class Database
 {
     const DB_CHANNELS_FILE = "tv_programs.txt";
     const DB_PROFILES = "profiles.txt";
+    const DB_HOT_INFO = "hot_info.txt";
     private $channels_file_path_;
     private $profiles_file_path_;
+    private $hot_info_file_path_;
     public static function getInstance()
     {
         if(!self::$instance_ instanceof  self)
@@ -16,7 +18,7 @@ class Database
     }
     
     /*
-     * channels[id][date] = programs
+     * channels[id][date] == programs
      */
     public function storeChannels($channels)
     {
@@ -32,6 +34,23 @@ class Database
         $string = file_get_contents($this->channels_file_path_);
         $channels = unserialize($string);
         return $channels;
+    }
+    
+    /*
+     * $hot_info[channel_name][index] == program
+     * program has proerty: name
+     */
+    public function storeHotInfo($hot_info)
+    {
+        $store = serialize($hot_info);
+        file_put_contents($this->hot_info_file_path_, $store);
+    }
+    
+    public function getHotInfo()
+    {
+        $string = file_get_contents($this->hot_info_file_path_);
+        $hot_info = unserialize($string);
+        return $hot_info;
     }
     
     /*
@@ -114,7 +133,7 @@ class Database
     { 
         $this->channels_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNELS_FILE;
         $this->profiles_file_path_ = dirname(__FILE__).'/store/'.self::DB_PROFILES;
-//        $con = mysql_connect("localhost", "test", "test");
+        $this->hot_info_file_path_  = dirname(__FILE__).'/store/'.self::DB_HOT_INFO;
         $con = mysql_pconnect("localhost", "test", "test");     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
         if (!$con)
             die('Could not connect: ' . mysql_error());

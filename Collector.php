@@ -40,6 +40,14 @@ class Collector
         return $array;
     }
     
+    /*
+     * return: The url of hot TV series
+     */
+    public function getHotUrl()
+    {
+        return "http://m.tvsou.com/juqing.asp";
+    }
+    
     public function getIdNames()
     {
         $xml = simplexml_load_file($this->_channels_xml_path);
@@ -139,27 +147,6 @@ class Collector
         return null;
     }
     
-    public function getHot()
-    {
-        $xml = simplexml_load_file($this->_hot_xml_path);
-        $arr1 = array();
-        $arr2 = array();
-        foreach ($xml->channel as $channel)
-        {
-            $programs = array();
-            foreach ($channel->program as $program)
-            {
-                $programs[] = (string)$program;
-            }
-            $id = (string)$channel["id"];
-            $arr1["name"] = $this->getNameById($id);
-            $arr1["programs"] = $programs;
-            $arr2[$id] = $arr1;
-        }
-        //var_dump($arr2);
-        return $arr2;
-    }
-
     private static $instance_;
     private function __construct()
     {

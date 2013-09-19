@@ -1,21 +1,21 @@
 <?php
     header("Content-type: text/html; charset=utf8");
-    require_once dirname(__FILE__).'/'.'../../Collector.php';
+    require_once dirname(__FILE__).'/'.'../../Database.php';
     
-    $result = array();
-    $arr1 = array();
-    $arr2 = array();
-    $colletor = Collector::getInstance();
-    $hots = $colletor->getHot();
-    
-    foreach ($hots as $id => $hot) 
+    $result = array();   
+    $db = Database::getInstance();
+    $hot_info = $db->getHotInfo();
+    $channel_list = array();
+    foreach ($hot_info as $channel_name => $programes_list)
     {
-        $arr1["id"] = $id;
-        $arr1["name"] = $hot["name"];
-        $arr1["programs"] = $hot["programs"];
-        $arr2[] = $arr1;
+        $program_name_list = array();
+        foreach ($programes_list as $i => $programs)
+            $program_name_list[] = (string)$programs["name"];
+        $channel["name"] = $channel_name;
+        $channel["programs"] = $program_name_list;
+        $channel_list[] = $channel;
     }
-
-    $result["hot"] = $arr2;
+    $result["hot"] = $channel_list;
+    
     echo json_encode($result);
 ?>

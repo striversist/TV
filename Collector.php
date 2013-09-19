@@ -3,8 +3,8 @@
 class Collector
 {
     const CHANNELS_XML = "channels.xml";
-    //const CHANNELS_XML = "channels_test.xml";
-    //const CHANNELS_XML = "channels_error.xml";
+//    const CHANNELS_XML = "channels_test.xml";
+//    const CHANNELS_XML = "channels_error.xml";
     const CHANNEL_CATEGORIES_XML = "categories.xml";
     const HOT_XML = "hot.xml";
     private $_channels_xml_path = null;
@@ -71,6 +71,7 @@ class Collector
         {
             for ($i=0; $i<count($channel->category); $i++)
             {
+                //echo "channel->category[".$i."]=".$channel->category[$i]."<br />";
                 if ($channel->category[$i] == $category)
                 {
                     $id = $channel["id"];

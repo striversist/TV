@@ -1,6 +1,6 @@
 <?php
     header("Content-type: text/html; charset=utf8");
-    require_once dirname(__FILE__).'/'.'../Collector.php';
+    require_once dirname(__FILE__).'/'.'../../Collector.php';
     
     $result = array();
     $arr1 = array();

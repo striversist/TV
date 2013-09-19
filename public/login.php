@@ -1,6 +1,6 @@
 <?php
     header("Content-type: text/html; charset=utf8");
-    require_once dirname(__FILE__).'/'.'./Database.php';
+    require_once dirname(__FILE__).'/'.'../Database.php';
     
     $db = Database::getInstance();
     $headers = apache_request_headers();

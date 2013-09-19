@@ -1,7 +1,7 @@
 <?php
     header("Content-type: text/html; charset=utf8");
-    require_once dirname(__FILE__).'/'.'../Database.php';
-    require_once dirname(__FILE__).'/'.'../Collector.php';
+    require_once dirname(__FILE__).'/'.'../../Database.php';
+    require_once dirname(__FILE__).'/'.'../../Collector.php';
     
     if(!isset($_GET["keyword"]) || htmlspecialchars($_GET["keyword"]) === '')
     {

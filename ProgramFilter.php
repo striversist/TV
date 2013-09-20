@@ -143,7 +143,17 @@ class ProgramFilter_tvsou implements ProgramFilter
                 $channels["$channel_name_list[$i]"] = $programs_list[$i];
             }
         }
-        var_dump($channels);
+        
+        // Dump the result
+        foreach ($channels as $name => $programs)
+        {
+            echo "channel : $name"."<br />";
+            foreach ($programs as $program)
+            {
+                echo "&nbsp &nbsp".$program["name"]."<br />";
+            }
+        }
+//        var_dump($channels);
         return $channels;
     }
             

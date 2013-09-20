@@ -17,6 +17,15 @@
         <category id="shanghai">
             <name>上海</name>
         </category>
+        <category id="guangdong">
+            <name>广东</name>
+        </category>
+        <category id="tianjin">
+            <name>天津</name>
+        </category>
+        <category id="chongqing">
+            <name>重庆</name>
+        </category>
         <category id="wuhan">
             <name>武汉</name>
         </category>

@@ -39,7 +39,7 @@
                 
                 var programJsonObject;
                 var xhrProgram = createXHR();
-                var programUrl = "json/channels.php?category=" + categorySelect.options[document.getElementById("categorySelect").options.selectedIndex].value;;
+                var programUrl = "public/json/channels.php?category=" + categorySelect.options[document.getElementById("categorySelect").options.selectedIndex].value;;
                 //document.getElementById("div").innerHTML = "updateProgramSelect=" + programUrl + "<br />";
                 xhrProgram.onreadystatechange = function()
                 {
@@ -76,7 +76,7 @@
                 var categorySelect = document.getElementById("categorySelect");
                 var categoryJsonObject;
                 var xhrCategory = createXHR();
-                var categoryUrl = "json/categories.php";
+                var categoryUrl = "public/json/categories.php";
                 xhrCategory.onreadystatechange = function()
                 {
                     //document.getElementById("div").innerHTML += xhrCategory.readyState;
@@ -110,7 +110,7 @@
             function showOnPlayingProgram(id)
             {
                 var xhr = createXHR();
-                var url = "json/onplaying_program.php?channel=" + id;
+                var url = "public/json/onplaying_program.php?channel=" + id;
                 var resultJsonObject;
                 //document.getElementById("div").innerHTML += "showOnPlayingProgram " + url + "<br />";
                 xhr.onreadystatechange = function()
@@ -137,7 +137,7 @@
             function showOnPlayingPrograms()
             {
                 var xhr = createXHR();
-                //var url = "json/onplaying_program.php?channel=" + id;
+                //var url = "public/json/onplaying_program.php?channel=" + id;
                 var url = "testPost.php";
                 var resultJsonObject;
                 //document.getElementById("div").innerHTML += "showOnPlayingProgram " + url + "<br />";
@@ -171,7 +171,7 @@
                 var xhr = createXHR();
                 var channel = document.getElementById("programSelect").options[document.getElementById("programSelect").options.selectedIndex].value;
                 var day = document.getElementById("daySelect").options[document.getElementById("daySelect").options.selectedIndex].value;
-                var url = "json/choose.php?channel=" + channel + "&day=" + day;
+                var url = "public/json/choose.php?channel=" + channel + "&day=" + day;
                 var resultJsonObject;
                 document.getElementById("div").innerHTML="";
                 //document.getElementById("div").innerHTML = "url=" + url;
@@ -207,7 +207,7 @@
             {
                 var xhr = createXHR();
                 var keyword = document.getElementById("keytext").value;
-                var url = "json/search.php?keyword=" + keyword;
+                var url = "public/json/search.php?keyword=" + keyword;
                 var resultJsonObject;
                 document.getElementById("div").innerHTML = "";
                 //document.getElementById("div").innerHTML = "url = " + url;

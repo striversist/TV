@@ -6,10 +6,10 @@
     $profiles = $db->getProfiles();    
     foreach ($profiles as $key => $profile) 
     {
-        $firstUse[$key] = $profile["FirstUse"];
+        $lastLogin[$key] = $profile["LastLogin"];
         $guid[$key] = $profile["GUID"];
     }
-    array_multisort($firstUse, SORT_STRING, SORT_ASC, $guid, SORT_STRING, SORT_ASC, $profiles);
+    array_multisort($lastLogin, SORT_STRING, SORT_DESC, $guid, SORT_STRING, SORT_ASC, $profiles);
     foreach ($profiles as $key => $profile) 
     {
 //        echo "GUID: ".$key."\t"."First use: ".$profile["FirstUse"]."<br />";

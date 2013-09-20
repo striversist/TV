@@ -23,9 +23,12 @@
     }
     
     @$ua = $headers["UA"];  
+    @$version = $header["Version"];
     $date = date("Y/m/d H:i:s");
     $profile["LastLogin"] = $date;
     if ($ua != null)
         $profile["UA"] = $ua;
+    if ($version != null)
+        $profile["Version"] = $version;
     $db->storeProfile($profile);
 ?>

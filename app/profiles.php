@@ -10,10 +10,13 @@
         $guid[$key] = $profile["GUID"];
     }
     array_multisort($lastLogin, SORT_STRING, SORT_DESC, $guid, SORT_STRING, SORT_ASC, $profiles);
-    foreach ($profiles as $key => $profile) 
+    foreach ($profiles as $guid => $profile) 
     {
-//        echo "GUID: ".$key."\t"."First use: ".$profile["FirstUse"]."<br />";
-        var_dump($profile);
+          echo "GUID: $guid"."<br />";
+          echo "&nbsp&nbsp&nbsp&nbsp"."LastLogin: ".$profile["LastLogin"]."<br />";
+          echo "&nbsp&nbsp&nbsp&nbsp"."FirstUse: ".$profile["FirstUse"]."<br />";
+          echo "&nbsp&nbsp&nbsp&nbsp"."UA: ".$profile["UA"]."<br /><br />";
+//        var_dump($profile);
     }
     
     echo "Total count: ".  count($profiles)."<br />";

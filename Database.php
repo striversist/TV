@@ -55,7 +55,7 @@ class Database
     
     /*
      * profiles: array of profile
-     * profile: key: GUID; value: first_use, favorite array, search_words array
+     * profile: key: GUID; value: FirstUse, favorite array, search_words array
      */
     public function storeProfiles($profiles)
     {
@@ -77,7 +77,7 @@ class Database
     }
     
     /*
-     * profile: key: GUID; value: first_use, favorite array, search_words array
+     * profile: key: GUID; value: FirstUse, favorite array, search_words array
      */
     public function storeProfile($profile)
     {

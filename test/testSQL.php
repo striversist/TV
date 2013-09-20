@@ -21,7 +21,7 @@
     
 //    $profile = array();
 //    $profile["GUID"] = "BF976871-AE67-A1F7-37EA-F159D56158E5";
-//    $profile["first_use"] = "2013/07/08 22:03:16";
+//    $profile["FirstUse"] = "2013/07/08 22:03:16";
 //    $store = serialize($profile);
 //    echo "store=".$store."<br />";
 //    mysql_query("INSERT INTO profiles (GUID, INFO) VALUES ('BF976871-AE67-A1F7-37EA-F159D56158E5', '$store')");

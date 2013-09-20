@@ -12,7 +12,7 @@
         $guid = guid();
         header("GUID: ".$guid);
         $profile["GUID"] = $guid;
-        $profile["first_use"] = date("Y/m/d H:i:s");
+        $profile["FirstUse"] = date("Y/m/d H:i:s");
     }
     else
     {

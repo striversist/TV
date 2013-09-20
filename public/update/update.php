@@ -1,6 +1,13 @@
-<updateinfo>
-    <versionCode>2</versionCode>
-    <versionName>1.0.2</versionName>
-    <url>http://192.168.1.104/projects/TV/update/apk/TVGuide_1.0.2.apk</url>
-    <channelVersion>1</channelVersion>
-</updateinfo>
+<?php
+header("Content-type: text/html; charset=utf8");
+
+echo <<< EOT
+<Updateinfo>
+    <VersionCode>2</VersionCode>
+    <VersionName>1.0.2</VersionName>
+    <Url>http://striversist.oicp.net/projects/TV/public/update/apk/TVGuide_1.0.2.apk</Url>
+    <ChannelVersion>1</ChannelVersion>
+</Updateinfo>
+EOT;
+
+?>

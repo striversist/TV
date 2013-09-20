@@ -23,7 +23,7 @@
     }
     
     @$ua = $headers["UA"];  
-    @$version = $header["Version"];
+    @$version = $headers["Version"];
     $date = date("Y/m/d H:i:s");
     $profile["LastLogin"] = $date;
     if ($ua != null)

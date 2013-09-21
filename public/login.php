@@ -27,8 +27,8 @@
     
     @$version = $headers["Version"];
     @$user_agent = $headers["UA"];  
-    @$user_ip = $headers["UIP"];
-    @$user_location = $headers["UL"];
+    @$user_ip = $_GET["UIP"];
+    @$user_location = $_GET["UL"];
     if ($version != null)
         $profile["Version"] = $version;
     if ($user_agent != null)

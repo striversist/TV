@@ -8,6 +8,8 @@ class Database
     private $channels_file_path_;
     private $profiles_file_path_;
     private $hot_info_file_path_;
+    private $memcache_;
+    const MEMCACHE_EXPIRE_TIME = 43200;      // 12 hour
     public static function getInstance()
     {
         if(!self::$instance_ instanceof  self)
@@ -27,12 +29,18 @@ class Database
         //fwrite($file, $store);
         //fclose($file);
         file_put_contents($this->channels_file_path_, $store);
+        $this->memcache_->set("channels", $channels, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
     }
     
     public function getChannels()
     {
+        $mem_channels = $this->memcache_->get("channels");
+        if ($mem_channels != FALSE)
+            return $mem_channels;
+        
         $string = file_get_contents($this->channels_file_path_);
         $channels = unserialize($string);
+        $this->memcache_->set("channels", $channels, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
         return $channels;
     }
     
@@ -134,10 +142,11 @@ class Database
         $this->channels_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNELS_FILE;
         $this->profiles_file_path_ = dirname(__FILE__).'/store/'.self::DB_PROFILES;
         $this->hot_info_file_path_  = dirname(__FILE__).'/store/'.self::DB_HOT_INFO;
-        $con = mysql_pconnect("localhost", "test", "test");     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
-        if (!$con)
-            die('Could not connect: ' . mysql_error());
+        $con = mysql_pconnect("localhost", "test", "test") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
         mysql_select_db("test", $con);
+        
+        $this->memcache_ = new Memcache();
+        $this->memcache_->pconnect('localhost', 11211) or die ("Could not connect memcached server");
     }
     private function __clone() {}
 }

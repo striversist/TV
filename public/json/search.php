@@ -21,10 +21,12 @@
     {
         $today = "7";
     }
+    
+    // 匹配关键字
     $result = array();
-    foreach ($channels as $id => $days)
+    foreach ($channels as $id => $channel)
     {
-        foreach ($days as $day => $programs) 
+        foreach ($channel["days"] as $day => $programs) 
         {
             if ($day == $today)
             {
@@ -44,6 +46,8 @@
             }
         }
     }
+    
+    // 返回用户结果
     if (count($result))
     {
         foreach ($result as $id => $programs) 

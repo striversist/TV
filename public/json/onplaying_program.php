@@ -19,7 +19,7 @@
     $result = array("id" => $id);
     
     //echo "id=$id, today=$today, now=$now"."<br />";
-    @$programs = $channels[$id][$today];        // id可能为未知，用@抑制错误
+    @$programs = $channels[$id]["days"][$today];        // id可能为未知，用@抑制错误
 
     for($i=0; $i<count($programs); $i++)
     {

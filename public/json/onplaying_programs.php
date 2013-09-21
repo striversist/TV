@@ -24,7 +24,7 @@
     {
         $tmp = array();
         //echo "id=$id, today=$today, now=$now"."<br />";
-        @$programs = $channels[$id][$today];        // id可能为未知，用@抑制错误
+        @$programs = $channels[$id]["days"][$today];        // id可能为未知，用@抑制错误
         for($i=0; $i<count($programs); $i++)
         {
             // TODO: 跨天的情况没有考虑，不过考虑转钟时使用的人数非常少，放在将在实现该功能

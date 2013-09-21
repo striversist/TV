@@ -32,7 +32,7 @@
                 $html = gb2312_to_utf8($html);
             }
             $dom = str_get_html($html);
-            $channels["$id"]["$day"] = $filter->getProgramList($dom);
+            $channels["$id"]["days"]["$day"] = $filter->getProgramList($dom);
             usleep(10 * 1000);  // sleep 10ms
         }
         //dump($channels);

@@ -17,7 +17,7 @@
     }
     $db = Database::getInstance();
     $channels = $db->getChannels();
-    foreach ($channels[$id][$day] as $program)
+    foreach ($channels[$id]["days"][$day] as $program)
     {
         //echo $program["time"].": ".$program["title"]."<br />";
         $array[] = array("time" => $program["time"], "title" => $program["title"]);

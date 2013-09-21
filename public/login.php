@@ -22,14 +22,22 @@
             return;
     }
     
-    @$ua = $headers["UA"];  
-    @$version = $headers["Version"];
     $date = date("Y/m/d H:i:s");
     $profile["LastLogin"] = $date;
-    if ($ua != null)
-        $profile["UA"] = $ua;
+    
+    @$version = $headers["Version"];
+    @$user_agent = $headers["UA"];  
+    @$user_ip = $headers["UIP"];
+    @$user_location = $headers["UL"];
     if ($version != null)
         $profile["Version"] = $version;
+    if ($user_agent != null)
+        $profile["UA"] = @$user_agent;
+    if ($user_ip != null)
+        $profile["UIP"] = $user_ip;
+    if ($user_location != null)
+        $profile["UL"] = $user_location;
+    
     $profile["RemoteIP"] = get_remote_ip();
     $db->storeProfile($profile);
     

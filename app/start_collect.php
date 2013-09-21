@@ -37,7 +37,12 @@
         }
         //dump($channels);
     }
-    //var_dump($channels);
+    
+    foreach ($channels as $id => &$channel)
+    {
+        $channel["categories"] = $colletor->getCategoriesByChannelId("$id");
+    }
+//    var_dump($channels);
     $db->storeChannels($channels);
     
     // ------------------ 收集热门节目 -------------------------

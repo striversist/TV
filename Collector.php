@@ -21,7 +21,7 @@ class Collector
     
     /*
      * param: $day: 1-7 means Monday to Sunday of this week
-     * return: array["channel_name"] = channel_url
+     * return: array["channel_id"] = channel_url
      * eg. array["cctv1"] = "http://xxx";
      */
     public function getIdUrlsByDay($day)
@@ -108,9 +108,53 @@ class Collector
         return $this->getLocalSubCategories();
     }
     
-    public function getLocalSubCategories()
+    /*
+     * 通过channel id获取对应的categories数组：key{category_id} => value{category_name}
+     */
+    public function getCategoriesByChannelId($channel_id)
     {
-       $array = array();
+        $result = array();
+        $xml = simplexml_load_file($this->_channels_xml_path);
+        foreach ($xml->channel as $channel)
+        {
+            $id = $channel["id"];
+            if ($channel_id == $id)
+            {
+                foreach ($channel->category as $category_id)
+                {
+//                    echo "category id = ".$category_id."<br />";
+                    $result["$category_id"] = $this->getCategoryNameById("$category_id");
+                }
+            }
+        }
+        return $result;
+    }
+    
+    /*
+     * 通过category id获取该category的name
+     * TODO: 目前假设Category层级最大为2
+     */
+    public function getCategoryNameById($category_id)
+    {
+        $xml = simplexml_load_file($this->_category_xml_path);
+        foreach ($xml->category as $category)
+        {
+            // 第一层级
+            if ($category["id"] == $category_id)
+                return (string)$category->name;
+
+            // 第二层级
+            foreach ($category as $sub_category) 
+            {
+                if ($sub_category["id"] == $category_id)
+                    return (string)$sub_category->name;
+            }
+        }
+        return false;
+    }
+        
+    private function getLocalSubCategories()
+    {
        $xml = simplexml_load_file($this->_category_xml_path);
        for ($i=0; $i<$xml->count(); $i++)
        {

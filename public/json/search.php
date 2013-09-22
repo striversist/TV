@@ -149,7 +149,110 @@
 //                echo "Found $location contains $category_name"."<br />";
                 return true;
             }
+            
+            // 有时用户位置只有省，没有市（使用GPRS等网络时），因此还需要比较
+            // 地方台所在省份，若包含省份名称，则该省的地方台也能被搜索到
+            // 即：该省的用户可以搜索到该省对应的地方台的节目
+            $more_locations = getMultiLocationsByCategory($category_id);
+            foreach ($more_locations as $more_location)
+            {
+                if (strpos($location, $more_location) !== FALSE)
+                {
+//                    echo "Found $location contains $more_location"."<br />";
+                    return true;
+                }
+            }
         }
         return false;
+    }
+    
+    function getMultiLocationsByCategory($category_id)
+    {
+        $locations = array();
+        switch ($category_id)
+        {
+            case "changsha";
+                $locations[] = "湖南";
+                break;
+            case "wuhan":
+                $locations[] = "湖北";
+                break;
+            case "guangzhou";
+                $locations[] = "广东";
+                break;
+            case "nanning";
+                $locations[] = "广西";
+                break;
+            case "zhengzhou";
+                $locations[] = "河南";
+                break;
+            case "shijiazhuang";
+                $locations[] = "河北";
+                break;
+            case "jinan";
+                $locations[] = "山东";
+                break;
+            case "taiyuan";
+                $locations[] = "山西";
+                break;
+            case "nanchang";
+                $locations[] = "江西";
+                break;
+            case "nanjing";
+                $locations[] = "江苏";
+                break;
+            case "hangzhou";
+                $locations[] = "浙江";
+                break;
+            case "haerbin";
+                $locations[] = "黑龙江";
+                break;
+            case "wulumuqi";
+                $locations[] = "新疆";
+                break;
+            case "kunming";
+                $locations[] = "云南";
+                break;
+            case "guiyang";
+                $locations[] = "贵州";
+                break;
+            case "fuzhou";
+                $locations[] = "福建";
+                break;
+            case "changchun";
+                $locations[] = "吉林";
+                break;
+            case "hefei";
+                $locations[] = "安徽";
+                break;
+            case "chengdu";
+                $locations[] = "四川";
+                break;
+            case "lasa";
+                $locations[] = "西藏";
+                break;
+            case "yinchuan";
+                $locations[] = "宁夏";
+                break;
+            case "shenyang";
+                $locations[] = "辽宁";
+                break;
+            case "xining";
+                $locations[] = "青海";
+                break;
+            case "lanzhou";
+                $locations[] = "甘肃";
+                break;
+            case "xian";
+                $locations[] = "陕西";
+                break;
+            case "haikou";
+                $locations[] = "海南";
+                break;
+            case "huhehaote";
+                $locations[] = "内蒙";
+                break;
+        }
+        return $locations;
     }
 ?>

@@ -23,6 +23,12 @@
 		<category id="hunan">
             <name>湖南</name>
         </category>
+		<category id="jiangsu">
+            <name>江苏</name>
+        </category>
+		<category id="zhejiang">
+            <name>浙江</name>
+        </category>
 		<!-- 以下将来需要调整 -->
         <category id="tianjin">
             <name>天津</name>

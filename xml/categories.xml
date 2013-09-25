@@ -20,6 +20,10 @@
         <category id="guangdong">
             <name>广东</name>
         </category>
+		<category id="hunan">
+            <name>湖南</name>
+        </category>
+		<!-- 以下将来需要调整 -->
         <category id="tianjin">
             <name>天津</name>
         </category>

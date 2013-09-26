@@ -29,13 +29,16 @@
 		<category id="zhejiang">
             <name>浙江</name>
         </category>
-		<!-- 以下将来需要调整 -->
         <category id="tianjin">
             <name>天津</name>
         </category>
         <category id="chongqing">
             <name>重庆</name>
         </category>
+		<category id="shandong">
+            <name>山东</name>
+        </category>
+		<!-- 以下将来需要调整 -->
         <category id="wuhan">
             <name>武汉</name>
         </category>

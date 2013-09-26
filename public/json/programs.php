@@ -45,7 +45,7 @@
     }
     
     echo json_encode($result);
-    //dump($channels);
+//    var_dump($result);
     
     // 记录该channel被访问次数
     $visit_records = $db->getChannelVisitRecords();
@@ -59,7 +59,7 @@
     else
         $visit_records["$date"][$id]["VisitTimes"] += 1;
     $db->storeChannelVisitRecords($visit_records);
-    var_dump($visit_records);
+//    var_dump($visit_records);
     
     // --------------------------- Functions --------------------------------
     function getOnPlayingProgram($channel)

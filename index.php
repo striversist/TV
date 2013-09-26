@@ -171,7 +171,7 @@
                 var xhr = createXHR();
                 var channel = document.getElementById("programSelect").options[document.getElementById("programSelect").options.selectedIndex].value;
                 var day = document.getElementById("daySelect").options[document.getElementById("daySelect").options.selectedIndex].value;
-                var url = "public/json/choose.php?channel=" + channel + "&day=" + day;
+                var url = "public/json/programs.php?channel=" + channel + "&day=" + day;
                 var resultJsonObject;
                 document.getElementById("div").innerHTML="";
                 //document.getElementById("div").innerHTML = "url=" + url;
@@ -182,7 +182,7 @@
                     {
                         if(xhr.status === 200)
                         {
-                            //document.getElementById("div").innerHTML = xhr.responseText;
+//                            document.getElementById("div").innerHTML = xhr.responseText;
                             resultJsonObject = eval("(" + xhr.responseText + ")");
                             for(var i=0; i<resultJsonObject.result.length; i++)
                             {

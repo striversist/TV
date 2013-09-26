@@ -38,9 +38,14 @@
 		<category id="shandong">
             <name>山东</name>
         </category>
-		<!-- 以下将来需要调整 -->
-        <category id="wuhan">
-            <name>武汉</name>
+		<category id="hubei">
+            <name>湖北</name>
+        </category>
+		<category id="henan">
+            <name>河南</name>
+        </category>
+		<category id="fujian">
+            <name>福建</name>
         </category>
     </category>
 </categories>

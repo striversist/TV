@@ -21,6 +21,14 @@
     $db = Database::getInstance();
     $channels = $db->getChannels();
     
+    // 该节目id不存在
+    if (!isset($channels[$id]))
+    {
+        $result["result"] = array();
+        echo json_encode($result);
+        return;
+    }
+    
     foreach ($channels[$id]["days"][$day] as $program)
     {
         //echo $program["time"].": ".$program["title"]."<br />";
@@ -38,6 +46,20 @@
     
     echo json_encode($result);
     //dump($channels);
+    
+    // 记录该channel被访问次数
+    $visit_records = $db->getChannelVisitRecords();
+    if ($visit_records == false)    // First use
+    {
+        $visit_records = array();
+    }
+    $date = date("Y/m/d");
+    if (!isset($visit_records["$date"][$id]["VisitTimes"]))
+        $visit_records["$date"][$id]["VisitTimes"] = 1;
+    else
+        $visit_records["$date"][$id]["VisitTimes"] += 1;
+    $db->storeChannelVisitRecords($visit_records);
+    var_dump($visit_records);
     
     // --------------------------- Functions --------------------------------
     function getOnPlayingProgram($channel)

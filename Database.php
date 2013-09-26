@@ -5,9 +5,11 @@ class Database
     const DB_CHANNELS_FILE = "tv_programs.txt";
     const DB_PROFILES = "profiles.txt";
     const DB_HOT_INFO = "hot_info.txt";
+    const DB_CHANNEL_VISIT_RECORD = "channel_visit_records.txt";
+    
     private $channels_file_path_;
-    private $profiles_file_path_;
     private $hot_info_file_path_;
+    private $channels_visit_record_file_path_;
     private $memcache_;
     const MEMCACHE_EXPIRE_TIME = 43200;      // 12 hour
     public static function getInstance()
@@ -67,11 +69,6 @@ class Database
      */
     public function storeProfiles($profiles)
     {
-        // Way I: use file to store
-//        $store = serialize($profiles);
-//        file_put_contents($this->profiles_file_path_, $store);
-        
-        // Way II: use MySQL
         foreach ($profiles as $guid => $profile)
         {
             $store = serialize($profile);
@@ -101,13 +98,6 @@ class Database
     
     public function getProfiles()
     {
-        // Way I: use file to store
-//        if (!file_exists($this->profiles_file_path_))
-//            return false;
-//        $string = file_get_contents($this->profiles_file_path_);
-//        $profiles = unserialize($string);
-        
-        // Way II: use MySQL
         $result = mysql_query("SELECT * FROM profiles");
         $num = mysql_num_rows($result);
         if ($num == 0)
@@ -135,13 +125,34 @@ class Database
         }
         return $profile;
     }
+    
+    /*
+     * return: key{date} => value{key{channel_id} => value{"VisitTimes"}}
+     */
+    public function getChannelVisitRecords()
+    {
+        if (!file_exists($this->channels_visit_record_file_path_))
+            return false;
+        $string = file_get_contents($this->channels_visit_record_file_path_);
+        $records = unserialize($string);
+        return $records;
+    }
+    
+    /*
+     * 记录每天各channel被访问的次数（查节目）
+     */
+    public function storeChannelVisitRecords($records)
+    {
+        $store = serialize($records);
+        file_put_contents($this->channels_visit_record_file_path_, $store);
+    }
 
     private static $instance_;
     private function __construct() 
     { 
         $this->channels_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNELS_FILE;
-        $this->profiles_file_path_ = dirname(__FILE__).'/store/'.self::DB_PROFILES;
         $this->hot_info_file_path_  = dirname(__FILE__).'/store/'.self::DB_HOT_INFO;
+        $this->channels_visit_record_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNEL_VISIT_RECORD;
         $con = mysql_pconnect("localhost", "test", "test") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
         mysql_select_db("test", $con);
         

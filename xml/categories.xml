@@ -53,5 +53,11 @@
 		<category id="sichuan">
             <name>四川</name>
         </category>
+		<category id="guangxi">
+            <name>广西</name>
+        </category>
+		<category id="hainan">
+            <name>海南</name>
+        </category>
     </category>
 </categories>

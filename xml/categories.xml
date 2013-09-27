@@ -47,5 +47,11 @@
 		<category id="fujian">
             <name>福建</name>
         </category>
+		<category id="hebei">
+            <name>河北</name>
+        </category>
+		<category id="sichuan">
+            <name>四川</name>
+        </category>
     </category>
 </categories>

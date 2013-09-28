@@ -1,0 +1,52 @@
+a  
+{
+	font:normal 12px ËÎÌו; 
+	color:blue;
+	text-decoration:none;
+}
+a:hover  
+{ 
+	color:#428EFF
+}
+body 
+{
+    FONT-SIZE: 12px;
+    COLOR: #000000;
+    FONT-FAMILY: ËÎÌו;
+    background-color: #D6DFF7; 
+}
+#TableTitleLink A:link, #TableTitleLink A:visited, #TableTitleLink A:active {
+	COLOR: #FFFFFF;
+	TEXT-DECORATION: none;
+}
+#TableTitleLink A:hover {
+	COLOR: #FFFFFF;
+	TEXT-DECORATION: underline;}
+.tableBorder
+{
+    border: 1px #6595D6 solid; 
+    margin-bottom:20px;
+}
+a.operate
+{
+	font-weight:300;
+	color:#000000;
+}
+th
+{
+    border:solid 1px #799AE1;
+    font-size: 12px;
+    background-color: transparent;
+    color:blue;
+}
+.ui-datepicker-calendar th
+{
+    font-size: 85%;
+    color:#000;
+}
+td.forumHeader
+{
+    background-color: #799AE1;
+	color:#FFFFFF;
+	border:none;
+}

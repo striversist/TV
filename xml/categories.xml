@@ -71,5 +71,14 @@
 		<category id="shanxi">
             <name>山西</name>
         </category>
+		<category id="gansu">
+            <name>甘肃</name>
+        </category>
+		<category id="ningxia">
+            <name>宁夏</name>
+        </category>
+		<category id="qinghai">
+            <name>青海</name>
+        </category>
     </category>
 </categories>

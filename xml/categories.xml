@@ -59,5 +59,17 @@
 		<category id="hainan">
             <name>海南</name>
         </category>
+		<category id="anhui">
+            <name>安徽</name>
+        </category>
+		<category id="jiangxi">
+            <name>江西</name>
+        </category>
+		<category id="shanxi2">
+            <name>陕西</name>
+        </category>
+		<category id="shanxi">
+            <name>山西</name>
+        </category>
     </category>
 </categories>

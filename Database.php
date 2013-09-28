@@ -153,8 +153,10 @@ class Database
         $this->channels_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNELS_FILE;
         $this->hot_info_file_path_  = dirname(__FILE__).'/store/'.self::DB_HOT_INFO;
         $this->channels_visit_record_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNEL_VISIT_RECORD;
-        $con = mysql_pconnect("localhost", "test", "test") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
-        mysql_select_db("test", $con);
+//        $con = mysql_pconnect("localhost", "test", "test") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
+//        mysql_select_db("test", $con);
+        $con = mysql_pconnect("localhost", "tv_guide", "M2m3EDw4sZEzUGya") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
+        mysql_select_db("tv_guide", $con);
         
         $this->memcache_ = new Memcache();
         $this->memcache_->pconnect('localhost', 11211) or die ("Could not connect memcached server");

@@ -80,5 +80,11 @@
 		<category id="qinghai">
             <name>青海</name>
         </category>
+		<category id="guizhou">
+            <name>贵州</name>
+        </category>
+		<category id="yunnan">
+            <name>云南</name>
+        </category>
     </category>
 </categories>

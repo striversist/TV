@@ -86,5 +86,11 @@
 		<category id="yunnan">
             <name>云南</name>
         </category>
+		<category id="xinjiang">
+            <name>新疆</name>
+        </category>
+		<category id="liaoning">
+            <name>辽宁</name>
+        </category>
     </category>
 </categories>

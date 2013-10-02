@@ -92,5 +92,14 @@
 		<category id="liaoning">
             <name>辽宁</name>
         </category>
+		<category id="jilin">
+            <name>吉林</name>
+        </category>
+		<category id="heilongjiang">
+            <name>黑龙江</name>
+        </category>
+		<category id="neimenggu">
+            <name>内蒙古</name>
+        </category>
     </category>
 </categories>

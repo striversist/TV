@@ -1,6 +1,7 @@
 <?php
     header("Content-type: text/html; charset=utf8");
     require_once dirname(__FILE__).'/'.'../../Database.php';
+    require_once dirname(__FILE__).'/'.'./utils.php';
     
     if(!isset($_POST["channels"]) || htmlspecialchars($_POST["channels"]) === '')
     {
@@ -22,22 +23,15 @@
     
     foreach ($request_channels->channels as $id) 
     {
+        if (!isset($channels[$id]))
+            continue;
+        $onplaying_program = getOnPlayingProgram($channels[$id]);
         $tmp = array();
-        //echo "id=$id, today=$today, now=$now"."<br />";
-        @$programs = $channels[$id]["days"][$today];        // id可能为未知，用@抑制错误
-        for($i=0; $i<count($programs); $i++)
-        {
-            // TODO: 跨天的情况没有考虑，不过考虑转钟时使用的人数非常少，放在将在实现该功能
-            if (($now >= @$programs[$i]["time"] && $now < @$programs[$i+1]["time"]) or ($i == count($programs) - 1))
-            {
-                //echo "Found the program now playing: ".$programs[$i]['time'].": ".$programs[$i]['title']."<br />";
-                $tmp["id"] = $id;
-                $tmp["time"] = $programs[$i]['time'];
-                $tmp["title"] = $programs[$i]['title'];
-                $result[] = $tmp;
-                break;
-            }
-        }
+        $tmp["id"] = $id;
+        $tmp["time"] = $onplaying_program["time"];
+        $tmp["title"] = $onplaying_program["title"];
+        $tmp["day"] = $onplaying_program["day"];
+        $result[] = $tmp;
     }
     $return["result"] = $result;
     echo json_encode($return);

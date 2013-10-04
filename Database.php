@@ -11,7 +11,7 @@ class Database
     private $hot_info_file_path_;
     private $channels_visit_record_file_path_;
     private $memcache_;
-    const MEMCACHE_EXPIRE_TIME = 43200;      // 12 hour
+    const MEMCACHE_EXPIRE_TIME = 86400;      // 24 hour
     public static function getInstance()
     {
         if(!self::$instance_ instanceof  self)
@@ -27,12 +27,10 @@ class Database
     public function storeChannels($channels)
     {
         $store = serialize($channels);
-        //$file = fopen(self::DB_CHANNELS_FILE, "w+") or exit("Unable to open file ".  self::DB_CHANNELS_FILE);
-        //fwrite($file, $store);
-        //fclose($file);
         file_put_contents($this->channels_file_path_, $store);
+        
         $this->memcache_->flush();
-        $this->memcache_->set("channels", $channels, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
+        $this->prepareMemChannels($channels);
     }
     
     public function getChannels()
@@ -43,7 +41,7 @@ class Database
         
         $string = file_get_contents($this->channels_file_path_);
         $channels = unserialize($string);
-        $this->memcache_->set("channels", $channels, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
+        $this->prepareMemChannels($channels);
         return $channels;
     }
     
@@ -57,8 +55,20 @@ class Database
         if (!isset($channels["$id"]))
             return false;
         $channel = $channels["$id"];
-        $this->memcache_->set("channel_".$id, $channel, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save channel $id data at the server");
+        $this->prepareMemChannels($channels);
         return $channel;
+    }
+    
+    /*
+     * 优化：将所有的channel信息放入memcache，以备后续需要
+     */
+    private function prepareMemChannels($channels)
+    {
+        $this->memcache_->set("channels", $channels, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
+        foreach ($channels as $id => $channel)
+        {
+            $this->memcache_->set("channel_".$id, $channel, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save channel $id data at the server");
+        }
     }
     
     /*

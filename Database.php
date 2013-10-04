@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__).'/'.'./Collector.php';
 
 class Database
 {
@@ -57,6 +58,51 @@ class Database
         $channel = $channels["$id"];
         $this->prepareMemChannels($channels);
         return $channel;
+    }
+    
+    public function getChannelsByCategory($param_category_id)
+    {
+//        echo "getChannelsByCategory $param_category_id"."<br />";
+        $mem_channels = $this->memcache_->get("channels_".$param_category_id);
+        if ($mem_channels != FALSE)
+            return $mem_channels;
+        
+        $collector = Collector::getInstance();
+        $root_categories = $collector->getRootCategories();
+        $local_categories = $collector->getLocals();
+        if (!array_key_exists($param_category_id, $root_categories) 
+                and !array_key_exists($param_category_id, $local_categories))
+            return false;
+        
+        $categories = array();
+        $channels = $this->getChannels();
+        foreach ($channels as $channel_id => $channel)
+        {
+            foreach ($root_categories as $category_id => $category)
+            {
+                if (array_key_exists($category_id, $channel["categories"]))
+                {
+//                    echo "$channel_id belongs to $category_id"."<br />";
+                    $categories["$category_id"][$channel_id] = $channel;
+                }
+            }
+            foreach ($local_categories as $category_id => $category)
+            {
+                if (array_key_exists($category_id, $channel["categories"]))
+                {
+//                    echo "$channel_id belongs to $category_id"."<br />";
+                    $categories["$category_id"][$channel_id] = $channel;
+                }
+            }
+        }
+
+        foreach ($categories as $category_id => $category_channels)
+        {
+//            echo "memecache set $category_id, count(category_channels)=".count($category_channels)."<br />";
+            $this->memcache_->set("channels_".$category_id, $category_channels, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save channels to $category_id at the server");
+        }
+        
+        return $categories["$param_category_id"];
     }
     
     /*

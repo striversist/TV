@@ -20,17 +20,17 @@
     if (isset($_GET["onplaying"]))
         $needOnPlaying = true;
     $db = Database::getInstance();
-    $channels = $db->getChannels();
+    $channel = $db->getChannelById($id);
     
     // 该节目id不存在
-    if (!isset($channels[$id]))
+    if ($channel == false)
     {
         $result["result"] = array();
         echo json_encode($result);
         return;
     }
     
-    foreach ($channels[$id]["days"][$day] as $program)
+    foreach ($channel["days"][$day] as $program)
     {
         //echo $program["time"].": ".$program["title"]."<br />";
         $array[] = array("time" => $program["time"], "title" => $program["title"]);
@@ -41,7 +41,7 @@
     $result["day"] = $day;
     if ($needOnPlaying)
     {
-        $program = getOnPlayingProgram($channels[$id]);
+        $program = getOnPlayingProgram($channel);
         $result["onplaying"] = $program;
     }
     

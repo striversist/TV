@@ -8,15 +8,19 @@
         return;
     }
     
+    $result = array();
     $id = htmlspecialchars($_GET["channel"]);
     $db = Database::getInstance();
-    $channels = $db->getChannels();
-    $result = array();
-    $program = getOnPlayingProgram($channels[$id]);
-    $result["id"] = $id;
-    $result["time"] = $program["time"];
-    $result["title"] = $program["title"];
-    $result["day"] = $program["day"];
+    $channel = $db->getChannelById($id);
+    
+    if ($channel != false)
+    {
+        $program = getOnPlayingProgram($channel);
+        $result["id"] = $id;
+        $result["time"] = $program["time"];
+        $result["title"] = $program["title"];
+        $result["day"] = $program["day"];
+    }
     
     echo json_encode($result);
     

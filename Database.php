@@ -31,6 +31,7 @@ class Database
         //fwrite($file, $store);
         //fclose($file);
         file_put_contents($this->channels_file_path_, $store);
+        $this->memcache_->flush();
         $this->memcache_->set("channels", $channels, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
     }
     
@@ -44,6 +45,20 @@ class Database
         $channels = unserialize($string);
         $this->memcache_->set("channels", $channels, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
         return $channels;
+    }
+    
+    public function getChannelById($id)
+    {
+        $mem_channel = $this->memcache_->get("channel_".$id);
+        if ($mem_channel != FALSE)
+            return $mem_channel;
+        
+        $channels = $this->getChannels();
+        if (!isset($channels["$id"]))
+            return false;
+        $channel = $channels["$id"];
+        $this->memcache_->set("channel_".$id, $channel, false, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save channel $id data at the server");
+        return $channel;
     }
     
     /*

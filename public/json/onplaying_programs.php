@@ -7,25 +7,23 @@
     {
         return;
     }
-    
     $json = $_POST["channels"];
     //echo "json = $json"."<br />";
     $request_channels = json_decode($json);
     $db = Database::getInstance();
-    $channels = $db->getChannels();
     $today = date("w");
     if ($today == "0")    // Sunday
     {
         $today = "7";
     }
-    $now = date("H:i");
     $return = array();
-    
     foreach ($request_channels->channels as $id) 
-    {
-        if (!isset($channels[$id]))
-            continue;
-        $onplaying_program = getOnPlayingProgram($channels[$id]);
+    {   
+        $channel = $db->getChannelById($id);
+        if ($channel == false)
+            continue;;
+        $onplaying_program = getOnPlayingProgram($channel);
+        
         $tmp = array();
         $tmp["id"] = $id;
         $tmp["time"] = $onplaying_program["time"];

@@ -10,6 +10,8 @@ class Collector
     private $_channels_xml_path = null;
     private $_category_xml_path = null;
     private $_hot_xml_path = null;
+    private $_channels_xml;
+    private $_categories_xml;
     public static function getInstance()
     {
         if(!self::$instance_ instanceof  self)
@@ -31,7 +33,7 @@ class Collector
             echo "day $day out limit";
             return null;
         }
-        $xml = simplexml_load_file($this->_channels_xml_path);
+        $xml = $this->_channels_xml;
         foreach ($xml->channel as $channel)
         {
             $id = $channel["id"];
@@ -50,7 +52,7 @@ class Collector
     
     public function getIdNames()
     {
-        $xml = simplexml_load_file($this->_channels_xml_path);
+        $xml = $this->_channels_xml;
         foreach ($xml->channel as $channel)
         {
             $id = $channel["id"];
@@ -65,7 +67,7 @@ class Collector
      */
     public function getIdNamesByCategory($category)
     {
-        $xml = simplexml_load_file($this->_channels_xml_path);
+        $xml = $this->_channels_xml;
         $array = array();
         foreach ($xml->channel as $channel)
         {
@@ -84,7 +86,7 @@ class Collector
     
     public function getRootCategories()
     {
-        $xml = simplexml_load_file($this->_category_xml_path);
+        $xml = $this->_categories_xml;
         $result = array();
         foreach ($xml->category as $category)
         {
@@ -113,8 +115,8 @@ class Collector
      */
     public function getCategoriesByChannelId($channel_id)
     {
+        $xml = $this->_channels_xml;
         $result = array();
-        $xml = simplexml_load_file($this->_channels_xml_path);
         foreach ($xml->channel as $channel)
         {
             $id = $channel["id"];
@@ -136,7 +138,7 @@ class Collector
      */
     public function getCategoryNameById($category_id)
     {
-        $xml = simplexml_load_file($this->_category_xml_path);
+        $xml = $this->_categories_xml;
         foreach ($xml->category as $category)
         {
             // 第一层级
@@ -155,7 +157,7 @@ class Collector
         
     private function getLocalSubCategories()
     {
-       $xml = simplexml_load_file($this->_category_xml_path);
+       $xml = $this->_categories_xml;
        for ($i=0; $i<$xml->count(); $i++)
        {
            if ($xml->category[$i]["id"] == "local")
@@ -181,7 +183,7 @@ class Collector
     
     public function getNameById($id)
     {
-        $xml = simplexml_load_file($this->_channels_xml_path);
+        $xml = $this->_channels_xml;
         foreach ($xml->channel as $channel)
         {
             if ($id == $channel["id"])
@@ -198,6 +200,8 @@ class Collector
         $this->_channels_xml_path = dirname(__FILE__).'/'."xml/".self::CHANNELS_XML;
         $this->_category_xml_path = dirname(__FILE__).'/'."xml/".self::CHANNEL_CATEGORIES_XML;
         $this->_hot_xml_path = dirname(__FILE__).'/'."xml/".self::HOT_XML;
+        $this->_channels_xml = simplexml_load_file($this->_channels_xml_path);
+        $this->_categories_xml = simplexml_load_file($this->_category_xml_path);
     }
     private function __clone() { }
 }

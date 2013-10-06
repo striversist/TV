@@ -13,14 +13,21 @@
     $db = Database::getInstance();
     
     // ------------------ 收集节目信息 -------------------------
-    $channels = array();
+    if (onlyPolishSomeChannels())
+        $channels = $db->getChannels();
+    else
+        $channels = array();
     for($day = 1; $day <= 7; $day++)
     {
         $map = $colletor->getIdUrlsByDay($day);
         foreach ($map as $id => $url)
         {
+            if (onlyPolishSomeChannels())
+            {
+                if (!in_array("$id", getSpecialChannelIds()))
+                    continue;
+            }
             echo "collecting $id day=$day url=$url"."<br />";
-            //$dom = file_get_html($url);
             for ($i=0; $i<3; $i++)
             {
                 $html = file_get_contents($url);
@@ -35,14 +42,12 @@
             $channels["$id"]["days"]["$day"] = $filter->getProgramList($dom);
             usleep(10 * 1000);  // sleep 10ms
         }
-        //dump($channels);
     }
     
     foreach ($channels as $id => &$channel)
     {
         $channel["categories"] = $colletor->getCategoriesByChannelId("$id");
     }
-//    var_dump($channels);
     $db->storeChannels($channels);
     
     // ------------------ 收集热门节目 -------------------------
@@ -78,17 +83,18 @@
         $dif = getTime()-$t;
         return ' '.number_format($dif,$l);
     }
-        
-    function dump($channels)
+
+    function onlyPolishSomeChannels()
     {
-        foreach ($channels as $channel => $list)
-        {
-            echo $channel.": <br />";
-            foreach ($list as $program)
-            {
-                echo $program["time"].": ".$program["title"]."<br />";
-            }
-        }
+        if (count(array_filter(getSpecialChannelIds())) > 0)
+            return true;
+        return false;
+    }
+    
+    function getSpecialChannelIds()
+    {
+        $special_channels = array("");
+        return $special_channels;
     }
     
 ?>

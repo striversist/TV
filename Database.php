@@ -215,7 +215,7 @@ class Database
     public function storeChannelVisitRecords($records)
     {
         $store = serialize($records);
-        file_put_contents($this->channels_visit_record_file_path_, $store);
+        file_put_contents($this->channels_visit_record_file_path_, $store, LOCK_EX);
     }
 
     private static $instance_;

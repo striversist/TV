@@ -1,10 +1,9 @@
 <?php
+require_once (dirname(__FILE__).'/'.'./Config.php');
 
 class Collector
 {
-    const CHANNELS_XML = "channels.xml";
-//    const CHANNELS_XML = "channels_test.xml";
-//    const CHANNELS_XML = "channels_error.xml";
+    private $CHANNELS_XML = null;
     const CHANNEL_CATEGORIES_XML = "categories.xml";
     const HOT_XML = "hot.xml";
     private $_channels_xml_path = null;
@@ -197,7 +196,14 @@ class Collector
     private static $instance_;
     private function __construct()
     {
-        $this->_channels_xml_path = dirname(__FILE__).'/'."xml/".self::CHANNELS_XML;
+        if (Config::$DATA_SRC == "tvsou")
+            $CHANNELS_XML = "channels.xml";
+        else if (Config::$DATA_SRC == "tvmao")
+            $CHANNELS_XML = "channels_tvmao.xml";
+//        $CHANNELS_XML = "channels_test.xml";
+//        $CHANNELS_XML = "channels_error.xml";
+        
+        $this->_channels_xml_path = dirname(__FILE__).'/'."xml/".$CHANNELS_XML;
         $this->_category_xml_path = dirname(__FILE__).'/'."xml/".self::CHANNEL_CATEGORIES_XML;
         $this->_hot_xml_path = dirname(__FILE__).'/'."xml/".self::HOT_XML;
         $this->_channels_xml = simplexml_load_file($this->_channels_xml_path);

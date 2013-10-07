@@ -1,13 +1,17 @@
 <?php
 header("Content-type: text/html; charset=utf8");
 require_once (dirname(__FILE__).'/'.'./third_party/simplehtmldom_1_5/simple_html_dom.php');
+require_once (dirname(__FILE__).'/'.'./Config.php');
 
 set_time_limit(0);
 class ProgramFilterFactory
 {
     public static function createProgramFilter()
     {
-        return ProgramFilter_tvsou::getInstance();
+        if (Config::$DATA_SRC == "tvsou")
+            return ProgramFilter_tvsou::getInstance();
+        else if (Config::$DATA_SRC == "tvmao")
+            return ProgramFilter_tvmao::getInstance();
     }
 }
 
@@ -161,6 +165,66 @@ class ProgramFilter_tvsou implements ProgramFilter
     private function __construct() { }
     private function __clone() { }
 }
+
+/*
+ * 专门针对http://m.tvmao.com 过滤节目信息的ProgramFilter
+ */
+class ProgramFilter_tvmao implements ProgramFilter
+{
+    public static function getInstance()
+    {
+        if(!self::$instance_ instanceof self)
+        {
+            self::$instance_ = new self();
+        }
+        return self::$instance_;
+    }
+    
+    public function getProgramList($dom)
+    {
+        if (!($dom instanceof simple_html_dom))
+        {
+            echo "Error input is not a instance of simple_html_dom"."<br />";
+            die("getProgramList error");
+            return;
+        }
+        $list = array();
+        $tables = $dom->find("table[class=timetable]");
+        foreach ($tables as $table)
+        {
+            $programs = $table->find("tr[class]");
+            foreach ($programs as $program)
+            {
+                $time = $program->find("td")[0];
+                $titles = $program->find("td a");
+                if (empty($titles))
+                    $title = $program->find("td")[1];
+                else
+                    $title = $titles[0];
+//                echo "time: ".$time->plaintext."  ";
+//                echo "title: ".$title->plaintext."<br />";
+                $list[] = @array("time" => $time->plaintext, "title" => $title->plaintext);
+            }
+        }
+        // Dump result
+        foreach ($list as $program)
+        {
+            echo $program["time"].": ".$program["title"]."<br />";
+        }
+        return $list;
+    }
+    
+    public function getHotInfo($dom)
+    {
+        $channels = array();
+        return $channels;
+    }
+    
+    private static $instance_;
+    private function __construct() { }
+    private function __clone() { }
+}
+
 
 /*
  * 专门针对http://tvguide.ent.sina.com.cn 过滤节目信息的ProgramFilter

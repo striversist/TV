@@ -197,7 +197,7 @@ class Collector
     private function __construct()
     {
         if (Config::$DATA_SRC == "tvsou")
-            $CHANNELS_XML = "channels.xml";
+            $CHANNELS_XML = "channels_tvsou.xml";
         else if (Config::$DATA_SRC == "tvmao")
             $CHANNELS_XML = "channels_tvmao.xml";
 //        $CHANNELS_XML = "channels_test.xml";

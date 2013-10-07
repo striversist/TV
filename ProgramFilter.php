@@ -195,10 +195,11 @@ class ProgramFilter_tvmao implements ProgramFilter
             $programs = $table->find("tr[class]");
             foreach ($programs as $program)
             {
-                $time = $program->find("td")[0];
+                $tds = $program->find("td");
+                $time = $tds[0];
                 $titles = $program->find("td a");
                 if (empty($titles))
-                    $title = $program->find("td")[1];
+                    $title = $tds[1];
                 else
                     $title = $titles[0];
 //                echo "time: ".$time->plaintext."  ";

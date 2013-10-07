@@ -36,4 +36,17 @@
         }
         return $program;
     }
+    
+    function getTime()
+    {
+        $time = explode(" ",microtime());
+        $time = $time[1].substr($time[0],1);
+        return $time;
+    }
+    
+    function runTime($t,$l=3)
+    {
+        $dif = getTime()-$t;
+        return ' '.number_format($dif,$l);
+    }
 ?>

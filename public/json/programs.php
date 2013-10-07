@@ -1,6 +1,7 @@
 <?php
     header("Content-type: text/html; charset=utf8");
     require_once dirname(__FILE__).'/'.'../../Database.php';
+    require_once dirname(__FILE__).'/'.'../../CacheLock.php';
     require_once dirname(__FILE__).'/'.'./utils.php';
     
     if(isset($_GET["channel"]) && isset($_GET["day"]))
@@ -49,6 +50,8 @@
 //    var_dump($result);
     
     // 记录该channel被访问次数
+    $lock = new CacheLock(__FILE__);
+    $lock->lock();      // 读写文件需要保证原子性，否则会读到脏数据或写乱文件
     $visit_records = $db->getChannelVisitRecords();
     if ($visit_records == false)    // First use
     {
@@ -60,6 +63,7 @@
     else
         $visit_records["$date"][$id]["VisitTimes"] += 1;
     $db->storeChannelVisitRecords($visit_records);
+    $lock->unlock();
 //    var_dump($visit_records);
     
     // --------------------------- Functions --------------------------------  

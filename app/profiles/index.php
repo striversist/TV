@@ -30,6 +30,21 @@
 
 <table id="user_info_table" style="border:solid 1px #ffffff">
     <p><h1>总用户数：<?php echo count($profiles); ?></h1></p>
+    <?php
+        $today = date("Y/m/d");
+        $daily_activity = 0;
+        $daily_new_user = 0;
+        foreach ($profiles as $profile)
+        {
+            $first_use = date("Y/m/d", strtotime($profile["FirstUse"]));
+            $last_login = date("Y/m/d", strtotime($profile["LastLogin"]));
+            if ($last_login == $today)
+                $daily_activity += 1;
+            if ($first_use == $today)
+                $daily_new_user += 1;
+        }
+    ?>
+    <p><h1>日活跃度：<?php echo $daily_activity; ?> = <?php echo $daily_new_user; ?>（日新增）+ <?php echo $daily_activity - $daily_new_user; ?>（老用户）</h1></p>
     <tbody>
         <tr>
             <th width="100">用户</th>

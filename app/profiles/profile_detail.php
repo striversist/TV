@@ -20,8 +20,7 @@
 
 <?php
     $db = Database::getInstance();
-    $profiles = $db->getProfiles();
-    $profile = $profiles["$guid"];
+    $profile = $db->getProfile("$guid");
 
     echo "<pre>";
     var_dump($profile);

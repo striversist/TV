@@ -7,10 +7,12 @@ class Database
     const DB_PROFILES = "profiles.txt";
     const DB_HOT_INFO = "hot_info.txt";
     const DB_CHANNEL_VISIT_RECORD = "channel_visit_records.txt";
+    const DB_DAILY_PROFILE_RECORD = "daily_profile_records.txt";
     
     private $channels_file_path_;
     private $hot_info_file_path_;
-    private $channels_visit_record_file_path_;
+    private $channels_visit_records_file_path_;
+    private $daily_profile_records_file_path_;
     private $memcache_;
     const MEMCACHE_EXPIRE_TIME = 86400;      // 24 hour
     public static function getInstance()
@@ -202,9 +204,9 @@ class Database
      */
     public function getChannelVisitRecords()
     {
-        if (!file_exists($this->channels_visit_record_file_path_))
+        if (!file_exists($this->channels_visit_records_file_path_))
             return false;
-        $string = file_get_contents($this->channels_visit_record_file_path_);
+        $string = file_get_contents($this->channels_visit_records_file_path_);
         $records = unserialize($string);
         return $records;
     }
@@ -215,7 +217,28 @@ class Database
     public function storeChannelVisitRecords($records)
     {
         $store = serialize($records);
-        file_put_contents($this->channels_visit_record_file_path_, $store, LOCK_EX);
+        file_put_contents($this->channels_visit_records_file_path_, $store, LOCK_EX);
+    }
+    
+    /*
+     * return key{date} => value{key{"DailyActivity", "NewUsers"}}
+     */
+    public function getDailyProfileRecords()
+    {
+        if (!file_exists($this->daily_profile_records_file_path_))
+            return false;
+        $string = file_get_contents($this->daily_profile_records_file_path_);
+        $records = unserialize($string);
+        return $records;
+    }
+    
+    /*
+     * 记录用户日活跃度，新增数量等信息
+     */
+    public function storeDailyProfileRecords($records)
+    {
+        $store = serialize($records);
+        file_put_contents($this->daily_profile_records_file_path_, $store, LOCK_EX);
     }
 
     private static $instance_;
@@ -223,7 +246,8 @@ class Database
     { 
         $this->channels_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNELS_FILE;
         $this->hot_info_file_path_  = dirname(__FILE__).'/store/'.self::DB_HOT_INFO;
-        $this->channels_visit_record_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNEL_VISIT_RECORD;
+        $this->channels_visit_records_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNEL_VISIT_RECORD;
+        $this->daily_profile_records_file_path_ = dirname(__FILE__).'/store/'.self::DB_DAILY_PROFILE_RECORD;
 //        $con = mysql_pconnect("localhost", "test", "test") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
 //        mysql_select_db("test", $con);
         $con = mysql_pconnect("localhost", "tv_guide", "M2m3EDw4sZEzUGya") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接

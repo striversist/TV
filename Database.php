@@ -7,12 +7,10 @@ class Database
     const DB_PROFILES = "profiles.txt";
     const DB_HOT_INFO = "hot_info.txt";
     const DB_CHANNEL_VISIT_RECORD = "channel_visit_records.txt";
-    const DB_DAILY_PROFILE_RECORD = "daily_profile_records.txt";
     
     private $channels_file_path_;
     private $hot_info_file_path_;
     private $channels_visit_records_file_path_;
-    private $daily_profile_records_file_path_;
     private $memcache_;
     const MEMCACHE_EXPIRE_TIME = 86400;      // 24 hour
     public static function getInstance()
@@ -199,6 +197,72 @@ class Database
         return $profile;
     }
     
+    public function getLoginRecords()
+    {
+        $result = mysql_query("SELECT * FROM login_records");
+        if (mysql_numrows($result) == 0)
+            return false;
+        
+        while ($row = mysql_fetch_array($result))
+        {
+            $records["Date"] = unserialize($row["DATE"]);
+            $records["NewUsers"] = unserialize($row["NEW_USERS"]);
+            $records["LoyalUsers"] = unserialize($row["LOYAL_USERS"]);
+        }
+        return $records;
+    }
+    
+    public function getLoginRecordByDate($date_str)
+    {
+        if (!$this->is_date($date_str))
+            return false;
+        
+        $result = mysql_query("SELECT * FROM login_records WHERE DATE='$date_str'");
+        if (mysql_numrows($result) == 0)
+            return false;
+        
+        while ($row = mysql_fetch_array($result))
+        {
+            $record["Date"] = $row["DATE"];
+            $record["NewUsers"] = unserialize($row["NEW_USERS"]);
+            $record["LoyalUsers"] = unserialize($row["LOYAL_USERS"]);
+        }
+        return $record;
+    }
+    
+    public function storeLoginRecord($record)
+    {
+        if (!isset($record["Date"]) || !isset($record["NewUsers"]) || !isset($record["LoyalUsers"]))
+            return false;
+        
+        if (!$this->is_date($record["Date"]))
+            return false;
+        
+        $date = $record["Date"];
+        $new_users = serialize($record["NewUsers"]);
+        $loyal_users = serialize($record["LoyalUsers"]);
+        
+        $result = mysql_query("SELECT * FROM login_records WHERE DATE='$date'");
+        $num = mysql_num_rows($result);
+        if ($num > 0)   // Found exist record, update
+            mysql_query("UPDATE login_records SET NEW_USERS='$new_users', LOYAL_USERS='$loyal_users' WHERE DATE='$date'");
+        else            // Not found exist record, insert
+            mysql_query("INSERT INTO login_records (DATE, NEW_USERS, LOYAL_USERS) VALUES ('$date', '$new_users', '$loyal_users')");
+    }
+    
+    private function is_date($str, $format="Y/m/d")
+    {
+        $unixTime_1 = strtotime($str);
+        if (!is_numeric($unixTime_1)) 
+            return false;
+        $checkDate = date($format, $unixTime_1);
+        $unixTime_2 = strtotime($checkDate);
+        if($unixTime_1 == $unixTime_2)
+            return true;
+        else
+            return false;
+    }
+    
     /*
      * return: key{date} => value{key{channel_id} => value{"VisitTimes"}}
      */
@@ -220,34 +284,12 @@ class Database
         file_put_contents($this->channels_visit_records_file_path_, $store, LOCK_EX);
     }
     
-    /*
-     * return key{date} => value{key{"DailyActivity", "NewUsers"}}
-     */
-    public function getDailyProfileRecords()
-    {
-        if (!file_exists($this->daily_profile_records_file_path_))
-            return false;
-        $string = file_get_contents($this->daily_profile_records_file_path_);
-        $records = unserialize($string);
-        return $records;
-    }
-    
-    /*
-     * 记录用户日活跃度，新增数量等信息
-     */
-    public function storeDailyProfileRecords($records)
-    {
-        $store = serialize($records);
-        file_put_contents($this->daily_profile_records_file_path_, $store, LOCK_EX);
-    }
-
     private static $instance_;
     private function __construct() 
     { 
         $this->channels_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNELS_FILE;
         $this->hot_info_file_path_  = dirname(__FILE__).'/store/'.self::DB_HOT_INFO;
         $this->channels_visit_records_file_path_ = dirname(__FILE__).'/store/'.self::DB_CHANNEL_VISIT_RECORD;
-        $this->daily_profile_records_file_path_ = dirname(__FILE__).'/store/'.self::DB_DAILY_PROFILE_RECORD;
 //        $con = mysql_pconnect("localhost", "test", "test") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接
 //        mysql_select_db("test", $con);
         $con = mysql_pconnect("localhost", "tv_guide", "M2m3EDw4sZEzUGya") or die('Could not connect: ' . mysql_error());     // mysql_pconnect() 函数打开一个到 MySQL 服务器的持久连接

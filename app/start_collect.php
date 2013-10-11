@@ -12,6 +12,11 @@
     $filter = ProgramFilterFactory::createProgramFilter();
     $db = Database::getInstance();
     
+    // ------------------ 收集热门节目 -------------------------
+    collectHot();
+    if (isset($_GET["only_hot"]))
+        goto Label_Finish;
+    
     // ------------------ 收集节目信息 -------------------------
     if (onlyPolishSomeChannels())
         $channels = $db->getChannels();
@@ -49,28 +54,32 @@
         $channel["categories"] = $colletor->getCategoriesByChannelId("$id");
     }
     $db->storeChannels($channels);
-    
-    // ------------------ 收集热门节目 -------------------------
-    $url = $colletor->getHotUrl();
-    echo "<br />collecting hot TV series url=$url"."<br />";
-    for ($i=0; $i<3; $i++)
-    {
-        $html = file_get_contents($url);
-        if (!empty($html))
-            break;
-    }
-    if (get_html_charset($html) === "gb2312")
-    {
-        $html = gb2312_to_utf8($html);
-    }
-    $dom = str_get_html($html);
-    $hot_info = $filter->getHotInfo($dom);
-    $db->storeHotInfo($hot_info);
-    
-    echo "collect finished..."."(".date("Y/m/d H:i:s").")"."<br />";
+
+Label_Finish:
+    echo "<br />collect finished..."."(".date("Y/m/d H:i:s").")"."<br />";
     echo "total time: ".runTime($t)."s"."<br />";
     
-    // ----------- calculate time function-------------  
+    // --------------------------- Functions --------------------------------  
+    function collectHot()
+    {
+        global $colletor, $filter, $db;
+        $url = $colletor->getHotUrl();
+        echo "<br />collecting hot TV series url=$url"."<br />";
+        for ($i=0; $i<3; $i++)
+        {
+            $html = file_get_contents($url);
+            if (!empty($html))
+                break;
+        }
+        if (get_html_charset($html) === "gb2312")
+        {
+            $html = gb2312_to_utf8($html);
+        }
+        $dom = str_get_html($html);
+        $hot_info = $filter->getHotInfo($dom);
+        $db->storeHotInfo($hot_info);
+    }
+    
     function getTime()
     {
         $time = explode(" ",microtime());

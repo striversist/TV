@@ -7,30 +7,37 @@
     $colletor = Collector::getInstance();
     $db = Database::getInstance();
     
-    $profiles = $db->getProfiles();
-    $today = date("Y/m/d");
-    $daily_activity = 0;
-    $daily_new_user = 0;
-    foreach ($profiles as $profile)
-    {
-        $first_use = date("Y/m/d", strtotime($profile["FirstUse"]));
-        $last_login = date("Y/m/d", strtotime($profile["LastLogin"]));
-        if ($last_login == $today)
-            $daily_activity += 1;
-        if ($first_use == $today)
-            $daily_new_user += 1;
-    }
-
-    // 记录到数据库中
-    $lock = new CacheLock(__FILE__);
-    $lock->lock();
-    $daily_records = $db->getDailyProfileRecords();
-    if ($daily_records == false)
-        $daily_records = array();
-    $daily_records["$today"]["DailyActivity"] = $daily_activity;
-    $daily_records["$today"]["NewUsers"] = $daily_new_user;
-    $db->storeDailyProfileRecords($daily_records);
-    $lock->unlock();
+    $visit_records = $db->getChannelVisitRecords();
+//    foreach ($visit_records as $date => $record)
+//    {
+//        echo "date".$date."<br />";
+//    }
+    var_dump($visit_records["2013/10/10"]);
+    
+//    $profiles = $db->getProfiles();
+//    $today = date("Y/m/d");
+//    $daily_activity = 0;
+//    $daily_new_user = 0;
+//    foreach ($profiles as $profile)
+//    {
+//        $first_use = date("Y/m/d", strtotime($profile["FirstUse"]));
+//        $last_login = date("Y/m/d", strtotime($profile["LastLogin"]));
+//        if ($last_login == $today)
+//            $daily_activity += 1;
+//        if ($first_use == $today)
+//            $daily_new_user += 1;
+//    }
+//
+//    // 记录到数据库中
+//    $lock = new CacheLock(__FILE__);
+//    $lock->lock();
+//    $daily_records = $db->getDailyProfileRecords();
+//    if ($daily_records == false)
+//        $daily_records = array();
+//    $daily_records["$today"]["DailyActivity"] = $daily_activity;
+//    $daily_records["$today"]["NewUsers"] = $daily_new_user;
+//    $db->storeDailyProfileRecords($daily_records);
+//    $lock->unlock();
     
 //    $daily_records = $db->getDailyProfileRecords();
 //    var_dump($daily_records);

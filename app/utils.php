@@ -172,4 +172,18 @@ function guid()
     }
 }
 
+function is_full_date ($ymd, $sep='/')
+{ 
+   $parts = explode($sep,$ymd);
+   if (count($parts) != 3)
+       return false;
+   
+   $year = $parts[0]; 
+   $month = $parts[1]; 
+   $day = $parts[2];
+
+   if(checkdate($month,$day,$year))
+        return true;
+   return false;
+}
 ?>

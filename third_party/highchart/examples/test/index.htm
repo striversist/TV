@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript">
+$(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'column',
+                margin: [ 50, 50, 100, 80]
+            },
+            title: {
+                text: '2013/10/10 节目访问详情'
+            },
+            xAxis: {
+                categories: [
+                    '广东卫视',
+                    '广东公共',
+                    'cctv1',
+                    'cctv10',
+                    'cctv3',
+                    'dongfangst',
+                    'zhejiangst',
+                    'gansust',
+					'tvbhd'
+                ],
+                labels: {
+                    rotation: -45,
+                    align: 'right',
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '节目访问量 (次)'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '节目访问量: <b>{point.y:.1f} 次</b>',
+            },
+            series: [{
+                name: '节目访问量',
+                data: [2, 1, 18, 1, 9, 4, 4, 1, 2],
+                dataLabels: {
+                    enabled: true,
+                    rotation: -90,
+                    color: '#FFFFFF',
+                    align: 'right',
+                    x: 4,
+                    y: 10,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }]
+        });
+    });
+    
+
+		</script>
+	</head>
+	<body>
+<script src="../../js/highcharts.js"></script>
+<script src="../../js/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 500px; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>

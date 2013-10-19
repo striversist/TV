@@ -50,7 +50,10 @@
     ?>
     <p><h1>日活跃度：<?php echo $daily_activity; ?> = <?php echo $daily_new_user; ?>（日新增）+ <?php echo $daily_activity - $daily_new_user; ?>（老用户）</h1></p>
     <a href="../visits/index.htm"/><p><h1>今日节目访问量：<?php echo $daily_channel_visit_count; ?></h1></p>
-    <a href="../searches/index.php"/><p><h1>搜索记录</h1></p>
+    <p>
+        <a href="../searches/index.php"/><font size="5px">搜索记录</font>&nbsp;&nbsp;
+        <a href="../feedbacks/index.php"/><font size="5px">反馈记录</font>
+    </p>
     <tbody>
         <tr>
             <th width="100">用户</th>

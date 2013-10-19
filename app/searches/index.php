@@ -21,7 +21,7 @@
 //    echo "<pre>";var_dump($searches);echo "</pre>";
     foreach ($searches as $date => $records)
     {
-        echo "<h3>$date:</h3>";
+        echo "<h3>$date: (".count($records).")</h3>";
         for ($i=0; $i<count($records); $i++)
         {
             echo "$records[$i] ";

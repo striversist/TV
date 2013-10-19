@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highstock Example</title>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript">
+$(function() {
+
+	$.getJSON('/projects/TV/app/activities/json/activities.php', function(result) {
+		var dataActivities = result.Activities;
+		var dataNewUsers = result.NewUsers;
+		var dataLoyalUsers = result.LoyalUsers;
+		$('#container').highcharts('StockChart', {
+			
+
+			rangeSelector : {
+				selected : 1
+			},
+
+			title : {
+				text : '用户日活跃度'
+			},
+			
+			legend: {
+                enabled: true
+            },
+			
+			series : [{
+				name : '日活跃度',
+				data : dataActivities,
+			}, {
+				name : '新增用户',
+				data : dataNewUsers,
+			}, {
+				name : '老用户',
+				data : dataLoyalUsers,
+			}]
+		});
+	});
+
+});
+
+		</script>
+	</head>
+	<body>
+<script src="../../third_party/highstock/js/highstock.js"></script>
+<script src="../../third_party/highstock/js/modules/exporting.js"></script>
+
+<div id="container" style="height: 500px; min-width: 500px"></div>
+	</body>
+</html>

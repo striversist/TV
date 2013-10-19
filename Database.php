@@ -203,11 +203,13 @@ class Database
         if (mysql_numrows($result) == 0)
             return false;
         
+        $records = array();
         while ($row = mysql_fetch_array($result))
         {
-            $records["Date"] = unserialize($row["DATE"]);
-            $records["NewUsers"] = unserialize($row["NEW_USERS"]);
-            $records["LoyalUsers"] = unserialize($row["LOYAL_USERS"]);
+            $record["Date"] = $row["DATE"];
+            $record["NewUsers"] = unserialize($row["NEW_USERS"]);
+            $record["LoyalUsers"] = unserialize($row["LOYAL_USERS"]);
+            $records[] = $record;
         }
         return $records;
     }

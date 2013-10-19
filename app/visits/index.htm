@@ -9,7 +9,24 @@
 		$(document).ready(function () 
 		{
 			initAllSelects();
+			selectToday();
 		});
+		
+		function selectToday()
+		{
+			var date = new Date();
+			var year = date.getFullYear();
+			var month = date.getMonth() + 1;
+			var day = date.getDate();
+			$('#yearSelect').val(year);
+			$('#yearSelect').change();
+			
+			$('#monthSelect').val(month);
+			$('#monthSelect').change();
+			
+			$('#daySelect').val(day);
+			$('#daySelect').change();
+		}
 		
 		function initAllSelects()
 		{

@@ -37,16 +37,19 @@
         $daily_new_user = count($login_record["NewUsers"]);
         
         $channel_visit_all = $db->getChannelVisitRecords();
-        $channel_visit_today = $channel_visit_all["$today"];
         $daily_channel_visit_count = 0;
-        foreach ($channel_visit_today as $channel_id => $channel)
+        if (isset($channel_visit_all["$today"]))
         {
-//            echo "channel: ".$channel_id." VisitTimes=".$channel["VisitTimes"]."<br />";
-            $daily_channel_visit_count += $channel["VisitTimes"];
+            $channel_visit_today = $channel_visit_all["$today"];
+            foreach ($channel_visit_today as $channel_id => $channel)
+            {
+    //            echo "channel: ".$channel_id." VisitTimes=".$channel["VisitTimes"]."<br />";
+                $daily_channel_visit_count += $channel["VisitTimes"];
+            }
         }
     ?>
     <p><h1>日活跃度：<?php echo $daily_activity; ?> = <?php echo $daily_new_user; ?>（日新增）+ <?php echo $daily_activity - $daily_new_user; ?>（老用户）</h1></p>
-    <p><h1>今日节目访问量：<?php echo $daily_channel_visit_count; ?></h1></p>
+    <a href="../visits/index.htm"/><p><h1>今日节目访问量：<?php echo $daily_channel_visit_count; ?></h1></p>
     <tbody>
         <tr>
             <th width="100">用户</th>

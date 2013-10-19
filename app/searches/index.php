@@ -16,7 +16,7 @@
             }
         }
     }
-    ksort($searches);
+    krsort($searches);
 
 //    echo "<pre>";var_dump($searches);echo "</pre>";
     foreach ($searches as $date => $records)

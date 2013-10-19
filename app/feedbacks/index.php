@@ -16,7 +16,7 @@
             }
         }
     }
-    ksort($feedbacks);
+    krsort($feedbacks);
     
     echo "<pre>";var_dump($feedbacks);;echo "</pre>";
 ?>

@@ -18,6 +18,16 @@
     }
     ksort($searches);
 
-    echo "<pre>";var_dump($searches);echo "</pre>";
+//    echo "<pre>";var_dump($searches);echo "</pre>";
+    foreach ($searches as $date => $records)
+    {
+        echo "<h3>$date:</h3>";
+        for ($i=0; $i<count($records); $i++)
+        {
+            echo "$records[$i] ";
+            if ($i == 20) echo "<br/>";
+        }
+        echo "<br/><br/>";
+    }
 ?>
 

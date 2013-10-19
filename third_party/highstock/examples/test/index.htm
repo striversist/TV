@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highstock Example</title>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript">
+$(function() {
+
+	$.getJSON('/projects/TV/app/logins/json/activities.php', function(result) {
+		// Create the chart
+		var testData = new Array();
+		testData.push(new Array(1161043200000, 74.29));
+		testData.push(new Array(1161129600000, 74.53));
+		testData.push(new Array(1161302400000, 78.99));
+		testData.push(new Array(1161561600000, 81.46));
+		testData.push(new Array(1161648000000, 81.05));
+		testData.push(new Array(1161734400000, 81.68));
+		testData.push(new Array(1161820800000, 82.19));
+		testData.push(new Array(1161907200000, 80.41));
+		testData.push(new Array(1162166400000, 80.42));
+		testData.push(new Array(1162252800000, 81.08));
+		
+		var dataActivities = result.Activities;
+		var dataNewUsers = result.NewUsers;
+		var dataLoyalUsers = result.LoyalUsers;
+		$('#container').highcharts('StockChart', {
+			
+
+			rangeSelector : {
+				selected : 1
+			},
+
+			title : {
+				text : '用户日活跃度'
+			},
+			
+			legend: {
+                enabled: true
+            },
+			
+			series : [{
+				name : '日活跃度',
+				data : dataActivities,
+			}, {
+				name : '新增用户',
+				data : dataNewUsers,
+			}, {
+				name : '老用户',
+				data : dataLoyalUsers,
+			}]
+		});
+	});
+
+});
+
+		</script>
+	</head>
+	<body>
+<script src="../../js/highstock.js"></script>
+<script src="../../js/modules/exporting.js"></script>
+
+<div id="container" style="height: 500px; min-width: 500px"></div>
+	</body>
+</html>

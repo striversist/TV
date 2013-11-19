@@ -20,14 +20,27 @@
     {
         $guid = $headers["GUID"];
         $profile = $db->getProfile($guid);
-    }  
+    }
+    @$version = $headers["Version"];
     
     $today = date("w");
     if ($today == "0")    // Sunday
         $today = "7";
     
-    // 匹配关键字
-    $result = array();
+    // 匹配关键字: 频道名称
+    $result_channels = array();
+    $channel_names = $colletor->getIdNames();
+    foreach ($channel_names as $id => $name)
+    {
+        if (strpos($name, $keyword) !== FALSE)  // Found
+        {
+            //echo "You found $keyword in ".$name."<br />";
+            $result_channels["$id"] = $name;
+        }
+    }
+    
+    // 匹配关键字: 节目列表
+    $result_programs = array();
     $search_categories = getSearchCategories($profile);
     foreach ($search_categories as $category_id)
     {
@@ -51,7 +64,7 @@
                     }
                     if (count($tmp))
                     {
-                        $result["$id"] = $tmp;
+                        $result_programs["$id"] = $tmp;
                     }
                 }
             }
@@ -59,30 +72,13 @@
     }
     
     // 返回用户结果
-    if (count($result))
+    if ($version != null and $version < "1.1.0")
     {
-        foreach ($result as $id => $programs) 
-        {
-            //echo "今日 ".$colletor->getNameById($id)."<br />";
-            $tmp = array();
-            foreach ($programs as $program)
-            {
-                //echo $program["time"].": ".$program["title"]."<br />";
-                $tmp[] = array("time" => $program["time"], "title" => $program["title"]);
-            }
-            $array["id"] = $id;
-            $array["name"] = $colletor->getNameById("$id");
-            $array["programs"] = $tmp;
-            $array2[] = $array;
-        }
-        $return["result"] = $array2;
-        echo json_encode($return);
+        show_result_v1($result_programs);
     }
-    else 
+    else
     {
-        //echo "对不起，没有匹配的结果"."<br />";
-        $return["result"] = array();
-        echo json_encode($return);
+        show_result_v2($result_channels, $result_programs);
     }
     
     // 收集用户搜索记录
@@ -163,5 +159,85 @@
    
         @$locations[] = $provinces["$category_id"];
         return $locations;
+    }
+    
+    /**
+     * 为1.0.x的终端版本显示返回结果
+     */
+    function show_result_v1($result_programs)
+    {
+        global $colletor;
+        if (count($result_programs))
+        {
+            foreach ($result_programs as $id => $programs) 
+            {
+                //echo "今日 ".$colletor->getNameById($id)."<br />";
+                $tmp = array();
+                foreach ($programs as $program)
+                {
+                    //echo $program["time"].": ".$program["title"]."<br />";
+                    $tmp[] = array("time" => $program["time"], "title" => $program["title"]);
+                }
+                $array["id"] = $id;
+                $array["name"] = $colletor->getNameById("$id");
+                $array["programs"] = $tmp;
+                $array2[] = $array;
+            }
+            $return["result"] = $array2;
+            echo json_encode($return);
+        }
+        else 
+        {
+            //echo "对不起，没有匹配的结果"."<br />";
+            $return["result"] = array();
+            echo json_encode($return);
+        }
+    }
+    
+    /**
+     * 为1.1.0及以上的终端版本返回结果
+     */
+    function show_result_v2($result_channels, $result_programs)
+    {
+        global $colletor;
+        $return = array();
+        if (count($result_channels))
+        {
+            $tmp = array();
+            foreach ($result_channels as $id => $name)
+            {
+                $tmp[] = array("id" => $id, "name" => $name);
+            }
+            $return["result_channels"] = $tmp;
+        }
+        else
+        {
+            $return["result_channels"] = array();
+        }
+        
+        if (count($result_programs))
+        {
+            foreach ($result_programs as $id => $programs) 
+            {
+                //echo "今日 ".$colletor->getNameById($id)."<br />";
+                $tmp = array();
+                foreach ($programs as $program)
+                {
+                    //echo $program["time"].": ".$program["title"]."<br />";
+                    $tmp[] = array("time" => $program["time"], "title" => $program["title"]);
+                }
+                $array["id"] = $id;
+                $array["name"] = $colletor->getNameById("$id");
+                $array["programs"] = $tmp;
+                $array2[] = $array;
+            }
+            $return["result_programs"] = $array2;
+        }
+        else
+        {
+            $return["result_programs"] = array();
+        }
+        
+        echo json_encode($return);
     }
 ?>

@@ -42,6 +42,7 @@
     @$user_agent = $headers["UA"];  
     @$user_ip = $_GET["UIP"];
     @$user_location = $_GET["UL"];
+    @$app_channel = $_GET["APP_CHANNEL"];
     if ($version != null)
         $profile["Version"] = $version;
     if ($user_agent != null)
@@ -50,6 +51,8 @@
         $profile["UIP"] = $user_ip;
     if ($user_location != null)
         $profile["UL"] = $user_location;
+    if ($app_channel != null)
+        $profile["APP_CHANNEL"] = $app_channel;
     
     $profile["RemoteIP"] = get_remote_ip();
     $db->storeProfile($profile);

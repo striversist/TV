@@ -56,7 +56,7 @@
     </p>
     <tbody>
         <tr>
-            <th width="100">用户</th>
+            <th width="50">用户</th>
             <th width="250">GUID</th>
             <th width="80">版本</th>
             <th width="150">首次启动</th>
@@ -64,6 +64,7 @@
             <th width="100">用户IP</th>
             <th width="180">位置</th>
             <th width="100">RemoteIP</th>
+            <th width="80">渠道</th>
             <th width="100">操作</th>
         </tr>
         <?php 
@@ -79,6 +80,7 @@
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["UIP"] ?></td>
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["UL"] ?></td>
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["RemoteIP"] ?></td>
+                <td style="border:solid 1px #799AE1"><?php echo @$profile["APP_CHANNEL"] ?></td>
                 <td style="border:solid 1px #799AE1"><a href="profile_detail.php?guid=<?php echo $profile["GUID"] ?>" style="cursor:pointer">更多</a></td>
         </tr>
         <?php

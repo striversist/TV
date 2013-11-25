@@ -69,7 +69,7 @@ class Database
         
         $collector = Collector::getInstance();
         $root_categories = $collector->getRootCategories();
-        $local_categories = $collector->getLocals();
+        $local_categories = $collector->getSubCategories("local");
         if (!array_key_exists($param_category_id, $root_categories) 
                 and !array_key_exists($param_category_id, $local_categories))
             return false;

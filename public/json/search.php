@@ -13,7 +13,7 @@
     //echo "You input keyword: ".$keyword." type = ".$type."<br />";
     
     $db = Database::getInstance();
-    $colletor = Collector::getInstance();
+    $collector = Collector::getInstance();
     $profile = false;
     $headers = apache_request_headers();
     if (isset($headers["GUID"]))
@@ -29,7 +29,7 @@
     
     // 匹配关键字: 频道名称
     $result_channels = array();
-    $channel_names = $colletor->getIdNames();
+    $channel_names = $collector->getIdNames();
     foreach ($channel_names as $id => $name)
     {
         if (strpos($name, $keyword) !== FALSE)  // Found
@@ -117,9 +117,9 @@
     {
         if (!isset($profile["UL"]))
             return false;
-        global $colletor;
+        global $collector;
         $location = $profile["UL"];
-        $locals = $colletor->getLocals();
+        $locals = $collector->getSubCategories("local");
         foreach ($locals as $id => $category)
         {
             // 若发现本地类型类型名称“北京、武汉...”出现在$location中，
@@ -166,12 +166,12 @@
      */
     function show_result_v1($result_programs)
     {
-        global $colletor;
+        global $collector;
         if (count($result_programs))
         {
             foreach ($result_programs as $id => $programs) 
             {
-                //echo "今日 ".$colletor->getNameById($id)."<br />";
+                //echo "今日 ".$collector->getNameById($id)."<br />";
                 $tmp = array();
                 foreach ($programs as $program)
                 {
@@ -179,7 +179,7 @@
                     $tmp[] = array("time" => $program["time"], "title" => $program["title"]);
                 }
                 $array["id"] = $id;
-                $array["name"] = $colletor->getNameById("$id");
+                $array["name"] = $collector->getNameById("$id");
                 $array["programs"] = $tmp;
                 $array2[] = $array;
             }
@@ -199,7 +199,7 @@
      */
     function show_result_v2($result_channels, $result_programs)
     {
-        global $colletor;
+        global $collector;
         $return = array();
         if (count($result_channels))
         {
@@ -219,7 +219,7 @@
         {
             foreach ($result_programs as $id => $programs) 
             {
-                //echo "今日 ".$colletor->getNameById($id)."<br />";
+                //echo "今日 ".$collector->getNameById($id)."<br />";
                 $tmp = array();
                 foreach ($programs as $program)
                 {
@@ -227,7 +227,7 @@
                     $tmp[] = array("time" => $program["time"], "title" => $program["title"]);
                 }
                 $array["id"] = $id;
-                $array["name"] = $colletor->getNameById("$id");
+                $array["name"] = $collector->getNameById("$id");
                 $array["programs"] = $tmp;
                 $array2[] = $array;
             }

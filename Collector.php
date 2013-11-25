@@ -104,11 +104,6 @@ class Collector
         return $result;
     }
     
-    public function getLocals()
-    {
-        return $this->getLocalSubCategories();
-    }
-    
     /*
      * 通过channel id获取对应的categories数组：key{category_id} => value{category_name}
      */
@@ -153,13 +148,17 @@ class Collector
         }
         return false;
     }
-        
-    private function getLocalSubCategories()
+    
+    /**
+     * 获取子目录
+     * TODO: 目前假设Category层级最大为2
+     */
+    public function getSubCategories($parent_id)
     {
        $xml = $this->_categories_xml;
        for ($i=0; $i<$xml->count(); $i++)
        {
-           if ($xml->category[$i]["id"] == "local")
+           if ($xml->category[$i]["id"] == $parent_id)
            {
                foreach ($xml->category[$i]->category as $subcategory)
                {

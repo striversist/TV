@@ -16,9 +16,17 @@
     {
         $categories = $colletor->getRootCategories();
     }
-    else if ($type === "local")
+    else
     {
-        $categories = $colletor->getLocals();
+        $root_categories = $colletor->getRootCategories();
+        foreach ($root_categories as $id => $root_category)
+        {
+            if ($root_category["has_sub_category"] == 1)
+            {
+                $categories = $colletor->getSubCategories($type);
+                break;
+            }
+        }
     }
     
     foreach ($categories as $id => $category)

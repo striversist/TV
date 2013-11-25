@@ -10,7 +10,7 @@
         <name>高清频道</name>
     </category>
     <category id="local">
-        <name>地方台</name>
+        <name>各省频道</name>
         <category id="beijing">
             <name>北京</name>
         </category>
@@ -100,6 +100,18 @@
         </category>
 		<category id="neimenggu">
             <name>内蒙古</name>
+        </category>
+    </category>
+	<category id="hat">
+        <name>港澳台</name>
+		<category id="hongkong">
+            <name>香港</name>
+        </category>
+        <category id="aomen">
+            <name>澳门</name>
+        </category>
+        <category id="taiwan">
+            <name>台湾</name>
         </category>
     </category>
 </categories>

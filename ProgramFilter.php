@@ -40,7 +40,7 @@ class ProgramFilter_tvsou implements ProgramFilter
         if (!($dom instanceof simple_html_dom))
         {
             echo "Error input is not a instance of simple_html_dom"."<br />";
-            die("getProgramList error");
+//            die("getProgramList error");       // 注意：不能使用die，否则整个收集工作会停止
             return;
         }
         $list = array();
@@ -109,7 +109,7 @@ class ProgramFilter_tvsou implements ProgramFilter
         if (!($dom instanceof simple_html_dom))
         {
             echo "Error input is not a instance of simple_html_dom"."<br />";
-            die("getHotInfo error");
+//            die("getHotInfo error");
             return;
         }
         $channels = array();

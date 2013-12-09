@@ -99,7 +99,7 @@ class Database
         foreach ($categories as $category_id => $category_channels)
         {
 //            echo "memecache set $category_id, count(category_channels)=".count($category_channels)."<br />";
-            $this->memcache_->set("channels_".$category_id, $category_channels, true, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save channels to $category_id at the server");
+            $this->memcache_->set("channels_".$category_id, $category_channels, MEMCACHE_COMPRESSED, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save channels to $category_id at the server");
         }
         
         return $categories["$param_category_id"];
@@ -110,10 +110,10 @@ class Database
      */
     private function prepareMemChannels($channels)
     {
-        $this->memcache_->set("channels", $channels, true, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
+        //$this->memcache_->set("channels", $channels, MEMCACHE_COMPRESSED, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save data at the memcached server");
         foreach ($channels as $id => $channel)
         {
-            $this->memcache_->set("channel_".$id, $channel, true, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save channel $id data at the server");
+            $this->memcache_->set("channel_".$id, $channel, MEMCACHE_COMPRESSED, self::MEMCACHE_EXPIRE_TIME) or die ("Failed to save channel $id data at the server");
         }
     }
     

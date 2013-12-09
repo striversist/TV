@@ -13,6 +13,7 @@ class Database
     private $channels_visit_records_file_path_;
     private $memcache_;
     const MEMCACHE_EXPIRE_TIME = 86400;      // 24 hour
+    const CHANNELS_CHUNK_SIZE = 50;
     public static function getInstance()
     {
         if(!self::$instance_ instanceof  self)
@@ -31,23 +32,27 @@ class Database
         file_put_contents($this->channels_file_path_, $store);
         
         $this->memcache_->flush();
-        $this->prepareMemChannels($channels);
+//        $this->prepareMemChannels($channels);
+        $this->storeChannelsToMemcache($channels);
     }
     
     public function getChannels()
     {
-        $mem_channels = $this->memcache_->get("channels");
+//        $mem_channels = $this->memcache_->get("channels");
+        $mem_channels = $this->getChannelsFromMemcache();
         if ($mem_channels != FALSE)
             return $mem_channels;
         
         $string = file_get_contents($this->channels_file_path_);
         $channels = unserialize($string);
-        $this->prepareMemChannels($channels);
+//        $this->prepareMemChannels($channels);
+        $this->storeChannelsToMemcache($channels);
         return $channels;
     }
        
     public function getChannelById($id)
     {
+//        echo "getChannelById id=$id"."<br/>";
         $mem_channel = $this->memcache_->get("channel_".$id);
         if ($mem_channel != FALSE)
             return $mem_channel;
@@ -106,13 +111,43 @@ class Database
         return $categories["$param_category_id"];
     }
     
+    private function storeChannelsToMemcache($channels)
+    {
+//        echo "storeChannelsToMemcache count(channels)=".count($channels)."<br/>";
+        assert($channels != null);
+        $chunks = array_chunk($channels, self::CHANNELS_CHUNK_SIZE, true);
+        if ($this->memcache_->set("channels_chunk_count", count($chunks), false, self::MEMCACHE_EXPIRE_TIME) == FALSE)
+            return;
+        for ($i=0; $i<count($chunks); $i++)
+        {
+            $this->memcache_->set("channels_chunk_".$i, $chunks[$i], MEMCACHE_COMPRESSED, self::MEMCACHE_EXPIRE_TIME);
+        }
+    }
+    
+    private function getChannelsFromMemcache()
+    {
+//        echo "getChannelsFromMemcache"."<br/>";
+        $chunk_count = $this->memcache_->get("channels_chunk_count");
+        if ($chunk_count == FALSE)
+            return FALSE;
+        
+        $channels = array();
+        for ($i=0; $i<$chunk_count; $i++)
+        {
+            $channels_chunk = $this->memcache_->get("channels_chunk_".$i);
+            if ($channels_chunk == FALSE)
+                break;
+            $channels = array_merge($channels, $channels_chunk);
+        }
+//        echo "getChannelsFromMemcache count(channels)=".count($channels)."<br/>";
+        return $channels;
+    }
+    
     /*
      * 优化：将所有的channel信息放入memcache，以备后续需要
      */
     private function prepareMemChannels($channels)
     {
-        if ($this->memcache_->set("channels", $channels, MEMCACHE_COMPRESSED, self::MEMCACHE_EXPIRE_TIME) == FALSE)
-            echo "Failed to save data at the memcached server"."<br/>";
         foreach ($channels as $id => $channel)
         {
             if ($this->memcache_->set("channel_".$id, $channel, MEMCACHE_COMPRESSED, self::MEMCACHE_EXPIRE_TIME) == FALSE)

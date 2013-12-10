@@ -53,7 +53,7 @@ class Database
         $mem_channel = $this->getFromMemcache("channel_".$id);
         if ($mem_channel != FALSE)
         {
-            var_dump($mem_channel["categories"]);
+//            var_dump($mem_channel["categories"]);
             return $mem_channel;
         }
         

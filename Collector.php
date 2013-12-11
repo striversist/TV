@@ -3,7 +3,6 @@ require_once (dirname(__FILE__).'/'.'./Config.php');
 
 class Collector
 {
-    private $CHANNELS_XML = null;
     const CHANNEL_CATEGORIES_XML = "categories.xml";
     const HOT_XML = "hot.xml";
     private $_channels_xml_path = null;
@@ -36,7 +35,10 @@ class Collector
         foreach ($xml->channel as $channel)
         {
             $id = $channel["id"];
-            $array["$id"] = (string)($channel->urls->url[$day - 1]);
+            $suffix = $channel->urls->url[0]["suffix"];
+            $url_pattern = $channel->urls->url[0];
+            $array["$id"] = (string)($url_pattern.strval($day).$suffix);
+//            echo "getIdUrlsByDay suffix=".$suffix." url=".$array["$id"]."<br/>";
         }
         return $array;
     }
@@ -199,7 +201,7 @@ class Collector
             $CHANNELS_XML = "channels_tvsou.xml";
         else if (Config::$DATA_SRC == "tvmao")
             $CHANNELS_XML = "channels_tvmao.xml";
-//        $CHANNELS_XML = "channels_test.xml";
+        $CHANNELS_XML = "channels_test.xml";
 //        $CHANNELS_XML = "channels_error.xml";
         
         $this->_channels_xml_path = dirname(__FILE__).'/'."xml/".$CHANNELS_XML;

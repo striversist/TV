@@ -35,10 +35,15 @@ class Collector
         foreach ($xml->channel as $channel)
         {
             $id = $channel["id"];
-            $suffix = $channel->urls->url[0]["suffix"];
-            $url_pattern = $channel->urls->url[0];
-            $array["$id"] = (string)($url_pattern.strval($day).$suffix);
-//            echo "getIdUrlsByDay suffix=".$suffix." url=".$array["$id"]."<br/>";
+            foreach ($channel->urls->url as $url)
+            {
+                if ($url["src"] == Config::$DATA_SRC)
+                {
+                    $suffix = $url["suffix"];
+                    $array["$id"] = (string)($url.strval($day).$suffix);
+//                    echo "getIdUrlsByDay suffix=".$suffix." url=".$array["$id"]."<br/>";
+                }
+            }
         }
         return $array;
     }

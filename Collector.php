@@ -206,7 +206,7 @@ class Collector
             $CHANNELS_XML = "channels_tvsou.xml";
         else if (Config::$DATA_SRC == "tvmao")
             $CHANNELS_XML = "channels_tvmao.xml";
-        $CHANNELS_XML = "channels_test.xml";
+//        $CHANNELS_XML = "channels_test.xml";
 //        $CHANNELS_XML = "channels_error.xml";
         
         $this->_channels_xml_path = dirname(__FILE__).'/'."xml/".$CHANNELS_XML;

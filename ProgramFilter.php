@@ -106,59 +106,7 @@ class ProgramFilter_tvsou implements ProgramFilter
      */
     public function getHotInfo($dom)
     {
-        if (!($dom instanceof simple_html_dom))
-        {
-            echo "Error input is not a instance of simple_html_dom"."<br />";
-//            die("getHotInfo error");
-            return;
-        }
-        $channels = array();
-        $programs_list = array();
-        $channel_name_list = array();
-        foreach ($dom->find("div[class=rb_tv]") as $rb_tv)
-        {
-            $channel_names = $rb_tv->find("a");
-            foreach ($channel_names as $name)
-            {
-//                echo "name=".$name->plaintext."<br />";
-                $channel_name_list[] = $name->plaintext;
-            }
-        }
-        foreach ($dom->find("div[class=rb_tv_jm rb_tv_jm2]") as $rb_tv_jm)
-        {
-            $program_names = $rb_tv_jm->find("a");
-            $programs = array();
-            foreach($program_names as $name)
-            {
-//                echo "name=".$name->plaintext."<br />";
-                $program["name"] = $name->plaintext;
-                $programs[] = $program;
-            }
-            $programs_list[] = $programs;
-        }
-//        echo "count(channel_name_list)=".count($channel_name_list)."<br />";
-//        echo "count(programs_list)=".count($programs_list)."<br />";
-
-        // 保证是一一对应的，否则错位，结果肯定不对
-        if (count($channel_name_list) == count($programs_list))
-        {
-            for ($i=0; $i<count($channel_name_list); $i++)
-            {
-                $channels["$channel_name_list[$i]"] = $programs_list[$i];
-            }
-        }
-        
-        // Dump the result
-        foreach ($channels as $name => $programs)
-        {
-            echo "channel : $name"."<br />";
-            foreach ($programs as $program)
-            {
-                echo "&nbsp &nbsp".$program["name"]."<br />";
-            }
-        }
-//        var_dump($channels);
-        return $channels;
+        return getTvSouHotInfo($dom);
     }
             
     private static $instance_;
@@ -215,10 +163,12 @@ class ProgramFilter_tvmao implements ProgramFilter
         return $list;
     }
     
+    /**
+     *  目前和ProgramFilter_tvsou的getHotInfo一致
+     */
     public function getHotInfo($dom)
     {
-        $channels = array();
-        return $channels;
+        return getTvSouHotInfo($dom);
     }
     
     private static $instance_;
@@ -266,5 +216,61 @@ class ProgramFilter_sina implements ProgramFilter
     private function __clone() { }
 }
 
+function getTvSouHotInfo($dom)
+{
+    if (!($dom instanceof simple_html_dom))
+    {
+        echo "Error input is not a instance of simple_html_dom"."<br />";
+//            die("getHotInfo error");
+        return;
+    }
+    $channels = array();
+    $programs_list = array();
+    $channel_name_list = array();
+    foreach ($dom->find("div[class=rb_tv]") as $rb_tv)
+    {
+        $channel_names = $rb_tv->find("a");
+        foreach ($channel_names as $name)
+        {
+//                echo "name=".$name->plaintext."<br />";
+            $channel_name_list[] = $name->plaintext;
+        }
+    }
+    foreach ($dom->find("div[class=rb_tv_jm rb_tv_jm2]") as $rb_tv_jm)
+    {
+        $program_names = $rb_tv_jm->find("a");
+        $programs = array();
+        foreach($program_names as $name)
+        {
+//                echo "name=".$name->plaintext."<br />";
+            $program["name"] = $name->plaintext;
+            $programs[] = $program;
+        }
+        $programs_list[] = $programs;
+    }
+//        echo "count(channel_name_list)=".count($channel_name_list)."<br />";
+//        echo "count(programs_list)=".count($programs_list)."<br />";
+
+    // 保证是一一对应的，否则错位，结果肯定不对
+    if (count($channel_name_list) == count($programs_list))
+    {
+        for ($i=0; $i<count($channel_name_list); $i++)
+        {
+            $channels["$channel_name_list[$i]"] = $programs_list[$i];
+        }
+    }
+
+    // Dump the result
+    foreach ($channels as $name => $programs)
+    {
+        echo "channel : $name"."<br />";
+        foreach ($programs as $program)
+        {
+            echo "&nbsp &nbsp".$program["name"]."<br />";
+        }
+    }
+//        var_dump($channels);
+    return $channels;
+}
 
 ?>

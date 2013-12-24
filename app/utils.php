@@ -122,6 +122,10 @@ $SpecialChars = array
     0xAC42 => "珺",
     0x91DE => "戅",
     0x8ECC => "幪",
+    0x938B => "搵",
+    0x83D3 => "冇",
+    0x8C59 => "孻",
+    0x89DE => "夀",
 );
 
 function is_specical_gb2312_char($first, $second)

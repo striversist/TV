@@ -18,7 +18,7 @@
     $channels = array();
     for($day = 1; $day <= 7; $day++)
     {
-        $map = $colletor->getIdUrlsByDay($day);
+        $map = $colletor->getCollectInfoByDay($day);
         $num = 0;
         foreach ($map as $id => $url)
         {

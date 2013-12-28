@@ -40,6 +40,7 @@
     $result["result"] = $array;
     $result["id"] = $id;
     $result["day"] = $day;
+    $result["days"] = strval(count($channel["days"]));
     if ($needOnPlaying)
     {
         $program = getOnPlayingProgram($channel);

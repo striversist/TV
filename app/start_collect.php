@@ -9,7 +9,6 @@
     $t = getTime();
     
     $colletor = Collector::getInstance();
-    $filter = ProgramFilterFactory::createProgramFilter();
     $db = Database::getInstance();
     
     // ------------------ 收集热门节目 -------------------------
@@ -22,20 +21,20 @@
         $channels = $db->getChannels();
     else
         $channels = array();
-    for($day = 1; $day <= 7; $day++)
+    for($day = 1; $day <= Config::MAX_COLLECT_DAYS; $day++)
     {
-        $map = $colletor->getIdUrlsByDay($day);
-        foreach ($map as $id => $url)
+        $map = $colletor->getCollectInfoByDay($day);
+        foreach ($map as $id => $info)
         {
             if (onlyPolishSomeChannels())
             {
                 if (!in_array("$id", getSpecialChannelIds()))
                     continue;
             }
-            echo "collecting $id day=$day url=$url"."<br />";
+            echo "collecting $id day=$day url=".$info["url"]."<br />";
             for ($i=0; $i<3; $i++)
             {
-                $html = file_get_contents($url);
+                $html = file_get_contents($info["url"]);
                 if (!empty($html))
                     break;
             }
@@ -44,6 +43,8 @@
                 $html = gb2312_to_utf8($html);
             }
             $dom = str_get_html($html);
+            
+            $filter = ProgramFilterFactory::createProgramFilter($info["src"]);
             $channels["$id"]["days"]["$day"] = $filter->getProgramList($dom);
             usleep(10 * 1000);  // sleep 10ms
         }
@@ -62,7 +63,8 @@ Label_Finish:
     // --------------------------- Functions --------------------------------  
     function collectHot()
     {
-        global $colletor, $filter, $db;
+        global $colletor, $db;
+        $filter = ProgramFilterFactory::createProgramFilter();
         $url = $colletor->getHotUrl();
         echo "<br />collecting hot TV series url=$url"."<br />";
         for ($i=0; $i<3; $i++)

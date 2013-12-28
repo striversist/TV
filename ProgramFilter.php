@@ -6,11 +6,11 @@ require_once (dirname(__FILE__).'/'.'./Config.php');
 set_time_limit(0);
 class ProgramFilterFactory
 {
-    public static function createProgramFilter()
+    public static function createProgramFilter($src = Config::DATA_SRC_TVSOU)
     {
-        if (Config::$DATA_SRC == "tvsou")
+        if ($src == Config::DATA_SRC_TVSOU)
             return ProgramFilter_tvsou::getInstance();
-        else if (Config::$DATA_SRC == "tvmao")
+        else if ($src == Config::DATA_SRC_TVMAO)
             return ProgramFilter_tvmao::getInstance();
     }
 }

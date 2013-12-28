@@ -24,24 +24,39 @@ class Collector
      * return: array["channel_id"] = channel_url
      * eg. array["cctv1"] = "http://xxx";
      */
-    public function getIdUrlsByDay($day)
+    public function getCollectInfoByDay($day)
     {
-        if($day < 0 || $day > 7)
+        if($day < 0 || $day > Config::MAX_COLLECT_DAYS)
         {
             echo "day $day out limit";
             return null;
         }
+        $array = null;
         $xml = $this->_channels_xml;
         foreach ($xml->channel as $channel)
         {
             $id = $channel["id"];
             foreach ($channel->urls->url as $url)
             {
-                if ($url["src"] == Config::$DATA_SRC)
+                if ($day <= 7)  // 一周内的节目按Config配置信息来取
                 {
-                    $suffix = $url["suffix"];
-                    $array["$id"] = (string)($url.strval($day).$suffix);
-//                    echo "getIdUrlsByDay suffix=".$suffix." url=".$array["$id"]."<br/>";
+                    if ($url["src"] == Config::$DATA_SRC)
+                    {
+                        $suffix = $url["suffix"];
+                        $array["$id"]["url"] = (string)($url.strval($day).$suffix);
+                        $array["$id"]["src"] = $url["src"];
+    //                    echo "getIdUrlsByDay suffix=".$suffix." url=".$array["$id"]["url"]."<br/>";
+                    }
+                }
+                else    // 下周的信息目前只能从tvmao中取（tvsou中下周信息时错误的）
+                {
+                    if ($url["src"] == Config::DATA_SRC_TVMAO)  // 如果存在tvmao的配置
+                    {
+                        $suffix = $url["suffix"];
+                        $array["$id"]["url"] = (string)($url.strval($day).$suffix);
+                        $array["$id"]["src"] = $url["src"];
+    //                    echo "getIdUrlsByDay suffix=".$suffix." url=".$array["$id"]["url"]."<br/>";
+                    }
                 }
             }
         }
@@ -202,9 +217,9 @@ class Collector
     private static $instance_;
     private function __construct()
     {
-        if (Config::$DATA_SRC == "tvsou")
+        if (Config::$DATA_SRC == Config::DATA_SRC_TVSOU)
             $CHANNELS_XML = "channels_tvsou.xml";
-        else if (Config::$DATA_SRC == "tvmao")
+        else if (Config::$DATA_SRC == Config::DATA_SRC_TVMAO)
             $CHANNELS_XML = "channels_tvmao.xml";
 //        $CHANNELS_XML = "channels_test.xml";
 //        $CHANNELS_XML = "channels_error.xml";

@@ -126,6 +126,13 @@ $SpecialChars = array
     0x83D3 => "冇",
     0x8C59 => "孻",
     0x89DE => "夀",
+    0x8E70 => "巔",
+    0x9943 => "機",
+    0x8465 => "別",
+    0x8147 => "丟",
+    0x954E => "昇",
+    0x93C4 => "撃",
+    0x8D6F => "峯",
 );
 
 function is_specical_gb2312_char($first, $second)

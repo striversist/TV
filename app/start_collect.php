@@ -45,7 +45,14 @@
             $dom = str_get_html($html);
             
             $filter = ProgramFilterFactory::createProgramFilter($info["src"]);
-            $channels["$id"]["days"]["$day"] = $filter->getProgramList($dom);
+            $programList = $filter->getProgramList($dom);
+            if (empty($programList))
+            {
+                echo "filter nothing, skip $id, day=$day"."<br/>";
+                continue;
+            }
+            $channels["$id"]["days"]["$day"] = $programList;
+            unset($programList);
             usleep(10 * 1000);  // sleep 10ms
         }
     }

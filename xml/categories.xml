@@ -20,13 +20,13 @@
         <category id="guangdong">
             <name>广东</name>
         </category>
-		<category id="hunan">
+        <category id="hunan">
             <name>湖南</name>
         </category>
-		<category id="jiangsu">
+        <category id="jiangsu">
             <name>江苏</name>
         </category>
-		<category id="zhejiang">
+        <category id="zhejiang">
             <name>浙江</name>
         </category>
         <category id="tianjin">
@@ -35,76 +35,76 @@
         <category id="chongqing">
             <name>重庆</name>
         </category>
-		<category id="shandong">
+        <category id="shandong">
             <name>山东</name>
         </category>
-		<category id="hubei">
+        <category id="hubei">
             <name>湖北</name>
         </category>
-		<category id="henan">
+        <category id="henan">
             <name>河南</name>
         </category>
-		<category id="fujian">
+        <category id="fujian">
             <name>福建</name>
         </category>
-		<category id="hebei">
+        <category id="hebei">
             <name>河北</name>
         </category>
-		<category id="sichuan">
+        <category id="sichuan">
             <name>四川</name>
         </category>
-		<category id="guangxi">
+        <category id="guangxi">
             <name>广西</name>
         </category>
-		<category id="hainan">
+        <category id="hainan">
             <name>海南</name>
         </category>
-		<category id="anhui">
+        <category id="anhui">
             <name>安徽</name>
         </category>
-		<category id="jiangxi">
+        <category id="jiangxi">
             <name>江西</name>
         </category>
-		<category id="shanxi2">
+        <category id="shanxi2">
             <name>陕西</name>
         </category>
-		<category id="shanxi">
+        <category id="shanxi">
             <name>山西</name>
         </category>
-		<category id="gansu">
+        <category id="gansu">
             <name>甘肃</name>
         </category>
-		<category id="ningxia">
+        <category id="ningxia">
             <name>宁夏</name>
         </category>
-		<category id="qinghai">
+        <category id="qinghai">
             <name>青海</name>
         </category>
-		<category id="guizhou">
+        <category id="guizhou">
             <name>贵州</name>
         </category>
-		<category id="yunnan">
+        <category id="yunnan">
             <name>云南</name>
         </category>
-		<category id="xinjiang">
+        <category id="xinjiang">
             <name>新疆</name>
         </category>
-		<category id="liaoning">
+        <category id="liaoning">
             <name>辽宁</name>
         </category>
-		<category id="jilin">
+        <category id="jilin">
             <name>吉林</name>
         </category>
-		<category id="heilongjiang">
+        <category id="heilongjiang">
             <name>黑龙江</name>
         </category>
-		<category id="neimenggu">
+        <category id="neimenggu">
             <name>内蒙古</name>
         </category>
     </category>
-	<category id="hat">
+    <category id="hat">
         <name>港澳台</name>
-		<category id="hongkong">
+        <category id="hongkong">
             <name>香港</name>
         </category>
         <category id="aomen">
@@ -113,5 +113,8 @@
         <category id="taiwan">
             <name>台湾</name>
         </category>
+    </category>
+    <category id="movie">
+        <name>精彩影视</name>
     </category>
 </categories>

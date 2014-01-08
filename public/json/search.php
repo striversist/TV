@@ -106,7 +106,7 @@
     // ------------------------- Functions -----------------------------------
     function getSearchCategories($profile)
     {
-        $result = array("cctv", "satellitetv", "hd");
+        $result = array("cctv", "satellitetv", "hd", "movie");
         $local_id = getLocalCategoryIdByUserLocation($profile);
         if ($local_id != false)
             $result[] = $local_id;

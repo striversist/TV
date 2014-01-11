@@ -112,7 +112,10 @@ class Database
             $this->sendToMemcache("channels_".$category_id, $category_channels);
         }
         
-        return $categories["$param_category_id"];
+        if (array_key_exists($param_category_id, $categories))
+            return $categories["$param_category_id"];
+        else
+            return false;
     }
     
     private function sendToMemcache($key, $target_array)

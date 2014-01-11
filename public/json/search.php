@@ -32,7 +32,7 @@
     $channel_names = $collector->getIdNames();
     foreach ($channel_names as $id => $name)
     {
-        if (strpos($name, $keyword) !== FALSE)  // Found
+        if (stripos($name, $keyword) !== FALSE)  // Found
         {
             //echo "You found $keyword in ".$name."<br />";
             $result_channels["$id"] = $name;
@@ -56,7 +56,7 @@
                     $tmp = array();
                     foreach ($programs as $program)
                     {
-                        if (strpos($program["title"], $keyword) !== FALSE)
+                        if (stripos($program["title"], $keyword) !== FALSE)
                         {
                             //echo "You found $keyword in ".$program["title"]."<br />";
                             $tmp[] = $program;

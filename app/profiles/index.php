@@ -68,6 +68,8 @@
             <th width="100">操作</th>
         </tr>
         <?php 
+            $show_limit = 500;
+            $index = 0;
             foreach ($profiles as $guid => $profile) 
             {
         ?>
@@ -84,6 +86,8 @@
                 <td style="border:solid 1px #799AE1"><a href="profile_detail.php?guid=<?php echo $profile["GUID"] ?>" style="cursor:pointer">更多</a></td>
         </tr>
         <?php
+                if ($index++ > $show_limit)
+                    break;
             }
         ?>
     </tbody>

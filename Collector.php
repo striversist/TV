@@ -63,6 +63,56 @@ class Collector
         return $array;
     }
     
+    public function getAllTvmaoIds()
+    {
+        $result = array();
+        $xml = $this->_channels_xml;
+        foreach ($xml->channel as $channel)
+        {
+            $id = $channel["id"];
+            foreach ($channel->urls->url as $url)
+            {
+                if ($url["src"] == Config::DATA_SRC_TVMAO)  // 如果存在tvmao的配置
+                {
+                    $tvmao_id = $this->filterTvmaoId($url);
+                    $result["$id"] = $tvmao_id;
+                }
+            }
+        }
+        return $result;
+    }
+    
+    public function getTvmaoId($channel_id)
+    {
+        $tvmao_id = null;
+        $xml = $this->_channels_xml;
+        foreach ($xml->channel as $channel)
+        {
+            $id = $channel["id"];
+            if ($id != $channel_id)
+                continue;
+            foreach ($channel->urls->url as $url)
+            {
+                if ($url["src"] == Config::DATA_SRC_TVMAO)  // 如果存在tvmao的配置
+                {
+                    $tvmao_id = $this->filterTvmaoId($url);
+//                    echo "getTvmaoId id=".$tvmao_id."<br/>";
+                }
+            }
+        }
+        return $tvmao_id;
+    }
+    
+    private function filterTvmaoId($url)
+    {
+        $matches = null;
+        $pattern = '/.+\/(.+)-w.*/';
+        preg_match($pattern, $url, $matches);
+        if (key_exists(1, $matches))
+            return $matches[1];
+        return null;
+    }
+    
     /*
      * return: The url of hot TV series
      */

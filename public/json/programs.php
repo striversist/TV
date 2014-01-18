@@ -31,6 +31,11 @@
         return;
     }
     
+    if (isset($_GET["report_visit"]))
+    {
+        goto Label_Record_Visit;
+    }
+    
     foreach ($channel["days"][$day] as $program)
     {
         //echo $program["time"].": ".$program["title"]."<br />";
@@ -51,6 +56,7 @@
 //    var_dump($result);
     
     // 记录该channel被访问次数
+Label_Record_Visit:
     $lock = new CacheLock(__FILE__);
     $lock->lock();      // 读写文件需要保证原子性，否则会读到脏数据或写乱文件
     $visit_records = $db->getChannelVisitRecords();

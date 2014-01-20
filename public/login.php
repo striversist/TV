@@ -1,5 +1,6 @@
 <?php
     header("Content-type: text/html; charset=utf8");
+    require_once dirname(__FILE__).'/'.'../Config.php';
     require_once dirname(__FILE__).'/'.'../Database.php';
     require_once dirname(__FILE__).'/'.'../CacheLock.php';
     require_once dirname(__FILE__).'/'.'../app/utils.php';
@@ -26,6 +27,15 @@
             return;
     }
     
+    // 返回配置
+    $configure = array();
+    $configure["config"]["channel_detail_from_web"] = "0";
+    if (Config::$ChannelDetailFromWeb)
+        $configure["config"]["channel_detail_from_web"] = "1";
+    echo json_encode($configure);
+    
+    // ---------------------- 后台处理 --------------------------
+    // 用户登陆记录处理
     // 针对老用户
     if (!$is_new_user)
     {

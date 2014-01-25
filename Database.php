@@ -305,10 +305,43 @@ class Database
      */
     public function getChannelVisitRecords()
     {
+        if ($this->needTransfer())  // Transfer finish
+        {
+            // Transer first
+            $string = file_get_contents($this->channels_visit_records_file_path_);
+            $visit_records = unserialize($string);
+            $this->transferData($visit_records);
+            
+            return $this->getAllVisitRecordsFromDatabase();
+        }
+        else
+        {
+            return $this->getAllVisitRecordsFromDatabase();
+        }
+        
         if (!file_exists($this->channels_visit_records_file_path_))
             return false;
         $string = file_get_contents($this->channels_visit_records_file_path_);
         $records = unserialize($string);
+        return $records;
+    }
+    
+    public function getAllVisitRecordsFromDatabase()
+    {
+        // Get from database
+        $result = mysql_query("SELECT * FROM channel_visit_records");
+        if (mysql_numrows($result) == 0)
+            return false;
+
+        $records = array();
+        while ($row = mysql_fetch_array($result))
+        {
+            $record["Date"] = $row["DATE"];
+            $record["VisitRecord"] = unserialize($row["VISIT_RECORD"]);
+//            echo "getChannelVisitRecords date=".$record["Date"].", count=".count($record["VisitRecord"])."<br/>";
+            // TODO: 暂时转换为外面所需的格式，以后直接输出即可
+            $records[$record["Date"]] = $record["VisitRecord"];
+        }
         return $records;
     }
     
@@ -317,8 +350,79 @@ class Database
      */
     public function storeChannelVisitRecords($records)
     {
+        if (!$this->needTransfer())      // Transfer finish
+        {
+            $today = date("Y/m/d");
+            $record["Date"] = "$today";
+            $record["VisitRecord"] = $records["$today"];
+            // TODO: 目前只更新今天的节目信息，以后删除这个接口
+            $this->storeChannelVisitRecord($record);
+            return;
+        }
+        
         $store = serialize($records);
         file_put_contents($this->channels_visit_records_file_path_, $store, LOCK_EX);
+    }
+    
+    public function needTransfer()
+    {
+        $today = date("Y/m/d");
+        if ($this->getChannelVisitRecordByDate($today) != false)    // Already exist
+            return false;   // No need
+        return true;
+    }
+    
+    public function transferData($visit_records)
+    {        
+        foreach ($visit_records as $date => $visit_record) 
+        {
+//            echo "transferData date=$date, count=".count($visit_record)."<br/>";
+            $record = array();
+            $record["Date"] = $date;
+            $record["VisitRecord"] = $visit_record;
+            $this->storeChannelVisitRecord($record);
+        }
+        return true;
+    }
+    
+    public function getChannelVisitRecordByDate($date)
+    {
+        if (!$this->is_date($date))
+            return false;
+        
+        $result = mysql_query("SELECT * FROM channel_visit_records WHERE DATE='$date'");
+        if (mysql_numrows($result) == 0)
+            return false;
+        
+        while ($row = mysql_fetch_array($result))
+        {
+            $record["Date"] = $row["DATE"];
+            $record["VisitRecord"] = unserialize($row["VISIT_RECORD"]);
+        }
+//        echo "getChannelVisitRecordByDate:"."<br/>";
+//        var_dump($record);
+        return $record;
+    }
+    
+    public function storeChannelVisitRecord($record)
+    {
+        if (!isset($record["Date"]) || !isset($record["VisitRecord"]))
+            return false;
+        
+        if (!$this->is_date($record["Date"]))
+            return false;
+        
+        $date = $record["Date"];
+        $visit_record = serialize($record["VisitRecord"]);
+//        echo "storeChannelVisitRecord date=$date, count=".count($record["VisitRecord"])."<br/>";
+//        var_dump($record["VisitRecord"]);
+        
+        $result = mysql_query("SELECT * FROM channel_visit_records WHERE DATE='$date'");
+        $num = mysql_num_rows($result);
+        if ($num > 0)   // Found exist record, update
+            mysql_query("UPDATE channel_visit_records SET DATE='$date', VISIT_RECORD='$visit_record' WHERE DATE='$date'");
+        else            // Not found exist record, insert
+            mysql_query("INSERT INTO channel_visit_records (DATE, VISIT_RECORD) VALUES ('$date', '$visit_record')");
     }
     
     private static $instance_;

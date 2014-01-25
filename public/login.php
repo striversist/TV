@@ -31,7 +31,12 @@
     $configure = array();
     $configure["config"]["channel_detail_from_web"] = "0";
     if (Config::$ChannelDetailFromWeb)
-        $configure["config"]["channel_detail_from_web"] = "1";
+    {
+        if (@$headers["Version"] >= "1.3.3")    // 版本做限制，因为html改版
+        {
+            $configure["config"]["channel_detail_from_web"] = "1";
+        }
+    }
     echo json_encode($configure);
     
     // ---------------------- 后台处理 --------------------------

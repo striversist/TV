@@ -303,6 +303,7 @@ class Database
     /*
      * return: key{date} => value{key{channel_id} => value{"VisitTimes"}}
      */
+    // @deprecated: delete soon
     public function getChannelVisitRecords()
     {
         if ($this->needTransfer())  // Transfer finish
@@ -326,7 +327,8 @@ class Database
         return $records;
     }
     
-    public function getAllVisitRecordsFromDatabase()
+    // @deprecated: deleted soon
+    private function getAllVisitRecordsFromDatabase()
     {
         // Get from database
         $result = mysql_query("SELECT * FROM channel_visit_records");
@@ -348,6 +350,7 @@ class Database
     /*
      * 记录每天各channel被访问的次数（查节目）
      */
+    // @deprecated: delete soon
     public function storeChannelVisitRecords($records)
     {
         if (!$this->needTransfer())      // Transfer finish

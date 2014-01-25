@@ -59,17 +59,13 @@
 Label_Record_Visit:
     $lock = new CacheLock(__FILE__);
     $lock->lock();      // 读写文件需要保证原子性，否则会读到脏数据或写乱文件
-    $visit_records = $db->getChannelVisitRecords();
-    if ($visit_records == false)    // First use
-    {
-        $visit_records = array();
-    }
-    $date = date("Y/m/d");
-    if (!isset($visit_records["$date"][$id]["VisitTimes"]))
-        $visit_records["$date"][$id]["VisitTimes"] = 1;
+    $today = date("Y/m/d");
+    $visit_record = $db->getChannelVisitRecordByDate($today);
+    if (!isset($visit_record["VisitRecord"][$id]["VisitTimes"]))
+        $visit_record["VisitRecord"][$id]["VisitTimes"] = 1;
     else
-        $visit_records["$date"][$id]["VisitTimes"] += 1;
-    $db->storeChannelVisitRecords($visit_records);
+        $visit_record["VisitRecord"][$id]["VisitTimes"] += 1;
+    $db->storeChannelVisitRecord($visit_record);
     $lock->unlock();
 //    var_dump($visit_records);
     

@@ -106,7 +106,17 @@
     // ------------------------- Functions -----------------------------------
     function getSearchCategories($profile)
     {
-        $result = array("cctv", "satellitetv", "hd", "movie");
+        // 不想被搜索的分类：local，直接搜索耗时大，且其它省份无法看
+        $exclude_root_categories = array("local");
+        
+        global $collector;
+        $root_categories = $collector->getRootCategories();
+        $result = array();
+        foreach ($root_categories as $category_id => $category) 
+        {
+            if (!in_array($category_id, $exclude_root_categories))
+                $result[] = $category_id;
+        }
         $local_id = getLocalCategoryIdByUserLocation($profile);
         if ($local_id != false)
             $result[] = $local_id;

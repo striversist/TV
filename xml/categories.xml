@@ -117,4 +117,7 @@
     <category id="movie">
         <name>精彩影视</name>
     </category>
+    <category id="education">
+        <name>教育频道</name>
+    </category>
 </categories>

@@ -50,6 +50,8 @@
             $last_login = false;
     }
     
+    if ($last_login != false)   // 存在上次登陆的记录
+        @$profile["NextLastLogin"] = $profile["LastLogin"]; // 上上次登陆时间，统计活跃度
     $date = date("Y/m/d H:i:s");
     $profile["LastLogin"] = $date;
     

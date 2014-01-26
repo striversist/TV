@@ -61,6 +61,11 @@ Label_Record_Visit:
     $lock->lock();      // 读写文件需要保证原子性，否则会读到脏数据或写乱文件
     $today = date("Y/m/d");
     $visit_record = $db->getChannelVisitRecordByDate($today);
+    if ($visit_record == false)     // No today's record, then create it
+    {
+        $visit_record["Date"] = $today;
+        $visit_record["VisitRecord"] = array();
+    }
     if (!isset($visit_record["VisitRecord"][$id]["VisitTimes"]))
         $visit_record["VisitRecord"][$id]["VisitTimes"] = 1;
     else

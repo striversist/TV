@@ -38,10 +38,13 @@
         
         $visit_record = $db->getChannelVisitRecordByDate($today);
         $daily_channel_visit_count = 0;
-        foreach ($visit_record["VisitRecord"] as $channel_id => $channel)
+        if ($visit_record != false)
         {
-//            echo "channel: ".$channel_id." VisitTimes=".$channel["VisitTimes"]."<br />";
-            $daily_channel_visit_count += $channel["VisitTimes"];
+            foreach ($visit_record["VisitRecord"] as $channel_id => $channel)
+            {
+    //            echo "channel: ".$channel_id." VisitTimes=".$channel["VisitTimes"]."<br />";
+                $daily_channel_visit_count += $channel["VisitTimes"];
+            }
         }
     ?>
     <a href="../activities/index.htm"/><p><h1>日活跃度：<?php echo $daily_activity; ?> = <?php echo $daily_new_user; ?>（日新增）+ <?php echo $daily_activity - $daily_new_user; ?>（老用户）</h1></p>
@@ -56,7 +59,8 @@
             <th width="250">GUID</th>
             <th width="80">版本</th>
             <th width="150">首次启动</th>
-            <th width="150">最后登录</th>
+            <th width="120">上上次登陆</th>
+            <th width="120">最后登录</th>
             <th width="100">用户IP</th>
             <th width="180">位置</th>
             <th width="100">RemoteIP</th>
@@ -74,6 +78,7 @@
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["GUID"] ?></td>
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["Version"] ?></td>
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["FirstUse"] ?></td>
+                <td style="border:solid 1px #799AE1"><?php echo @$profile["NextLastLogin"] ?></td>
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["LastLogin"] ?></td>
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["UIP"] ?></td>
                 <td style="border:solid 1px #799AE1"><?php echo @$profile["UL"] ?></td>

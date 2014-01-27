@@ -59,7 +59,7 @@
             <th width="250">GUID</th>
             <th width="80">版本</th>
             <th width="150">首次启动</th>
-            <th width="120">上上次登陆</th>
+            <th width="120">上次登陆</th>
             <th width="120">最后登录</th>
             <th width="100">用户IP</th>
             <th width="180">位置</th>

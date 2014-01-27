@@ -139,6 +139,7 @@ $SpecialChars = array
     0x8644 => "咲",
     0x9249 => "扞",
     0x8DEB => "嶋",
+    0x8F66 => "廸",
 );
 
 function is_specical_gb2312_char($first, $second)

@@ -72,19 +72,20 @@
             $index = 0;
             foreach ($profiles as $guid => $profile) 
             {
+                $uninstall = @$profile["Uninstall"];
         ?>
-        <tr>
-                <td style="border:solid 1px #799AE1"></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["GUID"] ?></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["Version"] ?></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["FirstUse"] ?></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["NextLastLogin"] ?></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["LastLogin"] ?></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["UIP"] ?></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["UL"] ?></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["RemoteIP"] ?></td>
-                <td style="border:solid 1px #799AE1"><?php echo @$profile["APP_CHANNEL"] ?></td>
-                <td style="border:solid 1px #799AE1"><a href="profile_detail.php?guid=<?php echo $profile["GUID"] ?>" style="cursor:pointer">更多</a></td>
+        <tr <?php if ($uninstall) echo "bgcolor=#D0D0D0"; ?>>
+            <td style="border:solid 1px #799AE1"></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["GUID"] ?></font></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["Version"] ?></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["FirstUse"] ?></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["NextLastLogin"] ?></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["LastLogin"] ?></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["UIP"] ?></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["UL"] ?></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["RemoteIP"] ?></td>
+            <td style="border:solid 1px #799AE1"><?php echo @$profile["APP_CHANNEL"] ?></td>
+            <td style="border:solid 1px #799AE1"><a href="profile_detail.php?guid=<?php echo $profile["GUID"] ?>" style="cursor:pointer">更多</a></td>
         </tr>
         <?php
                 if ($index++ > $show_limit)

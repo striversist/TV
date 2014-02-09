@@ -37,6 +37,8 @@
             $configure["config"]["channel_detail_from_web"] = "1";
         }
     }
+    
+    $configure["config"]["enable_ad"] = Config::$EnableAd ? "1" : "0";
     echo json_encode($configure);
     
     // ---------------------- 后台处理 --------------------------

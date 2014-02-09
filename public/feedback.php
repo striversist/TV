@@ -14,6 +14,7 @@
     $guid = $headers["GUID"];
     $profile = $db->getProfile($guid);
     $feedback = $_POST["feedback"];
+    $email = @$_POST["email"];
     $date = date("Y/m/d H:i:s");
     
     if (!isset($profile["feedbacks"]))
@@ -26,6 +27,8 @@
         $feedbacks["$date"] = $feedback;
     }
     $profile["feedbacks"] = $feedbacks;
+    if ($email)
+        $profile["Email"] = $email;
     $db->storeProfile($profile);
     
 //    var_dump($profiles[$guid]);

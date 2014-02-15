@@ -21,7 +21,7 @@
     foreach ($feedbacks as $dateTime => $feedback)
     {
         echo "Time: ".$dateTime."<br/>";
-        echo "Feekback: ".$feedback["feedbacks"]."<br/>";
+        echo "Feedback: ".$feedback["feedbacks"]."<br/>";
         echo "GUID: "."<a href=../profiles/profile_detail.php?guid=".$feedback["GUID"].">".$feedback["GUID"]."</a><br/>";
         echo "<br/>";
     }

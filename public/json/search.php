@@ -2,6 +2,7 @@
     header("Content-type: text/html; charset=utf8");
     require_once dirname(__FILE__).'/'.'../../Database.php';
     require_once dirname(__FILE__).'/'.'../../Collector.php';
+    require_once dirname(__FILE__).'/'.'./utils.php';
     
     if(!isset($_GET["keyword"]) || htmlspecialchars($_GET["keyword"]) === '')
     {
@@ -28,48 +29,11 @@
         $today = "7";
     
     // 匹配关键字: 频道名称
-    $result_channels = array();
-    $channel_names = $collector->getIdNames();
-    foreach ($channel_names as $id => $name)
-    {
-        if (stripos($name, $keyword) !== FALSE)  // Found
-        {
-            //echo "You found $keyword in ".$name."<br />";
-            $result_channels["$id"] = $name;
-        }
-    }
+    $result_channels = getMatchedChannels($keyword);
     
     // 匹配关键字: 节目列表
-    $result_programs = array();
     $search_categories = getSearchCategories($profile);
-    foreach ($search_categories as $category_id)
-    {
-        $channels = $db->getChannelsByCategory($category_id);
-        if ($channels == false)
-            continue;
-        foreach ($channels as $id => $channel)
-        {
-            foreach ($channel["days"] as $day => $programs) 
-            {
-                if ($day == $today)
-                {
-                    $tmp = array();
-                    foreach ($programs as $program)
-                    {
-                        if (stripos($program["title"], $keyword) !== FALSE)
-                        {
-                            //echo "You found $keyword in ".$program["title"]."<br />";
-                            $tmp[] = $program;
-                        }
-                    }
-                    if (count($tmp))
-                    {
-                        $result_programs["$id"] = $tmp;
-                    }
-                }
-            }
-        }
-    }
+    $result_programs = getMatchedPrograms($keyword, $search_categories, $today);
     
     // 返回用户结果
     if ($version != null and $version < "1.1.0")

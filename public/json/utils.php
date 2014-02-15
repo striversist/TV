@@ -49,4 +49,55 @@
         $dif = getTime()-$t;
         return ' '.number_format($dif,$l);
     }
+    
+    function getMatchedChannels($keyword)
+    {
+        $collector = Collector::getInstance();
+        $result_channels = array();
+        $channel_names = $collector->getIdNames();
+        foreach ($channel_names as $id => $name)
+        {
+            if (stripos($name, $keyword) !== FALSE)  // Found
+            {
+                //echo "You found $keyword in ".$name."<br />";
+                $result_channels["$id"] = $name;
+            }
+        }
+        return $result_channels;
+    }
+    
+    function getMatchedPrograms($keyword, $search_categories, $target_day)
+    {
+        $db = Database::getInstance();
+        $result_programs = array();
+        foreach ($search_categories as $category_id)
+        {
+            $channels = $db->getChannelsByCategory($category_id);
+            if ($channels == false)
+                continue;
+            foreach ($channels as $id => $channel)
+            {
+                foreach ($channel["days"] as $day => $programs) 
+                {
+                    if ($day == $target_day)
+                    {
+                        $tmp = array();
+                        foreach ($programs as $program)
+                        {
+                            if (stripos($program["title"], $keyword) !== FALSE)
+                            {
+                                //echo "You found $keyword in ".$program["title"]."<br />";
+                                $tmp[] = $program;
+                            }
+                        }
+                        if (count($tmp))
+                        {
+                            $result_programs["$id"] = $tmp;
+                        }
+                    }
+                }
+            }
+        }
+        return $result_programs;
+    }
 ?>

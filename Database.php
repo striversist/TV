@@ -340,6 +340,41 @@ class Database
             mysql_query("INSERT INTO channel_visit_records (DATE, VISIT_RECORD) VALUES ('$date', '$visit_record')");
     }
     
+    /**
+     * @param days: 范围
+     * @return 搜索结果
+     */
+    public function getSearchWordsInDays($days)
+    {
+        if ($days < 0)
+            return false;
+        
+        $profiles = $this->getProfiles();
+        $searches = array();
+        $result = array();
+        foreach ($profiles as $key => $profile) 
+        {
+            if (isset($profile["SearchRecords"]))
+            {
+                foreach ($profile["SearchRecords"] as $date => $records)
+                {
+                    foreach ($records as $record)
+                        $searches[$date][] = $record;
+                }
+            }
+        }
+        krsort($searches);
+
+        $index = 0;
+        foreach ($searches as $date => $records)
+        {
+            if ($index++ >= $days)
+                break;
+            $result = array_merge($result, $records);
+        }
+        return $result;
+    }
+    
     private static $instance_;
     private function __construct() 
     { 

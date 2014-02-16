@@ -375,6 +375,11 @@ class Database
         return $result;
     }
     
+    public function getMemcacheInstance()
+    {
+        return $this->memcache_;
+    }
+    
     private static $instance_;
     private function __construct() 
     { 

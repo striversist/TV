@@ -352,6 +352,7 @@ class Database
         $profiles = $this->getProfiles();
         $searches = array();
         $result = array();
+        $threshold_day = date("Y/m/d",strtotime("-".$days." day"));
         foreach ($profiles as $key => $profile) 
         {
             if (isset($profile["SearchRecords"]))
@@ -359,17 +360,16 @@ class Database
                 foreach ($profile["SearchRecords"] as $date => $records)
                 {
                     foreach ($records as $record)
-                        $searches[$date][] = $record;
+                    {
+                        if (date("Y/m/d", strtotime("$date")) >= $threshold_day)
+                            $searches[$date][] = $record;
+                    }
                 }
             }
         }
-        krsort($searches);
 
-        $index = 0;
         foreach ($searches as $date => $records)
         {
-            if ($index++ >= $days)
-                break;
             $result = array_merge($result, $records);
         }
         return $result;

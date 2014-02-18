@@ -13,7 +13,7 @@
     
     if (isset($_GET["uninstall"]))
     {
-        $profile["Uninstall"] = true;
+        $profile["Uninstall"] = date("Y/m/d H:i:s");
     }
     
     $db->storeProfile($profile);

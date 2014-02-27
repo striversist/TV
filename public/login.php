@@ -39,6 +39,7 @@
     }
     
     $configure["config"]["enable_ad"] = Config::$EnableAd ? "1" : "0";
+    $configure["config"]["hot_source"] = Config::$HotSource;
     echo json_encode($configure);
     
     // ---------------------- 后台处理 --------------------------

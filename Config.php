@@ -12,6 +12,7 @@ class Config
     public static $DATA_SRC = self::DATA_SRC_TVSOU;
     public static $ChannelDetailFromWeb = true;
     public static $EnableAd = false;
+    public static $HotSource = "tvmao";
 }
 
 ?>

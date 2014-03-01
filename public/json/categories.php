@@ -4,10 +4,15 @@
     require_once dirname(__FILE__).'/'.'../../Database.php';
     
     $type = null;
+    $app_channel = null;
     $result = array();
     if (isset($_GET["type"]))
     {
         $type = $_GET["type"];
+    }
+    if (isset($_GET["app_channel"]))
+    {
+        $app_channel = $_GET["app_channel"];
     }
         
     $colletor = Collector::getInstance();
@@ -31,6 +36,9 @@
     
     foreach ($categories as $id => $category)
     {
+        if ($id == "hat" and $app_channel == "安卓市场")  // 安卓市场不允许有“港澳台”节目
+            continue;
+        
         $arr1["id"] = $id;
         foreach ($category as $key => $value)
         {
@@ -38,6 +46,7 @@
         }
         $arr2[] = $arr1;
     }
+    
     $result["categories"] = $arr2;
     echo json_encode($result);
     //var_dump($categories);

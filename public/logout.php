@@ -81,9 +81,15 @@
         
         $first_login = date("Y/m/d", strtotime($profile["FirstUse"]));
         if ($first_login == $today)
-            $uninstall_record["NewUsers"][] = $guid;
+        {
+            if (!in_array($guid, $uninstall_record["NewUsers"]))
+                $uninstall_record["NewUsers"][] = $guid;
+        }
         else
-            $uninstall_record["LoyalUsers"][] = $guid;
+        {
+            if (!in_array($guid, $uninstall_record["LoyalUsers"]))
+                $uninstall_record["LoyalUsers"][] = $guid;
+        }
         $db->storeUninstallRecord($uninstall_record);
         $lock->unlock();
         

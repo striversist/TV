@@ -23,6 +23,9 @@
     }
     krsort($versions);
     
-    echo "月活跃度： ".$total."<br/>";
-    var_dump($versions);
+    echo "月活跃度： ".$total."<br/><br/>";
+    foreach ($versions as $version => $num) 
+    {
+        echo "Version: $version =>  $num"."<br/>";
+    }
 ?>

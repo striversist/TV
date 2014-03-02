@@ -287,6 +287,23 @@ class Database
             mysql_query("INSERT INTO login_records (DATE, NEW_USERS, LOYAL_USERS) VALUES ('$date', '$new_users', '$loyal_users')");
     }
     
+    public function getUninstallRecords()
+    {
+        $result = mysql_query("SELECT * FROM uninstall_records");
+        if (mysql_numrows($result) == 0)
+            return false;
+        
+        $records = array();
+        while ($row = mysql_fetch_array($result))
+        {
+            $record["Date"] = $row["DATE"];
+            $record["NewUsers"] = unserialize($row["NEW_USERS"]);
+            $record["LoyalUsers"] = unserialize($row["LOYAL_USERS"]);
+            $records[] = $record;
+        }
+        return $records;
+    }
+    
     public function getUninstallRecordByDate($date_str)
     {
         if (!$this->is_date($date_str))

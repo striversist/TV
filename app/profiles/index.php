@@ -46,8 +46,13 @@
                 $daily_channel_visit_count += $channel["VisitTimes"];
             }
         }
+        $uninstall_record = $db->getUninstallRecordByDate($today);
+        $daily_uninstall_new_user = count($uninstall_record["NewUsers"]);
+        $daily_uninstall_loyal_user = count($uninstall_record["LoyalUsers"]);
+        $daily_uninstall = $daily_uninstall_new_user + $daily_uninstall_loyal_user;
     ?>
     <a href="../activities/index.htm"/><p><h1>日活跃度：<?php echo $daily_activity; ?> = <?php echo $daily_new_user; ?>（日新增）+ <?php echo $daily_activity - $daily_new_user; ?>（老用户）</h1></p>
+    <p><h1>日卸载量：<?php echo $daily_uninstall; ?> = <?php echo $daily_uninstall_new_user; ?>（新用户）+ <?php echo $daily_uninstall_loyal_user; ?>（老用户）</h1></p>
     <a href="../visits/index.htm"/><p><h1>今日节目访问量：<?php echo $daily_channel_visit_count; ?></h1></p>
     <p>
         <a href="../searches/index.php"/><font size="5px">搜索记录</font>&nbsp;&nbsp;

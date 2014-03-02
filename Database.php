@@ -287,6 +287,44 @@ class Database
             mysql_query("INSERT INTO login_records (DATE, NEW_USERS, LOYAL_USERS) VALUES ('$date', '$new_users', '$loyal_users')");
     }
     
+    public function getUninstallRecordByDate($date_str)
+    {
+        if (!$this->is_date($date_str))
+            return false;
+        
+        $result = mysql_query("SELECT * FROM uninstall_records WHERE DATE='$date_str'");
+        if (mysql_numrows($result) == 0)
+            return false;
+        
+        while ($row = mysql_fetch_array($result))
+        {
+            $record["Date"] = $row["DATE"];
+            $record["NewUsers"] = unserialize($row["NEW_USERS"]);
+            $record["LoyalUsers"] = unserialize($row["LOYAL_USERS"]);
+        }
+        return $record;
+    }
+    
+    public function storeUninstallRecord($record)
+    {
+        if (!isset($record["Date"]) || !isset($record["NewUsers"]) || !isset($record["LoyalUsers"]))
+            return false;
+        
+        if (!$this->is_date($record["Date"]))
+            return false;
+        
+        $date = $record["Date"];
+        $new_users = serialize($record["NewUsers"]);
+        $loyal_users = serialize($record["LoyalUsers"]);
+        
+        $result = mysql_query("SELECT * FROM uninstall_records WHERE DATE='$date'");
+        $num = mysql_num_rows($result);
+        if ($num > 0)   // Found exist record, update
+            mysql_query("UPDATE uninstall_records SET NEW_USERS='$new_users', LOYAL_USERS='$loyal_users' WHERE DATE='$date'");
+        else            // Not found exist record, insert
+            mysql_query("INSERT INTO uninstall_records (DATE, NEW_USERS, LOYAL_USERS) VALUES ('$date', '$new_users', '$loyal_users')");
+    }
+    
     private function is_date($str, $format="Y/m/d")
     {
         $unixTime_1 = strtotime($str);

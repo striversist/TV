@@ -56,7 +56,8 @@
     <a href="../visits/index.htm"/><p><h1>今日节目访问量：<?php echo $daily_channel_visit_count; ?></h1></p>
     <p>
         <a href="../searches/index.php"/><font size="5px">搜索记录</font>&nbsp;&nbsp;
-        <a href="../feedbacks/index.php"/><font size="5px">反馈记录</font>
+        <a href="../feedbacks/index.php"/><font size="5px">反馈记录</font>&nbsp;&nbsp;
+        <a href="./version.php"/><font size="5px">版本比例</font>
     </p>
     <tbody>
         <tr>

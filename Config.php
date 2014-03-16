@@ -11,7 +11,7 @@ class Config
     const MAX_COLLECT_DAYS = 10;
     public static $DATA_SRC = self::DATA_SRC_TVSOU;
     public static $ChannelDetailFromWeb = true;
-    public static $EnableAd = false;
+    public static $EnableAd = true;
     public static $HotSource = "tvmao";
 }
 

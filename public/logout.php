@@ -5,7 +5,7 @@
        
     $db = Database::getInstance();
     
-    if (isset($_GET["init_uninstall_db"]))
+    if (isset($_GET["init_uninstall_db"]))  // 将卸载记录写入database
     {
         $profiles = $db->getProfiles();
         $result = array();
@@ -57,9 +57,18 @@
     }
     
     $headers = apache_request_headers();
-    if (!isset($headers["GUID"]))
+    $guid = null;
+    if (isset($headers["GUID"]))     // 老版本放入http header中
+    {
+        $guid = $headers["GUID"];
+    }
+    else if (isset($_GET["guid"]))   // 新版本放入url请求中
+    {
+        $guid = $_GET["guid"];
+    }
+    if ($guid == null)
         return;
-    $guid = $headers["GUID"];
+    
     $profile = $db->getProfile($guid);
     if ($profile == false)
         return;

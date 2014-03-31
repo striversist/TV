@@ -19,6 +19,8 @@
     
     if ($type == "collect")
         on_report_collect ();
+    if ($type == "search")
+        on_report_search ();
     
     $db->storeProfile($profile);
     
@@ -35,6 +37,27 @@
             $id_array[] = $id;
         }
         $profile["Collect"] = $id_array;
+    }
+    
+    function on_report_search()
+    {
+        global $profile;
+        $keyword = $_GET["keyword"];
+        
+        $date = date("Y/m/d");
+        // SearchRecords: key(date) => value(keywords); 
+        // keywords: array of keyword
+        if (!isset($profile["SearchRecords"]))
+        {
+            $keywords[] = $keyword;
+            $search_records["$date"] = $keywords;
+        }
+        else
+        {
+            $search_records = $profile["SearchRecords"];
+            $search_records["$date"][] = $keyword;
+        }
+        $profile["SearchRecords"] = $search_records;
     }
     
 ?>

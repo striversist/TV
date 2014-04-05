@@ -1,6 +1,11 @@
 <?php
-header("Content-type: text/html; charset=utf8");
+    header("Content-type: text/html; charset=utf8");
 
+    $headers = apache_request_headers();
+    @$version = @$headers["Version"];
+    if ($version == "1.5.0")    // 1.5.0版本升级提示会造成crash，故不提示升级
+        return;
+    
 echo <<< EOT
 <Updateinfo>
     <VersionCode>20</VersionCode>
